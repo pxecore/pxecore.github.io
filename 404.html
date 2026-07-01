@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>404 | Out of Bounds</title>
+  <meta name="robots" content="noindex" />
+
+  <style>
+    :root {
+      --bg: #07070a;
+      --bg2: #0a0a13;
+      --panel: #0c0f18;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #ff1a3c;
+      --accent-soft: rgba(255, 26, 60, 0.16);
+      --cyan: #00e5ff;
+      --warn: #f59e0b;
+      --ok: #22c55e;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; overflow: hidden; touch-action: none; background-color: var(--bg); }
+    
+    body {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: radial-gradient(1200px 800px at 50% 0%, #0e0e1b 0%, var(--bg) 70%), linear-gradient(90deg, var(--bg2), var(--bg));
+      color: var(--text); display: flex; justify-content: center; align-items: center;
+    }
+
+    .scanlines { position: fixed; inset: 0; pointer-events: none; background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.04), rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px); mix-blend-mode: overlay; opacity: .12; z-index: 3; }
+    .noise { position: fixed; inset: 0; pointer-events: none; background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC44IiBudW1PY3RhdmVzPSIyIiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI24pIiBvcGFjaXR5PSIwLjA1Ii8+PC9zdmc+'); opacity:.25; mix-blend-mode: soft-light; z-index: 2; }
+
+    .bg-legacy { position: fixed; inset: 0; display: grid; place-items: center; pointer-events: none; opacity: .2; filter: blur(3px) saturate(70%); transform: scale(1.02); z-index: 0; }
+    .bg-legacy .win98-window { width: min(720px, 86vw); background: #c0c0c0; border: 2px solid #808080; box-shadow: inset -1px -1px 0 #404040, inset 1px 1px 0 #ffffff, inset -2px -2px 0 #808080, inset 2px 2px 0 #dfdfdf; }
+    .bg-legacy .titlebar { height: 22px; display: flex; align-items: center; justify-content: space-between; padding: 0 6px; background: linear-gradient(90deg, #000080, #3a3ab0); color: #fff; font-weight: 700; font-size: 12px; }
+    .bg-legacy .titlebar .dots span { width: 10px; height: 10px; background: #c0c0c0; border: 2px solid #808080; box-shadow: inset -1px -1px 0 #404040, inset 1px 1px 0 #ffffff; display: inline-block; margin-left: 3px;}
+    .bg-legacy .menubar { padding: 3px 6px; font-size: 12px; color: #000; }
+    .bg-legacy .legacy-content { display: flex; gap: 10px; padding: 10px; color: #000; }
+    .bg-legacy .legacy-icon { width: 28px; height: 28px; background: linear-gradient(45deg,#ff2d2d 25%,transparent 25%,transparent 75%,#ff2d2d 75%), linear-gradient(45deg,#ff2d2d 25%,transparent 25%,transparent 75%,#ff2d2d 75%); background-size:10px 10px; background-position:0 0,5px 5px; border:2px solid #800000; box-shadow: inset 0 0 0 2px #ff9f9f; }
+    
+    .container {
+      display: flex; flex-direction: column; gap: 16px; padding: 24px; border: 1px solid rgba(255,255,255,0.16); border-radius: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03)), radial-gradient(900px 260px at 50% 0%, var(--accent-soft), transparent 60%), rgba(12, 15, 24, 0.7);
+      backdrop-filter: blur(12px) saturate(120%); -webkit-backdrop-filter: blur(12px) saturate(120%);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.06); z-index: 1; position: relative; max-width: 95vw; max-height: 95vh; overflow-y: auto; overflow-x: hidden;
+    }
+
+    #prompt-screen { display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 500px; justify-content: center; }
+    .brand-header { display: flex; align-items: center; gap: 12px; font-weight: 700; color: var(--accent); margin-bottom: 20px; border-bottom: 1px solid rgba(255, 26, 60, 0.3); padding-bottom: 10px; width: 100%; justify-content: center; }
+    .brand-header svg { width: 32px; height: 32px; filter: drop-shadow(0 0 8px rgba(255, 26, 60, 0.6)); }
+    #prompt-screen h1 { margin: 0 0 12px; font-size: 2.2rem; color: var(--text); letter-spacing: 2px; }
+    .funny-text { color: var(--warn); font-size: 1rem; margin-bottom: 20px; font-weight: bold; background: rgba(245, 158, 11, 0.1); padding: 8px 12px; border-radius: 4px; border: 1px solid rgba(245, 158, 11, 0.3); }
+    #prompt-screen p { color: var(--muted); line-height: 1.6; margin-bottom: 24px; font-size: 1rem; }
+    
+    #game-container { display: none; gap: 24px; flex-wrap: wrap; justify-content: center; align-items: stretch; width: 100%; }
+    
+    .canvas-wrap { background: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(10, 10, 20, 0.95) 100%); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 0 40px rgba(0,0,0,0.5); position: relative; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+    .canvas-wrap::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 30px 30px; pointer-events: none; }
+    .canvas-wrap::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, transparent, rgba(255, 26, 60, 0.4), transparent); pointer-events: none; }
+    canvas { display: block; touch-action: none; }
+    #tetris { border-radius: 6px; }
+
+    .sidebar { display: flex; flex-direction: column; width: 240px; gap: 16px; }
+    .glitch-text { font-size: 42px; font-weight: 800; line-height: 1; margin: 0; text-shadow: 0 0 12px rgba(255,26,60,.28); position: relative; color: var(--text); }
+    .glitch-text::before, .glitch-text::after { content: attr(data-text); position: absolute; left: 0; top: 0; } 
+    .glitch-text::before { color: var(--cyan); transform: translateX(-2px); mix-blend-mode: screen; animation: jitter 2.2s infinite; opacity: .8; }
+    .glitch-text::after { color: var(--accent); transform: translateX(2px); mix-blend-mode: screen; animation: jitter 2s infinite reverse; opacity: .7; }
+    @keyframes jitter { 0% { transform: translate(0,0) } 20% { transform: translate(1px,-1px) } 40% { transform: translate(-1px,1px) } 60% { transform: translate(1px,1px) } 80% { transform: translate(-1px,-1px) } 100% { transform: translate(0,0) } }
+
+    .panel { padding: 12px 16px; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; background: rgba(0,0,0,0.3); }
+    .panel h4 { margin: 0 0 10px; font-size: 0.85rem; color: var(--muted); border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 6px; text-transform: uppercase; letter-spacing: 1px;}
+    .kv { display: flex; justify-content: space-between; align-items: center; font-size: 1.1rem; padding: 4px 0; }
+    .kv .k { color: var(--muted); font-size: 0.95rem; }
+    .kv .v { color: var(--text); font-weight: bold; transition: color 0.2s; }
+    .v.highlight { color: var(--cyan); text-shadow: 0 0 10px var(--cyan); transform: scale(1.1); }
+
+    .next-piece-container { display: flex; justify-content: center; align-items: center; height: 120px; }
+    #next-canvas { background: transparent; border: none; box-shadow: none; width: 120px; height: 120px; }
+    
+    .controls-info { font-size: 0.8rem; color: var(--muted); line-height: 1.7; }
+    .controls-info span { color: var(--cyan); font-weight: bold; display: inline-block; width: 65px; }
+
+    .btn-group { display: flex; gap: 12px; width: 100%; justify-content: center;}
+    .btn { padding: 12px 18px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.16); background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)); color: var(--text); font-weight: bold; cursor: pointer; transition: all .15s ease; font-family: inherit; font-size: 0.95rem; text-decoration: none; text-align: center; flex: 1; }
+    .btn:hover { border-color: rgba(255,255,255,0.3); box-shadow: 0 6px 16px rgba(0,0,0,0.4); transform: translateY(-1px); }
+    .btn:active { transform: translateY(1px); }
+    .btn.accent { border-color: rgba(255, 26, 60, 0.5); background: rgba(255, 26, 60, 0.1); color: #fff; text-shadow: 0 0 8px rgba(255, 26, 60, 0.5);}
+    
+    #pause-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.75); display: none; flex-direction: column; justify-content: center; align-items: center; color: var(--warn); font-size: 1.5rem; font-weight: bold; z-index: 10; border-radius: 6px; letter-spacing: 2px; }
+
+    @media (max-width: 768px) {
+      #btn-yes { display: none !important; }
+      .funny-text { visibility: hidden; position: relative; }
+      .funny-text::after { content: "You've been caught wandering into unmapped territory."; visibility: visible; position: absolute; left: 0; top: 0; width: 100%; }
+      #prompt-screen p { visibility: hidden; position: relative; }
+      #prompt-screen p::after { content: "The requested packet was lost in the void. Please navigate back to safety."; visibility: visible; position: absolute; left: 0; top: 0; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+
+  <div class="bg-legacy" aria-hidden="true">
+    <div class="win98-window">
+      <div class="titlebar"><div>404 - File Not Found</div><div class="dots"><span></span><span></span><span></span></div></div>
+      <div class="menubar">File  Edit  View  Help</div>
+      <div class="legacy-content">
+        <div class="legacy-icon"></div>
+        <div>
+          <div><strong>Error:</strong> The requested resource could not be located.</div>
+          <div style="font-family: monospace; margin-top: 5px;">Code: 0x00000194 — HTTP 404 NOT FOUND</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div id="prompt-screen">
+      <div class="brand-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>INTERCEPTED</span>
+      </div>
+      <h1>404 | Out of Bounds</h1>
+      <div class="funny-text">You've been caught wandering into unmapped territory.</div>
+      <p>The requested packet was lost in the void.<br>Would you like to run a local simulation while you reorient?</p>
+      
+      <div class="btn-group">
+        <button class="btn accent" id="btn-yes">Execute Tetris.exe</button>
+        <a href="/" class="btn">Abort & Return</a>
+      </div>
+    </div>
+
+    <div id="game-container">
+      <div class="canvas-wrap">
+        <canvas id="tetris" width="300" height="600"></canvas>
+        <div id="pause-overlay">PAUSED</div>
+      </div>
+      
+      <div class="sidebar">
+        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+          <div class="glitch-text" data-text="404">404</div>
+          <button class="btn" id="btn-pause" style="flex: 0; padding: 6px 12px; font-size: 0.8rem;">PAUSE</button>
+        </div>
+        
+        <div class="panel">
+          <h4>NEXT BLOCK</h4>
+          <div class="next-piece-container"><canvas id="next-canvas" width="120" height="120"></canvas></div>
+        </div>
+
+        <div class="panel">
+          <h4>STATS</h4>
+          <div class="kv"><span class="k">Score</span><span class="v" id="score">0</span></div>
+          <div class="kv"><span class="k">Combo</span><span class="v" id="combo" style="color:var(--warn)">0</span></div>
+          <div class="kv"><span class="k">Level</span><span class="v" id="level">1</span></div>
+        </div>
+
+        <div class="panel controls-info">
+          <h4>CONTROLS</h4>
+          <div><span>W / ↑</span> Rotate</div>
+          <div><span>A / ←</span> Move Left</div>
+          <div><span>D / →</span> Move Right</div>
+          <div><span>S / ↓</span> Soft Drop</div>
+          <div><span>SPACE</span> Hard Drop (Smash)</div>
+        </div>
+        <a href="/" class="btn" style="text-align: center;">Exit Game</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const promptScreen = document.getElementById('prompt-screen');
+    const gameContainer = document.getElementById('game-container');
+    const pauseOverlay = document.getElementById('pause-overlay');
+    const btnYes = document.getElementById('btn-yes');
+    const btnPause = document.getElementById('btn-pause');
+    const elScore = document.getElementById('score');
+    const elCombo = document.getElementById('combo');
+    const elLevel = document.getElementById('level');
+    
+    const canvas = document.getElementById('tetris');
+    const context = canvas.getContext('2d');
+    context.scale(30, 30); 
+
+    const nextCanvas = document.getElementById('next-canvas');
+    const nextContext = nextCanvas.getContext('2d');
+    nextContext.scale(30, 30);
+
+    let dropCounter = 0;
+    let dropInterval = 1000;
+    let lastTime = 0;
+    let gameActive = false;
+    let isPaused = false;
+    
+    let screenShake = 0;
+    let particles = [];
+    let floatingTexts = [];
+
+    const pieceTypes = 'ILJOTSZ';
+    function createPiece(type) {
+      switch (type) {
+        case 'T': return [[0, 0, 0], [1, 1, 1], [0, 1, 0]];
+        case 'O': return [[2, 2], [2, 2]];
+        case 'L': return [[0, 3, 0], [0, 3, 0], [0, 3, 3]];
+        case 'J': return [[0, 4, 0], [0, 4, 0], [4, 4, 0]];
+        case 'I': return [[0, 5, 0, 0], [0, 5, 0, 0], [0, 5, 0, 0], [0, 5, 0, 0]];
+        case 'S': return [[0, 6, 6], [6, 6, 0], [0, 0, 0]];
+        case 'Z': return [[7, 7, 0], [0, 7, 7], [0, 0, 0]];
+      }
+    }
+
+    const colors = [null, '#ff1a3c', '#00e5ff', '#f59e0b', '#8b5cf6', '#22c55e', '#ef4444', '#3b82f6']; 
+
+    function createMatrix(w, h) {
+      const matrix = [];
+      while (h--) matrix.push(new Array(w).fill(0));
+      return matrix;
+    }
+
+    const arena = createMatrix(10, 20);
+    const player = { pos: { x: 0, y: 0 }, matrix: null, nextMatrix: null, score: 0, lines: 0, level: 1, combo: 0 };
+
+    function collide(arena, playerObj) {
+      const m = playerObj.matrix, o = playerObj.pos;
+      for (let y = 0; y < m.length; ++y) {
+        for (let x = 0; x < m[y].length; ++x) {
+          if (m[y][x] !== 0 && (arena[y + o.y] && arena[y + o.y][x + o.x]) !== 0) return true;
+        }
+      }
+      return false;
+    }
+
+    function merge(arena, playerObj) {
+      playerObj.matrix.forEach((row, y) => {
+        row.forEach((value, x) => {
+          if (value !== 0) arena[y + playerObj.pos.y][x + playerObj.pos.x] = value;
+        });
+      });
+    }
+
+    function addParticles(x, y, color) {
+      for(let i=0; i<5; i++) {
+        particles.push({
+          x: x + Math.random(), y: y + Math.random(),
+          vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5 - 0.2,
+          life: 1.0, color: color
+        });
+      }
+    }
+
+    function addFloatingText(x, y, text, color) {
+      floatingTexts.push({ x: x, y: y, text: text, life: 1.0, color: color });
+    }
+
+    function drawBlock(ctx, x, y, value, isGhost = false) {
+      ctx.fillStyle = colors[value];
+      if (isGhost) {
+        ctx.globalAlpha = 0.2; ctx.fillRect(x, y, 1, 1);
+        ctx.globalAlpha = 1.0; ctx.strokeStyle = `rgba(255,255,255,0.3)`;
+        ctx.lineWidth = 0.05; ctx.strokeRect(x, y, 1, 1);
+      } else {
+        ctx.fillRect(x, y, 1, 1);
+        ctx.lineWidth = 0.05; ctx.strokeStyle = 'rgba(0,0,0,0.5)'; ctx.strokeRect(x, y, 1, 1);
+        ctx.fillStyle = 'rgba(255,255,255,0.2)';
+        ctx.fillRect(x, y, 1, 0.1);
+      }
+    }
+
+    function drawMatrix(matrix, offset, ctx, isGhost = false) {
+      matrix.forEach((row, y) => {
+        row.forEach((value, x) => {
+          if (value !== 0) drawBlock(ctx, x + offset.x, y + offset.y, value, isGhost);
+        });
+      });
+    }
+
+    function drawNextPiece() {
+      nextContext.clearRect(0, 0, nextCanvas.width, nextCanvas.height);
+      if (!player.nextMatrix) return;
+      const offset = { x: (4 - player.nextMatrix[0].length) / 2, y: (4 - player.nextMatrix.length) / 2 };
+      drawMatrix(player.nextMatrix, offset, nextContext);
+    }
+
+    function draw() {
+      context.fillStyle = 'rgba(0, 0, 0, 1)';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      
+      context.save();
+      if(screenShake > 0) {
+        const dx = (Math.random() - 0.5) * screenShake * 0.1;
+        const dy = (Math.random() - 0.5) * screenShake * 0.1;
+        context.translate(dx, dy);
+        screenShake *= 0.8;
+        if(screenShake < 0.5) screenShake = 0;
+      }
+      
+      drawMatrix(arena, { x: 0, y: 0 }, context);
+      
+      if (player.matrix && !isPaused) {
+        const ghost = { matrix: player.matrix, pos: { x: player.pos.x, y: player.pos.y } };
+        while (!collide(arena, ghost)) ghost.pos.y++;
+        ghost.pos.y--;
+        drawMatrix(ghost.matrix, ghost.pos, context, true);
+        drawMatrix(player.matrix, player.pos, context);
+      }
+
+      for(let i=particles.length-1; i>=0; i--) {
+        let p = particles[i];
+        context.globalAlpha = p.life;
+        context.fillStyle = p.color;
+        context.fillRect(p.x, p.y, 0.3, 0.3);
+        p.x += p.vx; p.y += p.vy; p.life -= 0.03;
+        if(p.life <= 0) particles.splice(i, 1);
+      }
+      context.globalAlpha = 1.0;
+
+      for(let i=floatingTexts.length-1; i>=0; i--) {
+        let ft = floatingTexts[i];
+        context.globalAlpha = ft.life;
+        context.fillStyle = ft.color;
+        context.font = "1px monospace";
+        context.shadowColor = "black";
+        context.shadowBlur = 4;
+        context.fillText(ft.text, ft.x, ft.y);
+        context.shadowBlur = 0;
+        ft.y -= 0.05; ft.life -= 0.02;
+        if(ft.life <= 0) floatingTexts.splice(i, 1);
+      }
+      context.globalAlpha = 1.0;
+      context.restore();
+    }
+
+    function arenaSweep() {
+      let linesCleared = 0;
+      outer: for (let y = arena.length - 1; y > 0; --y) {
+        for (let x = 0; x < arena[y].length; ++x) {
+          if (arena[y][x] === 0) continue outer;
+        }
+        for(let px = 0; px < arena[y].length; ++px) {
+           addParticles(px, y, colors[arena[y][px]]);
+        }
+        const row = arena.splice(y, 1)[0].fill(0);
+        arena.unshift(row);
+        ++y;
+        linesCleared++;
+      }
+      
+      if (linesCleared > 0) {
+        player.combo++;
+        let points = (linesCleared * 100) * player.combo;
+        if(linesCleared === 4) points += 400;
+        player.score += points;
+        player.lines += linesCleared;
+        player.level = Math.floor(player.lines / 10) + 1;
+        addFloatingText(2, 5, `+${points}`, '#00e5ff');
+        if(linesCleared === 4) addFloatingText(2, 4, "TETRIS!", '#ff1a3c');
+        if(player.combo > 1) addFloatingText(6, 6, `${player.combo}x COMBO`, '#f59e0b');
+        screenShake = linesCleared * 3; 
+        updateUI(true);
+      } else {
+        player.combo = 0;
+        updateUI();
+      }
+    }
+
+    function getRandomPiece() { return createPiece(pieceTypes[pieceTypes.length * Math.random() | 0]); }
+
+    function playerReset() {
+      if (!player.nextMatrix) player.nextMatrix = getRandomPiece();
+      player.matrix = player.nextMatrix;
+      player.nextMatrix = getRandomPiece();
+      drawNextPiece();
+      player.pos.y = 0;
+      player.pos.x = Math.floor(arena[0].length / 2) - Math.floor(player.matrix[0].length / 2);
+      
+      if (collide(arena, player)) {
+        arena.forEach(row => row.fill(0));
+        player.score = 0; player.lines = 0; player.level = 1; player.combo = 0;
+        updateUI();
+      }
+    }
+
+    function playerDrop() {
+      player.pos.y++;
+      if (collide(arena, player)) {
+        player.pos.y--; merge(arena, player); playerReset(); arenaSweep();
+      }
+      dropCounter = 0;
+    }
+
+    function hardDrop() {
+      while (!collide(arena, player)) { player.pos.y++; }
+      player.pos.y--;
+      screenShake = 5;
+      merge(arena, player); playerReset(); arenaSweep();
+      dropCounter = 0;
+    }
+
+    function playerMove(dir) {
+      player.pos.x += dir;
+      if (collide(arena, player)) player.pos.x -= dir;
+    }
+
+    function rotate(matrix, dir) {
+      for (let y = 0; y < matrix.length; ++y) {
+        for (let x = 0; x < y; ++x) [matrix[x][y], matrix[y][x]] = [matrix[y][x], matrix[x][y]];
+      }
+      if (dir > 0) matrix.forEach(row => row.reverse()); else matrix.reverse();
+    }
+
+    function playerRotate(dir) {
+      const pos = player.pos.x; let offset = 1;
+      rotate(player.matrix, dir);
+      while (collide(arena, player)) {
+        player.pos.x += offset;
+        offset = -(offset + (offset > 0 ? 1 : -1));
+        if (offset > player.matrix[0].length) { rotate(player.matrix, -dir); player.pos.x = pos; return; }
+      }
+    }
+
+    function togglePause() {
+      isPaused = !isPaused;
+      pauseOverlay.style.display = isPaused ? 'flex' : 'none';
+      btnPause.innerText = isPaused ? 'RESUME' : 'PAUSE';
+      btnPause.classList.toggle('accent', isPaused);
+      if (!isPaused) update();
+    }
+
+    function update(time = 0) {
+      if (!gameActive || isPaused) return;
+      const deltaTime = time - lastTime; lastTime = time;
+      dropCounter += deltaTime;
+      const currentSpeed = Math.max(80, dropInterval - (player.level * 80));
+      if (dropCounter > currentSpeed) playerDrop();
+      draw();
+      requestAnimationFrame(update);
+    }
+
+    function updateUI(highlight = false) {
+      elScore.innerText = player.score;
+      elCombo.innerText = player.combo > 1 ? player.combo + 'x' : '0';
+      elLevel.innerText = player.level;
+      if(highlight) {
+        elScore.classList.add('highlight');
+        setTimeout(() => elScore.classList.remove('highlight'), 200);
+      }
+    }
+
+    function handleInput(action) {
+      if (!gameActive || isPaused) return;
+      switch(action) {
+        case 'left': playerMove(-1); break;
+        case 'right': playerMove(1); break;
+        case 'down': playerDrop(); break;
+        case 'up': playerRotate(1); break;
+        case 'space': hardDrop(); break;
+      }
+    }
+
+    document.addEventListener('keydown', event => {
+      if (!gameActive) return;
+      const key = event.key.toLowerCase();
+      if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright',' ','p'].includes(key)) event.preventDefault();
+      if (key === 'p') togglePause();
+      else if (key === 'a' || key === 'arrowleft') handleInput('left');
+      else if (key === 'd' || key === 'arrowright') handleInput('right');
+      else if (key === 's' || key === 'arrowdown') handleInput('down');
+      else if (key === 'w' || key === 'arrowup') handleInput('up');
+      else if (key === ' ') handleInput('space');
+    });
+
+    btnPause.addEventListener('click', () => { if(gameActive) togglePause(); });
+    btnYes.addEventListener('click', () => {
+      promptScreen.style.display = 'none';
+      gameContainer.style.display = 'flex';
+      gameActive = true; playerReset(); updateUI(); update();
+    });
+  </script>
+</body>
+</html>

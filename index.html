@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <!-- Meta Tags -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="PxeCore (Pxe) - Cybersecurity Researcher. Explore my technical projects, malware analysis, and research.">
+    <meta name="keywords" content="PxeCore, pxecore, Pxe Core, Pxe, pxe, PixieCore, pixiecore, Pixie, pixie, cybersecurity researcher, cyber security, student, pxecore github, pxecore portfolio, malware analysis, reverse engineering">
+    <meta name="author" content="PxeCore">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="color-scheme" content="dark light">
+    <meta name="theme-color" content="#c29f68">
+    
+    <!-- Resources -->
+    <link rel="canonical" href="https://pxecore.github.io/">
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+    <link rel="stylesheet" href="css/normalize.css?v=1.0.0&t=1736867776">
+    <!-- Preconnect to high-priority third-party origins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://unavatar.io" crossorigin>
+
+    <!-- Preload critical FontAwesome icon fonts early -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- Core Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Asynchronous loading of external fonts and icon stylesheets -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;600;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet"></noscript>
+
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"></noscript>
+    
+    <!-- Social Authority: Open Graph & Twitter -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pxecore.github.io/">
+    <meta property="og:title" content="PxeCore | Cybersecurity Researcher">
+    <meta property="og:description" content="Personal portfolio of PxeCore (Pxe). Cybersecurity Researcher focusing on malware and reverse engineering.">
+    <meta property="og:site_name" content="PxeCore Portfolio">
+    <meta property="og:image" content="https://unavatar.io/x/pxecore">
+    
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://pxecore.github.io/">
+    <meta name="twitter:title" content="PxeCore">
+    <meta name="twitter:description" content="Come see PxeCore's personal website and cybersecurity insights.">
+    <meta property="twitter:image" content="https://unavatar.io/x/pxecore">
+    
+    <title>PxeCore | Portfolio</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://unavatar.io/x/pxecore" type="image/jpeg">
+    
+    <!-- External Scripts (Localized for Privacy) -->
+    <script src="script/particles.min.js" defer></script>
+    <script src="script/script.js" defer></script>
+    
+    <!-- Structured Data (Schema.org) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "PxeCore",
+      "alternateName": [
+        "pxecore",
+        "pxe_core",
+        "pxe",
+        "Pxe",
+        "pixiecore",
+        "PixieCore",
+        "pixie",
+        "Pixie",
+        "Pxe Core"
+      ],
+      "url": "https://pxecore.github.io/",
+      "image": "https://unavatar.io/x/pxecore",
+      "jobTitle": "Cybersecurity Researcher",
+      "sameAs": [
+        "https://github.com/pxecore",
+        "https://x.com/pxecore",
+        "https://tryhackme.com/p/pxecore",
+        "https://www.youtube.com/@pxecore"
+      ],
+      "description": "Cybersecurity Researcher focusing on advanced systems and digital defense."
+    }
+    </script>
+</head>
+<body>
+    <!-- Particles.js: Covers the entire page, including header -->
+    <div id="particles-js" aria-hidden="true"></div>
+
+    <!-- Header: Logo only, navigation removed -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="header-left">
+                <span class="header-logo" translate="no">
+                  <span class="network-icon" aria-hidden="true" style="display:inline-flex;align-items:center;width:1.2em;height:1.2em;margin-right:0.5em;transform:translateY(-1px);">
+                    <svg viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="5" cy="12" r="2" stroke="var(--accent)" stroke-width="2"/>
+                      <circle cx="19" cy="12" r="2" stroke="var(--accent)" stroke-width="2"/>
+                      <circle cx="12" cy="5" r="2" stroke="var(--accent)" stroke-width="2"/>
+                      <circle cx="12" cy="19" r="2" stroke="var(--accent)" stroke-width="2"/>
+                      <line x1="7" y1="12" x2="10" y2="12" stroke="var(--accent)" stroke-width="2"/>
+                      <line x1="14" y1="12" x2="17" y2="12" stroke="var(--accent)" stroke-width="2"/>
+                      <line x1="12" y1="7" x2="12" y2="10" stroke="var(--accent)" stroke-width="2"/>
+                      <line x1="12" y1="14" x2="12" y2="17" stroke="var(--accent)" stroke-width="2"/>
+                    </svg>
+                  </span>
+                  Pxecore
+                </span>
+                <div class="header-btn-group">
+                    <button onclick="window.open('https://pxecore.github.io/notes.html', '_blank')" class="header-btn" rel="noopener noreferrer">Notes</button>
+                    <button id="resume-btn" class="header-btn">Resume</button>
+                </div>
+            </div>
+            <div class="header-right">
+                <button id="theme-toggle" class="header-btn theme-btn" title="Toggle Theme" aria-label="Toggle theme" aria-pressed="false">
+                    <i class="fa-solid fa-moon" style="font-size: 1.1em;" aria-hidden="true"></i>
+                    <i class="fa-solid fa-sun" style="font-size: 1.1em;" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="content">
+                <div class="left-section">
+                    <div class="about">
+                             <h1 class="glitch pixel-text" data-text="PxeCore" translate="no">
+                            <span class="pixel-char" data-char="p">p</span><span class="pixel-char" data-char="x">x</span><span class="pixel-char" data-char="e">e</span><span class="pixel-char" data-char="c">c</span><span class="pixel-char" data-char="o">o</span><span class="pixel-char" data-char="r">r</span><span class="pixel-char" data-char="e">e</span>
+                        </h1>
+                        <div class="hero-subtext">
+                            <span class="line"></span>
+                            <p>I want to become a machine.</p>
+                        </div>
+                        <div class="hi-text">Hey.</div>
+                        <p>
+                        Well, This is my home hub. Click the top two buttons for my resume and blog posts; the buttons below highlight my focus areas. Reach me via email, Session, and Signal.<br><span class="highlight">All content provided is for educational purposes only. The user is solely responsible for any misuse of the content.</span>
+                        </p>
+                        
+                        <div class="tech-stack" aria-label="Technical skills">
+                            <button class="tech-item" data-tooltip="Research" aria-label="Research skill">
+                                <i class="fas fa-search" aria-hidden="true"></i>
+                            </button>
+                            <button class="tech-item" data-tooltip="Osint" aria-label="OSINT skill">
+                                <i class="fas fa-user-secret" aria-hidden="true"></i>
+                            </button>
+                            <button class="tech-item" data-tooltip="Opsec" aria-label="OPSEC skill">
+                                <i class="fas fa-user-shield" aria-hidden="true"></i>
+                            </button>
+                            <button class="tech-item" data-tooltip="Reverse Engineering" aria-label="Reverse Engineering skill">
+                                <i class="fas fa-sync-alt" aria-hidden="true"></i>
+                            </button>
+                            <button class="tech-item" data-tooltip="Computer Science" aria-label="Computer Science skill">
+                                <i class="fas fa-microchip" aria-hidden="true"></i>
+                            </button>
+                        </div>
+
+                        <div class="contact-buttons" translate="no">
+                            <a href="mailto:contact@pxecore.anonaddy.com" class="contact-btn" translate="no" aria-label="Send me an email at contact@pxecore.anonaddy.com">
+                                <svg viewBox="0 0 512 512" width="1.1em" height="1.1em" fill="currentColor" aria-hidden="true" style="margin-right:0.6em;"><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+                                <span>Contact Me</span>
+                            </a>
+                            <button type="button" class="contact-btn session-btn" onclick="copySessionID()" translate="no" aria-label="Copy my Session ID to clipboard">
+                                <span class="session-icon" aria-hidden="true" style="display:inline-block;width:1.2em;height:1.2em;vertical-align:middle;margin-right:0.5em;">
+                                    <svg viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                                <span>Session</span>
+                            </button>
+                            <a href="https://signal.me/#eu/KIW3VH5Yp5zs2A1kbXV9mDJgS94QUkNK5sWyIhqK1dZV9uEza1dIHpcnYOniAXoe" target="_blank" rel="noopener noreferrer" class="contact-btn" translate="no" aria-label="Contact me on Signal (Opens in new tab)">
+                                <svg viewBox="0 0 512 512" width="1.1em" height="1.1em" fill="currentColor" aria-hidden="true" style="margin-right:0.6em;"><path d="M256 32a224 224 0 1 1 0 448 224 224 0 1 1 0-448zm0 272a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm-96 0a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm192 0a48 48 0 1 0 0-96 48 48 0 1 0 0 96z"/></svg>
+                                <span>Signal</span>
+                            </a>
+                            <span id="session-copied" style="display:none;margin-left:10px;color:var(--accent);font-size:0.95rem;">Copied!</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="right-section">
+                    <div class="profile-card">
+                        <div class="card-header" aria-label="Profile banner">
+                            <div class="site-harmony-banner" style="background-image: url('media/banner.webp');"></div>
+                            <img src="https://unavatar.io/x/pxecore" alt="PxeCore - Cybersecurity Researcher Avatar" class="profile-img" loading="lazy" decoding="async" width="76" height="76">
+                        </div>
+                        <div class="card-body">
+                            <div class="profile-info">
+                                <h2 translate="no">Pxe Core</h2>
+                                <div class="profile-meta">
+                                    <span class="badge">Researcher</span>
+                                    <span class="badge">Student</span>
+                                </div>
+                                <div class="profile-action">
+                                    <button onclick="window.location.href='404.html'" class="profile-btn">404</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Audio Vocalizer -->
+                            <button type="button" class="audio-vocalizer" id="audio-vocalizer" onclick="toggleAudio()" aria-label="Music player visualizer">
+                                <div class="vocalizer-play-btn">
+                                    <svg viewBox="0 0 448 512" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L448 256 73 39z"/></svg>
+                                </div>
+                                <div class="vocalizer-bars" style="will-change: contents;">
+                                    <div class="vocalizer-bar" style="will-change: transform;"></div>
+                                    <div class="vocalizer-bar" style="will-change: transform;"></div>
+                                    <div class="vocalizer-bar" style="will-change: transform;"></div>
+                                    <div class="vocalizer-bar" style="will-change: transform;"></div>
+                                    <div class="vocalizer-bar" style="will-change: transform;"></div>
+                                    <div class="vocalizer-bar" style="will-change: transform;"></div>
+                                    <div class="vocalizer-bar" style="will-change: transform;"></div>
+                                    <div class="vocalizer-bar" style="will-change: transform;"></div>
+                                    <div class="vocalizer-bar" style="will-change: transform;"></div>
+                                    <div class="vocalizer-bar" style="will-change: transform;"></div>
+                                </div>
+                            </button>
+                            
+                            <div class="interests" translate="no">
+                                <h3>Interests</h3>
+                                <div class="interest-tags">
+                                    <span translate="no">Cyber Security</span>
+                                    <span translate="no">Malware</span>
+                                    <span translate="no">Computer Science</span>
+                                 
+
+
+                                </div>
+                            </div>
+                            
+                            <div class="social-links">
+                                <a href="https://github.com/pxecore" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub">
+                                    <i class="fab fa-github" aria-hidden="true"></i>
+                                </a>
+                                <a href="https://x.com/pxecore" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="X (Twitter)">
+                                    <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
+                                </a>
+                                <a href="https://www.youtube.com/@pxecore" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="YouTube">
+                                    <i class="fab fa-youtube" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.content -->
+
+            <!-- Terminal Container -->
+            <div class="terminal-container">
+                <div class="terminal" role="region" aria-label="Terminal Display">
+                    <div class="terminal-header">
+                        <span class="terminal-btn red" aria-hidden="true"></span>
+                        <span class="terminal-btn yellow" aria-hidden="true"></span>
+                        <span class="terminal-btn green" aria-hidden="true"></span>
+                    </div>
+                    <div class="terminal-body">
+                        <p class="terminal-text"><span class="prompt" translate="no">pxecore@system:~$</span> <span class="command" translate="no">date</span></p>
+                        <p class="terminal-output" id="static-date"></p>
+                        <p class="terminal-text"><span class="prompt" translate="no">pxecore@system:~$</span> <span class="command" translate="no">ls</span></p>
+                        <p class="terminal-output"><a href="https://pxecore.github.io/ident.txt" target="_blank" rel="noopener noreferrer" class="terminal-link">ident.txt</a></p>
+                        <p class="terminal-text"><span class="prompt" translate="no">pxecore@system:~$</span> <span class="cursor"></span></p>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /.container -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p></p>
+    </footer>
+
+    
+    <!-- Audio element for background music -->
+    <audio id="background-audio" loop>
+        Your browser does not support the audio element.
+    </audio>
+
+
+    <!-- Backdrop for panels -->
+    <div class="panel-backdrop" id="panel-backdrop"></div>
+
+    <!-- Integrated Resume Panel -->
+    <div class="resume-overlay" id="resume-panel">
+        <div class="resume-overlay-header" id="resume-header">
+            <div class="terminal-controls">
+                <span class="terminal-btn red" id="close-resume"></span>
+                <span class="terminal-btn yellow"></span>
+                <span class="terminal-btn green"></span>
+            </div>
+            <div class="resume-title">RESUME</div>
+        </div>
+        
+        <div class="resume-overlay-content">
+            <!-- About Section -->
+            <div class="resume-section-box">
+                <h3><i class="fa-solid fa-circle-user" aria-hidden="true"></i> About Me</h3>
+                <div class="resume-card">
+                    <h4>PxeCore</h4>
+                    <p class="subheading">Cybersecurity Researcher</p>
+                    <p>Hi, I’m currently preparing for the university entrance exam at home. That’s why I haven’t been able to create much content lately.
+                     My main interests are Computer Science and Cybersecurity. Most of my days are spent studying and preparing for the exam. In my free time, I follow current events on Twitter.
+                     I’ll be back soon.</p>
+                </div>
+            </div>
+
+            <!-- Skills Section -->
+            <div class="resume-section-box">
+                <h3><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Technical Skills</h3>
+                <div class="resume-card">
+                    <h4>Core Capabilities</h4>
+                    <p class="subheading">I'll tidy up this place in my free time.</p>
+                    <ul class="skill-chips" style="margin-top: var(--space-3);">
+                        <li>GNU/Linux</li>
+                        <li>Osint</li>
+                        <li>Opsec</li>
+                        <li>Research</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Experience / Social Section -->
+            <div class="resume-section-box">
+                <h3><i class="fa-solid fa-earth-europe" aria-hidden="true"></i> Network &amp; Presence</h3>
+                <div class="resume-card">
+                    <h4>Profiles</h4>
+                    <p class="subheading">Active communities and social presence.</p>
+                    <ul class="resume-grid">
+                        <!-- 1. GitHub -->
+                        <li>
+                            <a href="https://github.com/pxecore" target="_blank" class="resume-link">
+                                <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right:0.5em;"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg> <span class="notranslate">GitHub</span>
+                            </a>
+                        </li>
+                        <!-- 2. Twitter -->
+                        <li>
+                            <a href="https://x.com/pxecore" target="_blank" class="resume-link">
+                                <i class="fa-brands fa-x-twitter" style="margin-right:0.5em;"></i> <span class="notranslate">Twitter</span>
+                            </a>
+                        </li>
+                        <!-- 3. YouTube -->
+                        <li>
+                            <a href="https://youtube.com/@pxecore" target="_blank" class="resume-link">
+                                <i class="fa-brands fa-youtube" style="margin-right:0.5em;"></i> <span class="notranslate">YouTube</span>
+                            </a>
+                        </li>
+                        <!-- 4. Ident -->
+                        <li>
+                             <a href="/ident.txt" target="_blank" rel="noopener noreferrer" class="resume-link">
+                                 <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right:0.5em;vertical-align:middle;display:inline-block;transform:translateY(-1px);">
+                                     <rect x="3" y="4" width="18" height="16" rx="2"/>
+                                     <circle cx="9" cy="12" r="2"/>
+                                     <path d="M14 10h4M14 14h4"/>
+                                 </svg> <span class="notranslate">Ident</span>
+                             </a>
+                        </li>
+                        <!-- 5. TryHackMe -->
+                        <li>
+                            <a href="https://tryhackme.com/p/pxecore" target="_blank" class="resume-link">
+                                <i class="fa-solid fa-hat-wizard" style="margin-right:0.5em;"></i> <span class="notranslate">TryHackMe</span>
+                            </a>
+                        </li>
+                        <!-- 6. Hacker News -->
+                        <li>
+                            <a href="https://news.ycombinator.com/user?id=pxecore" target="_blank" class="resume-link">
+                                <i class="fa-brands fa-hacker-news" style="margin-right:0.5em;"></i> <span class="notranslate">Hacker News</span>
+                            </a>
+                        </li>
+                        <!-- 7. HackerOne -->
+                        <li>
+                            <a href="https://hackerone.com/pxecore?type=user" target="_blank" class="resume-link">
+                                <i class="fa-solid fa-shield-halved" style="margin-right:0.5em;"></i> <span class="notranslate">HackerOne</span>
+                            </a>
+                        </li>
+                        <!-- 8. Bugcrowd -->
+                        <li>
+                            <a href="https://bugcrowd.com/h/Pxecore" target="_blank" class="resume-link">
+                                <i class="fa-solid fa-bug" style="margin-right:0.5em;"></i> <span class="notranslate">Bugcrowd</span>
+                            </a>
+                        </li>
+                        <!-- 9. Bug Hunters -->
+                        <li>
+                            <a href="https://bughunters.google.com/profile/c435c089-543e-4449-9d9b-05179f6bcb0a" target="_blank" class="resume-link">
+                                <i class="fa-brands fa-google" style="margin-right:0.5em;"></i> <span class="notranslate">Bug Hunters</span>
+                            </a>
+                        </li>
+                        <!-- 10. Google Dev -->
+                        <li>
+                            <a href="https://g.dev/pxecore" target="_blank" class="resume-link">
+                                <i class="fa-solid fa-code" style="margin-right:0.5em;"></i> <span class="notranslate">Google Dev</span>
+                            </a>
+                        </li>
+                        <!-- 11. Hugging Face -->
+                        <li>
+                            <a href="https://huggingface.co/Pxecore" target="_blank" class="resume-link">
+                                <svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" aria-hidden="true" style="margin-right:0.5em;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1.5 14.5c-.55 0-1-.67-1-1.5s.45-1.5 1-1.5 1 .67 1 1.5-.45 1.5-1 1.5zm5 0c-.55 0-1-.67-1-1.5s.45-1.5 1-1.5 1 .67 1 1.5-.45 1.5-1 1.5zM8.5 12c-.83 0-1.5-.67-1.5-1.5S7.67 9 8.5 9s1.5.67 1.5 1.5S9.33 12 8.5 12zm7 0c-.83 0-1.5-.67-1.5-1.5S14.67 9 15.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg> <span class="notranslate">Hugging Face</span>
+                            </a>
+                        </li>
+                        <!-- 12. Discord -->
+                        <li>
+                            <span class="resume-link" style="cursor: default;" title="Discord">
+                                <i class="fa-brands fa-discord" style="margin-right:0.5em;"></i> <span class="notranslate">pxecore</span>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Projects Section -->
+            <div class="resume-section-box">
+                <h3><i class="fa-solid fa-folder-open" aria-hidden="true"></i> Projects</h3>
+                <div class="resume-card">
+                    <h4>Main Repository</h4>
+                    <p>All my active research and code projects are public on GitHub.</p>
+                    <a href="https://github.com/pxecore?tab=repositories" target="_blank" class="resume-link">
+                        <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right:0.4em;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg> View all repositories
+                    </a>
+                </div>
+            </div>
+
+            <!-- Web Badges -->
+            <div class="resume-footer-badges">
+                <div class="web-badges justify-center">
+                    <img src="media/badges/anybrowser3.webp" alt="Compatibility" loading="lazy">
+                    <img src="media/badges/coffee.webp" alt="Coffee" loading="lazy">
+                    <img src="media/badges/css3.webp" alt="Modern Styling" loading="lazy">
+                    <img src="media/badges/letsnotencrypt.webp" alt="Security" loading="lazy">
+                    <img src="media/badges/got_html.webp" alt="Structure" loading="lazy">
+                    <img src="media/badges/cyberrealmrefer.webp" alt="Realm" loading="lazy">
+                    <img src="media/badges/madewithnotepad2.webp" alt="Minimalism" loading="lazy">
+                    <img src="media/badges/volta.webp" alt="Energy" loading="lazy">
+                    <img src="media/badges/ie_rainbow.webp" alt="Legacy" loading="lazy">
+                    <img src="media/badges/pixel_art.webp" alt="Pixel Art" loading="lazy">
+                    <img src="media/badges/yumenikki.webp" alt="Yumenikki" loading="lazy">
+                    <img src="media/badges/000010.webp" alt="Cyber" loading="lazy">
+             
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Close Button (Bottom sticky/centered for ease of use) -->
+        <div class="mobile-resume-footer">
+            <button id="mobile-close-resume" class="mobile-close-btn">Close Resume</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
