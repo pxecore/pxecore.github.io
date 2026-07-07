@@ -2,21 +2,21 @@
 const particleConfigBase = {
     particles: {
         number: { 
-            value: window.matchMedia('(max-width: 767px)').matches ? 50 : 100,
+            value: 80,
             density: { enable: true, value_area: 800 } 
         },
         shape: { type: 'circle' },
         opacity: { value: 0.7, random: false, anim: { enable: false } },
-        size: { value: 2, random: true, anim: { enable: false } },
+        size: { value: 2.2, random: true, anim: { enable: false } },
         line_linked: { 
             enable: true,
-            distance: 160,
+            distance: 140,
             opacity: 0.40, // Reduced from 0.45 for a more balanced look
             width: 1 
         },
         move: { 
             enable: true, 
-            speed: window.matchMedia('(max-width: 767px)').matches ? 0.6 : 0.8,
+            speed: 1.15,
             direction: 'none', 
             random: false,
             straight: false,
@@ -29,7 +29,7 @@ const particleConfigBase = {
         events: {
             onhover: { enable: window.matchMedia('(min-width: 768px)').matches, mode: 'grab' },
             onclick: { enable: true, mode: 'push' },
-            resize: true
+            resize: false
         },
         modes: {
             grab: { distance: 120, line_linked: { opacity: 0.55 } }, // Slightly reduced for harmony
@@ -37,11 +37,46 @@ const particleConfigBase = {
         }
     },
     retina_detect: true,
-    fps_limit: window.matchMedia('(max-width: 767px)').matches ? 30 : 60
+    fps_limit: 60
 };
 
 let initialWindowArea;
 let initialParticleCanvasArea; 
+
+/**
+ * Unified hardware and screen-size aware particle settings helper
+ */
+function getParticleSettingsForScreen(screenWidth) {
+    let count = 80;
+    let size = 2.2;
+    let distance = 110;
+
+    if (screenWidth >= 1920) {
+        count = 100; size = 2.4; distance = 120;
+    } else if (screenWidth >= 1440) {
+        count = 90;  size = 2.3; distance = 110;
+    } else if (screenWidth >= 1024) {
+        count = 80;  size = 2.2; distance = 100;
+    } else if (screenWidth >= 768) {
+        count = 70;  size = 2.0; distance = 90;
+    } else if (screenWidth >= 480) {
+        count = 60;  size = 1.8; distance = 80;
+    } else {
+        count = 50;  size = 1.6; distance = 70;
+    }
+
+    const cores = navigator.hardwareConcurrency;
+    const memory = navigator.deviceMemory;
+    if (cores && memory) {
+        if (cores < 2 && memory < 2) {
+            count = Math.floor(count * 0.6);
+        } else if (cores < 4 || memory < 4) {
+            count = Math.floor(count * 0.8);
+        }
+    }
+    count = Math.max(40, Math.min(count, 100));
+    return { count, size, distance };
+}
 
 /**
  * Safely handles particles.js lifecycle with hardware awareness
@@ -68,65 +103,21 @@ function initializeParticles(particleColor, forceReinit = false) {
         pJSInstance.interactivity.modes.grab.distance = particleConfigBase.interactivity.modes.grab.distance;
         pJSInstance.interactivity.modes.grab.line_linked.opacity = particleConfigBase.interactivity.modes.grab.line_linked.opacity;
 
+        const isLightTheme = (particleColor === '#8c4a32');
+        const targetDotOpacity = isLightTheme ? 0.75 : particleConfigBase.particles.opacity.value;
+        const targetLineOpacity = isLightTheme ? 0.45 : particleConfigBase.particles.line_linked.opacity;
+
         // Apply opacity values
-        pJSInstance.particles.opacity.value = particleConfigBase.particles.opacity.value;
+        pJSInstance.particles.opacity.value = targetDotOpacity;
         if (pJSInstance.particles.line_linked) {
-            pJSInstance.particles.line_linked.opacity = particleConfigBase.particles.line_linked.opacity;
+            pJSInstance.particles.line_linked.opacity = targetLineOpacity;
         }
 
-        let targetParticleCount = 0;
-        let targetParticleSize = particleConfigBase.particles.size.value; // From base config
-        let targetLineDistance = particleConfigBase.particles.line_linked.distance; // From base config
-
-        // Optimize particle count/size/line distance for performance
-        const screenWidth = window.innerWidth;
-        if (screenWidth >= 1920) {
-            targetParticleCount = 180; // Reduced for performance
-            targetParticleSize = 2.2;
-            targetLineDistance = 100;
-        } else if (screenWidth >= 1440) {
-            targetParticleCount = 150;
-            targetParticleSize = 2.1;
-            targetLineDistance = 95;
-        } else if (screenWidth >= 1024) {
-            targetParticleCount = 120;
-            targetParticleSize = 2.0;
-            targetLineDistance = 90;
-        } else if (screenWidth >= 768) {
-            targetParticleCount = 100; // Optimized for tablets
-            targetParticleSize = 1.8;
-            targetLineDistance = 80;
-        } else if (screenWidth >= 480) {
-            targetParticleCount = 80; // Reduced for mobile performance
-            targetParticleSize = 1.6;
-            targetLineDistance = 70;
-        } else if (screenWidth >= 320) {
-            targetParticleCount = 60; // Minimal for small screens
-            targetParticleSize = 1.4;
-            targetLineDistance = 60;
-        } else { // Very small mobile screens
-            targetParticleCount = 40; // Minimal particles
-            targetParticleSize = 1.2;
-            targetLineDistance = 50;
-        }
-
-        // Adjust particle count by hardware performance
-        const cores = navigator.hardwareConcurrency;
-        const memory = navigator.deviceMemory;
-        if (cores && memory) { // Only adjust if both are available
-            if (cores < 2 && memory < 2) {
-                // 40% reduction for very low-end devices
-                targetParticleCount = Math.floor(targetParticleCount * 0.6);
-            } else if (cores < 4 || memory < 4) {
-                // 20% reduction for low-mid devices
-                targetParticleCount = Math.floor(targetParticleCount * 0.8);
-            }
-        }
-
-        // Clamp particle count to max 100 for better performance
-        if (targetParticleCount > 0) {
-            targetParticleCount = Math.max(40, Math.min(targetParticleCount, 100));
-        }
+        const { count, size, distance } = getParticleSettingsForScreen(window.innerWidth);
+        const pxratio = pJSInstance.canvas.pxratio || window.devicePixelRatio || 1;
+        const targetParticleCount = count;
+        const targetParticleSize = size * pxratio;
+        const targetLineDistance = distance * pxratio;
 
         // Update if particle count, size, or line distance changed
         const numChanged = pJSInstance.particles.number.value !== targetParticleCount;
@@ -185,65 +176,20 @@ function initializeParticles(particleColor, forceReinit = false) {
     currentParticleConfig.particles.color = { value: particleColor };
     currentParticleConfig.particles.line_linked.color = particleColor;
 
+    const isLightThemeConfig = (particleColor === '#8c4a32');
+    const configDotOpacity = isLightThemeConfig ? 0.75 : particleConfigBase.particles.opacity.value;
+    const configLineOpacity = isLightThemeConfig ? 0.45 : particleConfigBase.particles.line_linked.opacity;
+
     // Apply desired opacity values
-    currentParticleConfig.particles.opacity.value = particleConfigBase.particles.opacity.value;
-    currentParticleConfig.particles.line_linked.opacity = particleConfigBase.particles.line_linked.opacity;
+    currentParticleConfig.particles.opacity.value = configDotOpacity;
+    currentParticleConfig.particles.line_linked.opacity = configLineOpacity;
 
     // Initial particle count/size/line distance based on screen and device
-    let initialParticleCount = 0;
-    let initialParticleSize = particleConfigBase.particles.size.value;
-    let initialLineDistance = particleConfigBase.particles.line_linked.distance;
+    const { count, size, distance } = getParticleSettingsForScreen(window.innerWidth);
 
-    const screenWidth = window.innerWidth;
-    if (screenWidth >= 1920) {
-        initialParticleCount = 260;
-        initialParticleSize = 2.2;
-        initialLineDistance = 120;
-    } else if (screenWidth >= 1440) {
-        initialParticleCount = 220;
-        initialParticleSize = 2.2;
-        initialLineDistance = 110;
-    } else if (screenWidth >= 1024) {
-        initialParticleCount = 180;
-        initialParticleSize = 2.0;
-        initialLineDistance = 100;
-    } else if (screenWidth >= 768) {
-        initialParticleCount = 160;
-        initialParticleSize = 1.8;
-        initialLineDistance = 90;
-    } else if (screenWidth >= 480) {
-        initialParticleCount = 200;
-        initialParticleSize = 1.8;
-        initialLineDistance = 80;
-    } else if (screenWidth >= 320) {
-        initialParticleCount = 180;
-        initialParticleSize = 1.5;
-        initialLineDistance = 70;
-    } else { // Very small mobile screens
-        initialParticleCount = 150; // For the smallest screens
-        initialParticleSize = 1.3; // Slightly larger on mobile
-        initialLineDistance = 60;
-    }
-
-    // Adjust particle count by hardware performance (less aggressive)
-    const cores = navigator.hardwareConcurrency;
-    const memory = navigator.deviceMemory;
-    if (cores && memory) {
-        if (cores < 2 && memory < 2) {
-            initialParticleCount = Math.floor(initialParticleCount * 0.6);
-        } else if (cores < 4 || memory < 4) {
-            initialParticleCount = Math.floor(initialParticleCount * 0.8);
-        }
-    }
-    
-    // Particle count clamped to max 100 for better performance
-    if (initialParticleCount > 0) {
-        initialParticleCount = Math.max(40, Math.min(initialParticleCount, 100));
-    }
-
-    currentParticleConfig.particles.number.value = initialParticleCount;
-    currentParticleConfig.particles.size.value = initialParticleSize;
-    currentParticleConfig.particles.line_linked.distance = initialLineDistance;
+    currentParticleConfig.particles.number.value = count;
+    currentParticleConfig.particles.size.value = size;
+    currentParticleConfig.particles.line_linked.distance = distance;
     currentParticleConfig.particles.number.density.enable = true;
 
     // Initialize particlesJS with error handling
@@ -325,7 +271,7 @@ function applyTheme(theme, isInitialLoad = false) {
     // Smooth transition without particle lag
     requestAnimationFrame(() => {
         // Performance: Avoid layout-thrashing getComputedStyle(body) reads by mapping known variables directly
-        const particleColor = theme === 'light' ? '#7a3e12' : '#c29f68';
+        const particleColor = theme === 'light' ? '#8c4a32' : '#c29f68';
         initializeParticles(particleColor, isInitialLoad);
     });
 }
@@ -353,7 +299,7 @@ document.addEventListener('visibilitychange', () => {
             // Re-enable and do a full clean reinit to guarantee particles appear
             pJS.particles.move.enable = true;
             const currentTheme = localStorage.getItem('theme') || 'dark';
-            const particleColor = currentTheme === 'light' ? '#7a3e12' : '#c29f68';
+            const particleColor = currentTheme === 'light' ? '#8c4a32' : '#c29f68';
             // Short delay so browser settles before reinitializing canvas
             setTimeout(() => initializeParticles(particleColor, true), 150);
         }
@@ -392,7 +338,7 @@ const handleResize = debounce(function() {
     
     if (areaChangePercent > 0.15) {
         const currentTheme = localStorage.getItem('theme') || 'dark';
-        const particleColor = currentTheme === 'light' ? '#7a3e12' : '#c29f68';
+        const particleColor = currentTheme === 'light' ? '#8c4a32' : '#c29f68';
         initializeParticles(particleColor, true); // Force re-init on significant resize
         initialWindowArea = currentWindowArea;
     }
@@ -447,7 +393,7 @@ function toggleAudio() {
 
         const playSVG = `<svg viewBox="0 0 448 512" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L448 256 73 39z"/></svg>`;
         const pauseSVG = `<svg viewBox="0 0 448 512" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H144c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48H384c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H288z"/></svg>`;
-        const loadingSVG = `<svg viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor" aria-hidden="true" style="animation:spin 1s linear infinite"><path d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm0 416a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-362A48 48 0 1 0 75 142.9 48 48 0 1 0 142.9 75zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z"/></svg>`;
+        const loadingSVG = `<svg viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor" aria-hidden="true" class="audio-spinner"><path d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm0 416a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-362A48 48 0 1 0 75 142.9 48 48 0 1 0 142.9 75zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z"/></svg>`;
 
         // Dynamically set src only on first play to prevent 2MB load on initial page view
         if (!audioElement.src || audioElement.src === "" || audioElement.src === window.location.href) {
