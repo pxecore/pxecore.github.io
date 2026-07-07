@@ -59,7 +59,7 @@
     .canvas-wrap { background: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(10, 10, 20, 0.95) 100%); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 0 40px rgba(0,0,0,0.5); position: relative; overflow: hidden; display: flex; justify-content: center; align-items: center; }
     .canvas-wrap::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 30px 30px; pointer-events: none; }
     .canvas-wrap::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, transparent, rgba(255, 26, 60, 0.4), transparent); pointer-events: none; }
-    canvas { display: block; touch-action: none; }
+    canvas { display: block; touch-action: none; max-width: 100%; max-height: 55vh; object-fit: contain; }
     #tetris { border-radius: 6px; }
 
     .sidebar { display: flex; flex-direction: column; width: 240px; gap: 16px; }
@@ -365,7 +365,17 @@
       }
     }
 
-    function getRandomPiece() { return createPiece(pieceTypes[pieceTypes.length * Math.random() | 0]); }
+    let pieceBag = [];
+    function getRandomPiece() {
+      if (pieceBag.length === 0) {
+        pieceBag = 'ILJOTSZ'.split('');
+        for (let i = pieceBag.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [pieceBag[i], pieceBag[j]] = [pieceBag[j], pieceBag[i]];
+        }
+      }
+      return createPiece(pieceBag.pop());
+    }
 
     function playerReset() {
       if (!player.nextMatrix) player.nextMatrix = getRandomPiece();
@@ -400,7 +410,11 @@
 
     function playerMove(dir) {
       player.pos.x += dir;
-      if (collide(arena, player)) player.pos.x -= dir;
+      if (collide(arena, player)) {
+        player.pos.x -= dir;
+      } else {
+        dropCounter = 0; // Infinity lock delay reset
+      }
     }
 
     function rotate(matrix, dir) {
@@ -418,6 +432,7 @@
         offset = -(offset + (offset > 0 ? 1 : -1));
         if (offset > player.matrix[0].length) { rotate(player.matrix, -dir); player.pos.x = pos; return; }
       }
+      dropCounter = 0; // Infinity lock delay reset
     }
 
     function togglePause() {
