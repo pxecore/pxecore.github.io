@@ -81,6 +81,9 @@ img, video { max-width: 100%; height: auto; display: block; }
     --radius-xl: 28px;
     --radius-full: 9999px;
 
+    /* Effects */
+    --blur-amount: 8px; /* Safe default for Linux X11/Wayland GPU compositors */
+
     /* Motion */
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -105,26 +108,26 @@ img, video { max-width: 100%; height: auto; display: block; }
     --shadow-dark:        0 8px 32px rgba(0, 0, 0, 0.5);
     --shadow-hover-dark:  0 16px 48px rgba(0, 0, 0, 0.7);
     --particle-color-dark: '#c29f68';
-    --terminal-bg-dark:   rgba(17, 16, 15, 0.30);
+    --terminal-bg-dark:   rgba(17, 16, 15, 0.55);
 
-    /* Light Theme */
-    --bg-primary-light:    #fdfcfb;
-    --bg-secondary-light:  #f5f1ed;
+    /* Light Theme - 'Milk Foam & Rust' (Comforting Off-White & Rust Brown) */
+    --bg-primary-light:    #fdfbf7;
+    --bg-secondary-light:  #f5f0e6;
     --bg-elevated-light:   #ffffff;
-    --card-bg-light:       rgba(255, 255, 255, 0.65);
-    --text-primary-light:  #2d2621;
-    --text-secondary-light:#5c544e;
-    --text-tertiary-light: #766a62; /* WCAG AA Compliance contrast check (4.5:1+) */
-    --accent-light:        #8B4513;
-    --accent-glow-light:   rgba(139, 69, 19, 0.12);
-    --border-light:        rgba(139, 69, 19, 0.12);
-    --border-strong-light: rgba(139, 69, 19, 0.22);
-    --btn-bg-light:        rgba(139, 69, 19, 0.04); 
-    --btn-hover-light:     rgba(139, 69, 19, 0.08);
-    --shadow-light:        0 4px 20px rgba(45, 38, 33, 0.06); 
-    --shadow-hover-light:  0 8px 32px rgba(45, 38, 33, 0.10); 
-    --particle-color-light: '#7a3e12';
-    --terminal-bg-light:   rgba(253, 252, 251, 0.60); 
+    --card-bg-light:       rgba(255, 255, 255, 0.85);
+    --text-primary-light:  #2f2a28;
+    --text-secondary-light:#5e5450;
+    --text-tertiary-light: #7d716c;
+    --accent-light:        #8c4a32; /* Vibrant Rust Brown */
+    --accent-glow-light:   rgba(140, 74, 50, 0.12);
+    --border-light:        rgba(140, 74, 50, 0.15);
+    --border-strong-light: rgba(140, 74, 50, 0.30);
+    --btn-bg-light:        rgba(140, 74, 50, 0.04); 
+    --btn-hover-light:     rgba(140, 74, 50, 0.08);
+    --shadow-light:        0 4px 20px rgba(47, 42, 40, 0.06); 
+    --shadow-hover-light:  0 8px 32px rgba(47, 42, 40, 0.10); 
+    --particle-color-light: '#8c4a32';
+    --terminal-bg-light:   rgba(253, 251, 247, 0.85); 
 
     /* Active tokens (defaults = dark) */
     --bg-primary:    var(--bg-primary-dark);
@@ -247,17 +250,10 @@ button, a, [role="button"],
     height: 100%;
     z-index: -1;
     pointer-events: none;
-    /* GPU compositing hint */
-    will-change: transform;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
 }
 
-/* Promote canvas to separate GPU layer */
 #particles-js canvas {
     display: block;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
 }
 
 #particles-js.fallback-background {
@@ -271,7 +267,7 @@ button, a, [role="button"],
 }
 
 body.light-theme #particles-js {
-    opacity: 0.85; /* Rich and vivid in light mode */
+    opacity: 0.55; /* Soft and soothing in light mode without blinding glare */
 }
 
 @keyframes particleFloat {
@@ -473,7 +469,7 @@ body.light-theme .theme-btn .fa-moon { display: none; }
     z-index: -1;
     color: transparent;
     opacity: 0;
-    animation: glitchGlow 6s infinite ease-in-out;
+    animation: glitchGlow 10s infinite ease-in-out;
     will-change: opacity;
 }
 
@@ -566,7 +562,6 @@ body.light-theme .theme-btn .fa-moon { display: none; }
         background var(--duration-base) var(--ease-out),
         border-color var(--duration-base) var(--ease-out),
         transform var(--duration-fast) var(--ease-spring);
-    will-change: transform;
 }
 
 .tech-item:hover {
@@ -675,13 +670,12 @@ body.light-theme .theme-btn .fa-moon { display: none; }
     border: 1px solid rgba(194,159,104,0.12);
     border: 1px solid var(--border);
     overflow: hidden;
-    isolation: isolate;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    /* Device-aware blur: Premium on desktop, performant on mobile */
-    -webkit-backdrop-filter: blur(var(--blur-amount, 12px)) saturate(110%);
-            backdrop-filter: blur(var(--blur-amount, 12px)) saturate(110%);
-    will-change: transform, opacity;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    /* Device-aware blur: Optimized for GPU performance on Linux/Wayland */
+    -webkit-backdrop-filter: blur(var(--blur-amount, 8px)) saturate(110%);
+            backdrop-filter: blur(var(--blur-amount, 8px)) saturate(110%);
 
     box-shadow: var(--shadow);
     transition:
@@ -778,7 +772,12 @@ body.light-theme .site-harmony-banner {
     letter-spacing: 0.3px;
     border: 1px solid var(--border);
     background: var(--btn-bg);
-    color: var(--text-secondary);
+    color: color-mix(in srgb, var(--text-secondary) 75%, var(--accent) 25%);
+}
+
+.badge:hover {
+    background: var(--btn-hover);
+    border-color: var(--accent);
 }
 
 .profile-action {
@@ -793,7 +792,7 @@ body.light-theme .site-harmony-banner {
     border-radius: var(--radius-full);
     background: var(--btn-bg);
     border: 1px solid var(--border);
-    color: var(--text-secondary);
+    color: color-mix(in srgb, var(--text-secondary) 75%, var(--accent) 25%);
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.4px;
@@ -956,11 +955,12 @@ body.light-theme .site-harmony-banner {
     border-radius: var(--radius-full);
     background: var(--btn-bg);
     border: 1px solid var(--border);
-    color: var(--text-secondary);
+    color: color-mix(in srgb, var(--text-secondary) 75%, var(--accent) 25%);
     font-size: 0.78rem;
     font-weight: 500;
     transition:
         background var(--duration-base) ease,
+        border-color var(--duration-base) ease,
         color var(--duration-base) ease,
         transform var(--duration-fast) var(--ease-spring);
 }
@@ -968,6 +968,7 @@ body.light-theme .site-harmony-banner {
 .interest-tags span:hover {
     background: var(--btn-hover);
     color: var(--text-primary);
+    border-color: var(--accent);
     transform: translateY(-2px);
 }
 
@@ -1014,8 +1015,6 @@ body.light-theme .site-harmony-banner {
     margin: var(--space-6) 0 0;
     position: relative;
     z-index: 2;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
     -webkit-animation: contentEnter 1s cubic-bezier(0.215, 0.610, 0.355, 1) both;
     animation: contentEnter 1s cubic-bezier(0.215, 0.610, 0.355, 1) both;
     -webkit-animation-delay: 0.4s;
@@ -1023,15 +1022,15 @@ body.light-theme .site-harmony-banner {
 }
 
 .terminal {
-    background: rgba(17,16,15,0.45); /* solid fallback */
+    background: rgba(17,16,15,0.55); /* solid fallback */
     background: var(--terminal-bg);
     border-radius: var(--radius-lg);
     border: 1px solid rgba(194,159,104,0.12);
     border: 1px solid var(--border);
     overflow: hidden;
-    isolation: isolate;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
     -webkit-backdrop-filter: blur(2px) saturate(110%);
             backdrop-filter: blur(2px) saturate(110%);
     box-shadow: var(--shadow);
@@ -1046,9 +1045,6 @@ body.light-theme .site-harmony-banner {
     gap: var(--space-2);
     padding: var(--space-3) var(--space-4);
     background: rgba(22, 20, 19, 0.45);
-    will-change: opacity;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
     border-bottom: 1px solid var(--border);
 }
 
@@ -1194,7 +1190,6 @@ body.light-theme .terminal-btn {
         timedPulseTransform 8s ease-in-out infinite;
     opacity: 0;
     transform: translateY(-40px) rotateX(45deg);
-    will-change: transform, opacity;
 }
 
 /* Pseudo-element for GPU-composited color transition to avoid CPU repaints */
@@ -1206,7 +1201,6 @@ body.light-theme .terminal-btn {
     color: var(--accent);
     opacity: 0;
     animation: timedPulseGlow 8s ease-in-out infinite;
-    will-change: opacity;
 }
 
 @keyframes letterDrop {
@@ -1271,6 +1265,11 @@ body.light-theme .terminal-btn {
 
     .left-section  { max-width: 100%; }
     .right-section { width: 100%; max-width: 420px; margin: 0 auto; }
+
+    .tech-stack,
+    .contact-buttons {
+        justify-content: center;
+    }
 }
 
 /*
@@ -1288,7 +1287,6 @@ body.light-theme .terminal-btn {
         justify-content: center;
         gap: var(--space-3);
     }
-
     .resume-overlay {
         width: 95%;
         height: 88vh;
@@ -1322,6 +1320,11 @@ body.light-theme .terminal-btn {
 
     .mobile-close-btn:active {
         opacity: 0.8;
+    }
+
+    .resume-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-2) var(--space-3);
     }
 }
 
@@ -1364,7 +1367,7 @@ body.light-theme .terminal-btn {
     .hi-text { font-size: 1.5rem; }
     .about > p { font-size: 0.95rem; }
 
-    .contact-buttons { gap: 6px; }
+    .contact-buttons { gap: 6px; justify-content: center; }
     .contact-btn { font-size: 0.85rem; height: 40px; padding: 0 10px; }
 
     .tech-stack { gap: var(--space-2); justify-content: center; }
@@ -1412,11 +1415,9 @@ body.light-theme .terminal-btn {
     max-width: 720px;
     height: 80vh;
     background: var(--card-bg);
-    backdrop-filter: blur(12px) saturate(180%);
-    -webkit-backdrop-filter: blur(12px) saturate(180%);
-    will-change: transform, opacity;
-    -webkit-transform: translateZ(0);
-    transform: translate(-50%, -50%) scale(0.9) translateZ(0);
+    backdrop-filter: blur(var(--blur-amount, 8px)) saturate(140%);
+    -webkit-backdrop-filter: blur(var(--blur-amount, 8px)) saturate(140%);
+    transform: translate(-50%, -50%) scale(0.9);
     z-index: 2000;
     box-shadow: 0 30px 90px rgba(0,0,0,0.5);
     border: 1px solid var(--border-strong);
@@ -1592,7 +1593,7 @@ body.light-theme .terminal-btn {
 
 .resume-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
     gap: var(--space-3);
     list-style: none;
     padding: 0;
@@ -1776,4 +1777,15 @@ body.light-theme .terminal-btn {
 /* Ensure ultra-smooth scrolling on iOS */
 .terminal-content, .resume-content {
     -webkit-overflow-scrolling: touch;
+}
+
+/* Global Animations */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.audio-spinner {
+    animation: spin 1s linear infinite !important;
+    transform-origin: center;
 }
