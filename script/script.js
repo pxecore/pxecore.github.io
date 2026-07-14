@@ -104,13 +104,14 @@ function initializeParticles(particleColor, forceReinit = false) {
         pJSInstance.interactivity.modes.grab.line_linked.opacity = particleConfigBase.interactivity.modes.grab.line_linked.opacity;
 
         const isLightTheme = (particleColor === '#8c4a32');
-        const targetDotOpacity = isLightTheme ? 0.75 : particleConfigBase.particles.opacity.value;
-        const targetLineOpacity = isLightTheme ? 0.45 : particleConfigBase.particles.line_linked.opacity;
+        const targetDotOpacity = isLightTheme ? 0.90 : particleConfigBase.particles.opacity.value;
+        const targetLineOpacity = isLightTheme ? 0.65 : particleConfigBase.particles.line_linked.opacity;
 
-        // Apply opacity values
+        // Apply opacity and line thickness values for rich visibility
         pJSInstance.particles.opacity.value = targetDotOpacity;
         if (pJSInstance.particles.line_linked) {
             pJSInstance.particles.line_linked.opacity = targetLineOpacity;
+            pJSInstance.particles.line_linked.width = isLightTheme ? 1.4 : particleConfigBase.particles.line_linked.width;
         }
 
         const { count, size, distance } = getParticleSettingsForScreen(window.innerWidth);
@@ -177,12 +178,15 @@ function initializeParticles(particleColor, forceReinit = false) {
     currentParticleConfig.particles.line_linked.color = particleColor;
 
     const isLightThemeConfig = (particleColor === '#8c4a32');
-    const configDotOpacity = isLightThemeConfig ? 0.75 : particleConfigBase.particles.opacity.value;
-    const configLineOpacity = isLightThemeConfig ? 0.45 : particleConfigBase.particles.line_linked.opacity;
+    const configDotOpacity = isLightThemeConfig ? 0.90 : particleConfigBase.particles.opacity.value;
+    const configLineOpacity = isLightThemeConfig ? 0.65 : particleConfigBase.particles.line_linked.opacity;
 
-    // Apply desired opacity values
+    // Apply desired opacity and line thickness values
     currentParticleConfig.particles.opacity.value = configDotOpacity;
     currentParticleConfig.particles.line_linked.opacity = configLineOpacity;
+    if (isLightThemeConfig) {
+        currentParticleConfig.particles.line_linked.width = 1.4;
+    }
 
     // Initial particle count/size/line distance based on screen and device
     const { count, size, distance } = getParticleSettingsForScreen(window.innerWidth);
