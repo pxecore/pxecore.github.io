@@ -267,7 +267,7 @@ button, a, [role="button"],
 }
 
 body.light-theme #particles-js {
-    opacity: 0.55; /* Soft and soothing in light mode without blinding glare */
+    opacity: 1; /* Crisp and clearly visible against cream off-white background */
 }
 
 @keyframes particleFloat {
