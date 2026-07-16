@@ -1182,7 +1182,6 @@ body.light-theme .terminal-btn {
     position: relative;
     display: inline-block;
     overflow: visible;
-    animation: timedPulseTransform 8s ease-in-out infinite;
 }
 
 .pixel-char {
@@ -1190,7 +1189,8 @@ body.light-theme .terminal-btn {
     transform-origin: center;
     position: relative;
     color: var(--text-primary);
-    animation: letterDrop 0.8s var(--ease-spring) forwards;
+    animation: letterDrop 0.8s var(--ease-spring) forwards,
+               timedPulseTransform 8s ease-in-out infinite;
     opacity: 0;
     transform: translateY(-40px) rotateX(45deg);
 }
@@ -1213,9 +1213,9 @@ body.light-theme .terminal-btn {
 
 @keyframes timedPulseTransform {
     0%, 20%   { transform: scale(1) translateY(0); }
-    25%, 30%  { transform: scale(1.04) translateY(-3px); }
+    25%, 30%  { transform: scale(1.08) translateY(-5px); }
     35%, 80%  { transform: scale(1) translateY(0); }
-    85%, 90%  { transform: scale(1.04) translateY(-3px); }
+    85%, 90%  { transform: scale(1.08) translateY(-5px); }
     95%, 100% { transform: scale(1) translateY(0); }
 }
 
