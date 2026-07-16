@@ -104,8 +104,8 @@ function initializeParticles(particleColor, forceReinit = false) {
         pJSInstance.interactivity.modes.grab.line_linked.opacity = particleConfigBase.interactivity.modes.grab.line_linked.opacity;
 
         const isLightTheme = (particleColor === '#8c4a32');
-        const targetDotOpacity = isLightTheme ? 0.90 : particleConfigBase.particles.opacity.value;
-        const targetLineOpacity = isLightTheme ? 0.65 : particleConfigBase.particles.line_linked.opacity;
+        const targetDotOpacity = isLightTheme ? 0.78 : particleConfigBase.particles.opacity.value;
+        const targetLineOpacity = isLightTheme ? 0.54 : particleConfigBase.particles.line_linked.opacity;
 
         // Apply opacity and line thickness values for rich visibility
         pJSInstance.particles.opacity.value = targetDotOpacity;
@@ -178,8 +178,8 @@ function initializeParticles(particleColor, forceReinit = false) {
     currentParticleConfig.particles.line_linked.color = particleColor;
 
     const isLightThemeConfig = (particleColor === '#8c4a32');
-    const configDotOpacity = isLightThemeConfig ? 0.90 : particleConfigBase.particles.opacity.value;
-    const configLineOpacity = isLightThemeConfig ? 0.65 : particleConfigBase.particles.line_linked.opacity;
+    const configDotOpacity = isLightThemeConfig ? 0.78 : particleConfigBase.particles.opacity.value;
+    const configLineOpacity = isLightThemeConfig ? 0.54 : particleConfigBase.particles.line_linked.opacity;
 
     // Apply desired opacity and line thickness values
     currentParticleConfig.particles.opacity.value = configDotOpacity;
