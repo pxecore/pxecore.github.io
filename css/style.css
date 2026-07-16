@@ -717,14 +717,12 @@ body.light-theme .theme-btn .fa-moon { display: none; }
     background-size: cover;
     background-position: center;
     /* High-quality noise fallback for load failures */
-    background-image: linear-gradient(rgba(17, 16, 15, 0.4), rgba(17, 16, 15, 0.4)),
-                      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-image: linear-gradient(rgba(17, 16, 15, 0.4), rgba(17, 16, 15, 0.4));
     transition: background-image 0.5s ease;
 }
 
 body.light-theme .site-harmony-banner {
-    background-image: linear-gradient(rgba(253, 252, 251, 0.2), rgba(253, 252, 251, 0.2)),
-                      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-image: linear-gradient(rgba(253, 252, 251, 0.2), rgba(253, 252, 251, 0.2));
 }
 
 /* Avatar */
@@ -1184,6 +1182,7 @@ body.light-theme .terminal-btn {
     position: relative;
     display: inline-block;
     overflow: visible;
+    animation: timedPulseTransform 8s ease-in-out infinite;
 }
 
 .pixel-char {
@@ -1191,9 +1190,7 @@ body.light-theme .terminal-btn {
     transform-origin: center;
     position: relative;
     color: var(--text-primary);
-    animation: 
-        letterDrop 0.8s var(--ease-spring) forwards,
-        timedPulseTransform 8s ease-in-out infinite;
+    animation: letterDrop 0.8s var(--ease-spring) forwards;
     opacity: 0;
     transform: translateY(-40px) rotateX(45deg);
 }
