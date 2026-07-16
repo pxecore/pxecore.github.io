@@ -16,12 +16,18 @@
     <!-- Resources -->
     <link rel="canonical" href="https://pxecore.github.io/">
     <link rel="sitemap" type="application/xml" href="/sitemap.xml">
-    <link rel="stylesheet" href="css/normalize.css?v=1.0.0&t=1736867776">
+    <!-- normalize.css inlined to eliminate render-blocking network request -->
+    <style>
+      html{line-height:1.15;-webkit-text-size-adjust:100%;box-sizing:border-box;font-size:16px;scroll-behavior:smooth}*,*:before,*:after{box-sizing:inherit}body{margin:0;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.5;text-rendering:optimizeLegibility}main{display:block}h1{font-size:2em;margin:.67em 0}hr{box-sizing:content-box;height:0;overflow:visible}pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent}abbr[title]{border-bottom:none;text-decoration:underline dotted}b,strong{font-weight:bolder}code,kbd,samp{font-family:monospace,monospace;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none;max-width:100%;height:auto}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}button,[type="button"],[type="reset"],[type="submit"]{-webkit-appearance:button;appearance:button}fieldset{padding:.35em .75em .625em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{vertical-align:baseline}textarea{overflow:auto}[type="checkbox"],[type="radio"]{box-sizing:border-box;padding:0}[type="search"]{-webkit-appearance:textfield;appearance:textfield;outline-offset:-2px}[type="search"]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}details{display:block}summary{display:list-item}template,[hidden]{display:none}@media screen and (max-width:768px){html{font-size:14px}}
+    </style>
     <!-- Preconnect to high-priority third-party origins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preconnect" href="https://unavatar.io" crossorigin>
+
+    <!-- Preload LCP Banner image immediately -->
+    <link rel="preload" href="media/banner.webp" as="image" fetchpriority="high">
 
     <!-- Preload critical FontAwesome icon fonts early -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
@@ -215,7 +221,7 @@
                     <div class="profile-card">
                         <div class="card-header" aria-label="Profile banner">
                             <div class="site-harmony-banner" style="background-image: url('media/banner.webp');"></div>
-                            <img src="https://unavatar.io/x/pxecore" alt="PxeCore - Cybersecurity Researcher Avatar" class="profile-img" loading="lazy" decoding="async" width="76" height="76">
+                            <img src="https://unavatar.io/x/pxecore?size=128" alt="PxeCore - Cybersecurity Researcher Avatar" class="profile-img" loading="eager" decoding="async" width="76" height="76">
                         </div>
                         <div class="card-body">
                             <div class="profile-info">
