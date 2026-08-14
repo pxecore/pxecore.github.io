@@ -51,6 +51,15 @@ function skyFromInk(hex) {
     return getSky();
 }
 
+/** Touch / stylus primary — no mouse-style grab on these devices. */
+function isCoarsePointer() {
+    try {
+        return window.matchMedia('(pointer: coarse)').matches;
+    } catch (_) {
+        return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    }
+}
+
 /* ═══════════════════════════════════════════════════════════
  * PARTICLES — density locked to screen buckets (no swarm/cap fight)
  *   • density.value_area sized so count ≈ number.value
@@ -128,15 +137,15 @@ function getParticleSettingsForScreen(screenWidth) {
     if (screenWidth >= 1920) {
         count = 100; size = 2.4; distance = 120;
     } else if (screenWidth >= 1440) {
-        count = 90;  size = 2.3; distance = 110;
+        count = 90; size = 2.3; distance = 110;
     } else if (screenWidth >= 1024) {
-        count = 80;  size = 2.2; distance = 100;
+        count = 80; size = 2.2; distance = 100;
     } else if (screenWidth >= 768) {
-        count = 70;  size = 2.0; distance = 90;
+        count = 70; size = 2.0; distance = 90;
     } else if (screenWidth >= 480) {
-        count = 55;  size = 1.8; distance = 80;
+        count = 55; size = 1.8; distance = 80;
     } else {
-        count = 42;  size = 1.55; distance = 70;
+        count = 42; size = 1.55; distance = 70;
     }
 
     const cores = navigator.hardwareConcurrency;
@@ -341,17 +350,23 @@ function ensureParticlePointerBridge() {
         return true;
     }
 
-    // Track touch taps so we can spawn on pointerup (mobile click is flaky / delayed)
+    // ── Grab = mouse only (touch was causing appear/disappear flicker)
+    // ── Spawn = mouse click + clean touch/pen tap (no drag)
+
     let touchTap = null;
 
     window.addEventListener('pointerdown', (e) => {
         if (isInteractiveTarget(e.target)) return;
         const pJS = livePJS();
-        if (!pJS || !pJS.interactivity?.events?.onhover?.enable) return;
+        if (!pJS) return;
         if (!inCanvas(pJS, e.clientX, e.clientY)) return;
 
-        setMouse(pJS, e.clientX, e.clientY);
+        // Grab coordinates only for real mouse
+        if (e.pointerType === 'mouse' && pJS.interactivity?.events?.onhover?.enable) {
+            setMouse(pJS, e.clientX, e.clientY);
+        }
 
+        // Track potential tap for spawn (touch/pen)
         if (e.pointerType === 'touch' || e.pointerType === 'pen') {
             touchTap = { x: e.clientX, y: e.clientY, id: e.pointerId, moved: false };
         }
@@ -359,15 +374,19 @@ function ensureParticlePointerBridge() {
 
     window.addEventListener('pointermove', (e) => {
         const pJS = livePJS();
-        if (!pJS || !pJS.interactivity?.events?.onhover?.enable) return;
+        if (!pJS) return;
 
+        // Mark touch as drag if finger moved > ~10px (scroll / swipe → no spawn)
         if (touchTap && e.pointerId === touchTap.id) {
             const dx = e.clientX - touchTap.x;
             const dy = e.clientY - touchTap.y;
-            if (dx * dx + dy * dy > 100) touchTap.moved = true; // >10px → scroll/drag, not tap
+            if (dx * dx + dy * dy > 100) touchTap.moved = true;
         }
 
-        // Grab still works over cards — only skip when leaving the viewport canvas
+        // Grab only for mouse
+        if (e.pointerType !== 'mouse') return;
+        if (!pJS.interactivity?.events?.onhover?.enable) return;
+
         if (!inCanvas(pJS, e.clientX, e.clientY)) {
             clearMouse(pJS);
             return;
@@ -379,20 +398,20 @@ function ensureParticlePointerBridge() {
         const pJS = livePJS();
         if (!pJS) return;
 
-        // Mobile/pen tap spawn (before click may or may not fire)
+        // Clean touch/pen tap → spawn one particle
         if (touchTap && e.pointerId === touchTap.id) {
             const tap = touchTap;
             touchTap = null;
             if (!tap.moved && !isInteractiveTarget(e.target) && inCanvas(pJS, tap.x, tap.y)) {
                 spawnAt(pJS, tap.x, tap.y);
-                // Suppress the delayed synthetic click spawn for this gesture
                 window.__pxeSkipClickSpawnUntil = Date.now() + 500;
             }
+            // Never leave a grab cursor stuck from touch
             clearMouse(pJS);
             return;
         }
 
-        // Mouse: keep grab while cursor is over canvas; clear if left
+        // Mouse: clear grab if pointer left canvas
         if (e.pointerType === 'mouse' && !inCanvas(pJS, e.clientX, e.clientY)) {
             clearMouse(pJS);
         }
@@ -416,7 +435,7 @@ function ensureParticlePointerBridge() {
         if (pJS) clearMouse(pJS);
     });
 
-    // Desktop / leftover click spawn (capture)
+    // Desktop / synthetic click spawn (touch already handled on pointerup)
     window.addEventListener('click', (e) => {
         if (window.__pxeSkipClickSpawnUntil && Date.now() < window.__pxeSkipClickSpawnUntil) return;
         if (isInteractiveTarget(e.target)) return;
@@ -427,11 +446,6 @@ function ensureParticlePointerBridge() {
     }, true);
 }
 
-/**
- * particles.js lifecycle.
- * Soft path = tint/retune only (NO canvas-size rebuild — that caused zoom clump/lag).
- * Hard path = destroy + recreate (used after viewport settles).
- */
 function initializeParticles(particleColor, forceReinit = false) {
     const particlesJSElement = document.getElementById('particles-js');
     if (!particlesJSElement) return;
@@ -446,7 +460,7 @@ function initializeParticles(particleColor, forceReinit = false) {
     if (!forceReinit && live) {
         const pJSInstance = live;
         tintParticles(pJSInstance, color);
-        pJSInstance.interactivity.events.onhover.enable = true;
+        pJSInstance.interactivity.events.onhover.enable = !isCoarsePointer();
         pJSInstance.interactivity.events.onclick.enable = false;
         detachNativeParticleMouse(pJSInstance);
         return;
@@ -475,7 +489,7 @@ function initializeParticles(particleColor, forceReinit = false) {
     currentParticleConfig.particles.line_linked.width = sky.lineW;
     currentParticleConfig.interactivity.modes.grab.line_linked.opacity =
         sky.grabLineOp || particleConfigBase.interactivity.modes.grab.line_linked.opacity;
-    currentParticleConfig.interactivity.events.onhover.enable = true;
+    currentParticleConfig.interactivity.events.onhover.enable = !isCoarsePointer();
     currentParticleConfig.interactivity.events.onclick.enable = false;
 
     const { count, size, distance } = getParticleSettingsForScreen(window.innerWidth);
@@ -535,6 +549,9 @@ function finalizeParticlesInit() {
 
     pJSInstance.interactivity.detect_on = 'canvas';
     pJSInstance.interactivity.el = pJSInstance.canvas.el;
+    if (pJSInstance.interactivity.events && pJSInstance.interactivity.events.onhover) {
+        pJSInstance.interactivity.events.onhover.enable = !isCoarsePointer();
+    }
     detachNativeParticleMouse(pJSInstance);
 
     const particlesJSElement = document.getElementById('particles-js');
@@ -663,7 +680,7 @@ document.addEventListener('visibilitychange', () => {
                 pJS.fn.vendors.draw();
             }
         }
-    } catch(e) {
+    } catch (e) {
         console.warn('Visibility particle toggle failed:', e);
     }
 });
@@ -677,9 +694,9 @@ document.addEventListener('visibilitychange', () => {
  */
 function debounce(func, wait, immediate) {
     var timeout;
-    return function() {
+    return function () {
         var context = this, args = arguments;
-        var later = function() {
+        var later = function () {
             timeout = null;
             if (!immediate) func.apply(context, args);
         };
@@ -731,13 +748,13 @@ if (window.visualViewport) {
 function copySessionID() {
     const FIXED_SESSION_ID = '0500d49ca2b7d6e4149e53e8eba080f0b3795af952810f19bc21882121a7a4e760';
 
-    navigator.clipboard.writeText(FIXED_SESSION_ID).then(function() {
+    navigator.clipboard.writeText(FIXED_SESSION_ID).then(function () {
         const el = document.getElementById('session-copied');
         if (el) {
             el.style.display = 'inline';
             setTimeout(() => { el.style.display = 'none'; }, 2000);
         }
-    }).catch(function() {
+    }).catch(function () {
         // Fallback for older browsers / iOS WebView
         const textArea = document.createElement('textarea');
         textArea.value = FIXED_SESSION_ID;
@@ -781,7 +798,7 @@ function toggleAudio() {
 
             audioElement.src = "media/hmm.opus";
             audioElement.load();
-            
+
             // Restore saved position after metadata is loaded
             try {
                 const savedTime = localStorage.getItem('audioCurrentTime');
@@ -800,12 +817,12 @@ function toggleAudio() {
                 audioElement.volume = 0.3;
                 var playPromise = audioElement.play();
                 if (playPromise !== undefined && typeof playPromise.then === 'function') {
-                    playPromise.then(function() {
+                    playPromise.then(function () {
                         audioPlaying = true;
                         if (vocalizer) vocalizer.classList.add('playing');
                         if (playBtn) playBtn.innerHTML = pauseSVG;
                         try { localStorage.setItem('audioPlaying', 'true'); } catch (e) { /* */ }
-                    }).catch(function() {
+                    }).catch(function () {
                         if (vocalizer) vocalizer.classList.remove('loading');
                         if (playBtn) playBtn.innerHTML = playSVG;
                     });
@@ -833,12 +850,12 @@ function toggleAudio() {
             var playPromise = audioElement.play();
             // .then() only exists on modern browsers
             if (playPromise !== undefined && typeof playPromise.then === 'function') {
-                playPromise.then(function() {
+                playPromise.then(function () {
                     audioPlaying = true;
                     if (vocalizer) vocalizer.classList.add('playing');
                     if (playBtn) playBtn.innerHTML = pauseSVG;
                     try { localStorage.setItem('audioPlaying', 'true'); } catch (e) { /* */ }
-                }).catch(function() { /* Autoplay blocked or audio error */ });
+                }).catch(function () { /* Autoplay blocked or audio error */ });
             } else {
                 // Older browser: assume success
                 audioPlaying = true;
@@ -888,7 +905,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Save current time periodically (throttled)
         let lastSaveTime = 0;
-        audio.addEventListener('timeupdate', function() {
+        audio.addEventListener('timeupdate', function () {
             if (audioPlaying && Date.now() - lastSaveTime > 1000) {
                 try {
                     localStorage.setItem('audioCurrentTime', audio.currentTime);
@@ -898,7 +915,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Hide vocalizer if audio fails to load
-        audio.addEventListener('error', function() {
+        audio.addEventListener('error', function () {
             if (vocalizer) vocalizer.style.display = 'none';
         });
     }
@@ -947,7 +964,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Draggable Window Logic
     function makeDraggable(element, handle) {
         let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-        
+
         handle.onmousedown = dragMouseDown;
 
         function dragMouseDown(e) {
@@ -970,7 +987,7 @@ document.addEventListener('DOMContentLoaded', () => {
             pos2 = pos4 - e.clientY;
             pos3 = e.clientX;
             pos4 = e.clientY;
-            
+
             // Set element's new position
             let newTop = element.offsetTop - pos2;
             let newLeft = element.offsetLeft - pos1;
@@ -1025,7 +1042,7 @@ document.addEventListener('DOMContentLoaded', () => {
             mobileCloseResumeBtn.addEventListener('click', () => toggleResume(false));
         }
         panelBackdrop.addEventListener('click', () => toggleResume(false));
-        
+
         // Initialize dragging
         if (resumeHeader) {
             makeDraggable(resumePanel, resumeHeader);
@@ -1051,7 +1068,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Prevent text selection when spam clicking particles background
     const particlesContainer = document.getElementById('particles-js');
     if (particlesContainer) {
-        particlesContainer.addEventListener('mousedown', function(e) {
+        particlesContainer.addEventListener('mousedown', function (e) {
             if (e.detail > 1) {
                 e.preventDefault();
             }
@@ -1086,7 +1103,7 @@ function initCosmicStarfield() {
         dpr = window.devicePixelRatio || 1;
         W = window.innerWidth;
         H = window.innerHeight;
-        canvas.width  = Math.round(W * dpr);
+        canvas.width = Math.round(W * dpr);
         canvas.height = Math.round(H * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         if (forceRegen) generateAll();
@@ -1243,7 +1260,7 @@ function initCosmicStarfield() {
 
         // Explode into a massive supernova flash & shockwave at the very end
         if (blackHole.age >= blackHole.lifetime) {
-            explosions.push({ 
+            explosions.push({
                 debris: [], flash: 1.6, x: blackHole.x, y: blackHole.y, flashRadius: 220,
                 shockwaveR: 10, maxShockwaveR: 350, shockwaveOp: 0.8
             });
@@ -1286,13 +1303,13 @@ function initCosmicStarfield() {
                 x: star.x, y: star.y,
                 vx: Math.cos(angle) * speed,
                 vy: Math.sin(angle) * speed,
-                r:  0.4 + Math.random() * 2.2,
+                r: 0.4 + Math.random() * 2.2,
                 life: 1.0,
                 decay: 0.006 + Math.random() * 0.014,
                 colorType: star.colorType
             });
         }
-        explosions.push({ 
+        explosions.push({
             debris, flash: 1.0, x: star.x, y: star.y, flashRadius: flashR,
             shockwaveR: 5, maxShockwaveR: flashR * 2.5, shockwaveOp: 0.6
         });
@@ -1321,8 +1338,8 @@ function initCosmicStarfield() {
 
         star.vx += (ux * radialForce - uy * tangentialForce) * dt;
         star.vy += (uy * radialForce + ux * tangentialForce) * dt;
-        star.x  += star.vx * dt;
-        star.y  += star.vy * dt;
+        star.x += star.vx * dt;
+        star.y += star.vy * dt;
 
         // Absorbed into singularity
         if (dist < blackHole.coreRadius + 2) {
@@ -1543,9 +1560,9 @@ function initCosmicStarfield() {
         // Gravitational lensing bloom
         const lensR = coreRadius * 8;
         const lens = ctx.createRadialGradient(drawX, drawY, coreRadius * 0.5, drawX, drawY, lensR);
-        lens.addColorStop(0,   `rgba(${colors.star}, ${intensity * 0.5})`);
+        lens.addColorStop(0, `rgba(${colors.star}, ${intensity * 0.5})`);
         lens.addColorStop(0.3, `rgba(${colors.star}, ${intensity * 0.15})`);
-        lens.addColorStop(1,   `rgba(${colors.star}, 0)`);
+        lens.addColorStop(1, `rgba(${colors.star}, 0)`);
         ctx.beginPath();
         ctx.arc(drawX, drawY, lensR, 0, Math.PI * 2);
         ctx.fillStyle = lens;
@@ -1556,13 +1573,13 @@ function initCosmicStarfield() {
         ctx.translate(drawX, drawY);
         ctx.rotate(diskAngle);
         ctx.scale(1, 0.35);
-        
+
         // Doppler Beaming Gradient: Blueshifted (brighter) on left, redshifted (dimmer) on right
         const diskGrad = ctx.createLinearGradient(-coreRadius * 4, 0, coreRadius * 4, 0);
         diskGrad.addColorStop(0, `rgba(${colors.white}, ${intensity * 0.95})`);
         diskGrad.addColorStop(0.4, `rgba(${colors.star}, ${intensity * 0.6})`);
         diskGrad.addColorStop(1, `rgba(${colors.starAlt}, ${intensity * 0.15})`);
-        
+
         // Outer glow disk
         ctx.beginPath();
         ctx.arc(0, 0, coreRadius * 4, 0, Math.PI * 2);
@@ -1577,14 +1594,14 @@ function initCosmicStarfield() {
         ctx.strokeStyle = diskGrad;
         ctx.lineWidth = 4.0;
         ctx.stroke();
-        
+
         // Inner bright matter ring
         ctx.beginPath();
         ctx.arc(0, 0, coreRadius * 2, 0, Math.PI * 2);
         ctx.strokeStyle = `rgba(${colors.white}, ${intensity * 0.9})`;
         ctx.lineWidth = 2.5;
         ctx.stroke();
-        
+
         // Photon ring (very bright, tightly wrapping the core)
         ctx.beginPath();
         ctx.arc(0, 0, coreRadius * 1.2, 0, Math.PI * 2);
@@ -1596,14 +1613,14 @@ function initCosmicStarfield() {
 
         // Dark core — the singularity itself
         const coreGrad = ctx.createRadialGradient(drawX, drawY, 0, drawX, drawY, coreRadius);
-        coreGrad.addColorStop(0,   `rgba(0, 0, 0, ${intensity})`);
+        coreGrad.addColorStop(0, `rgba(0, 0, 0, ${intensity})`);
         coreGrad.addColorStop(0.8, `rgba(0, 0, 0, ${intensity * 0.95})`);
-        coreGrad.addColorStop(1,   'rgba(0, 0, 0, 0)');
+        coreGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
         ctx.beginPath();
         ctx.arc(drawX, drawY, coreRadius, 0, Math.PI * 2);
         ctx.fillStyle = coreGrad;
         ctx.fill();
-        
+
         // Event Horizon boundary line
         ctx.beginPath();
         ctx.arc(drawX, drawY, coreRadius + 1, 0, Math.PI * 2);
@@ -1616,7 +1633,7 @@ function initCosmicStarfield() {
     function drawExplosions(colors) {
         for (let i = explosions.length - 1; i >= 0; i--) {
             const exp = explosions[i];
-            
+
             // Gravitational Shockwave Ring
             if (exp.shockwaveR !== undefined && exp.shockwaveR < exp.maxShockwaveR) {
                 exp.shockwaveR += (exp.maxShockwaveR - exp.shockwaveR) * 0.08 + 1.5;
@@ -1635,9 +1652,9 @@ function initCosmicStarfield() {
                 const fg = ctx.createRadialGradient(
                     exp.x, exp.y, 0, exp.x, exp.y, exp.flashRadius
                 );
-                fg.addColorStop(0,   `rgba(${colors.white}, ${exp.flash * 0.9})`);
+                fg.addColorStop(0, `rgba(${colors.white}, ${exp.flash * 0.9})`);
                 fg.addColorStop(0.3, `rgba(${colors.star}, ${exp.flash * 0.5})`);
-                fg.addColorStop(1,   `rgba(${colors.star}, 0)`);
+                fg.addColorStop(1, `rgba(${colors.star}, 0)`);
                 ctx.beginPath();
                 ctx.arc(exp.x, exp.y, exp.flashRadius, 0, Math.PI * 2);
                 ctx.fillStyle = fg;
@@ -1730,4 +1747,3 @@ function initCosmicStarfield() {
         }
     });
 }
-
