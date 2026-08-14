@@ -1,38 +1,109 @@
-/* Particles configuration */
+/* ═══════════════════════════════════════════════════════════
+ * UNIFIED SKY — one palette, two depths
+ *   Far  : starfield pinpricks + rare sparkles (canvas)
+ *   Near : constellation nodes + links (particles.js)
+ * Same accent family, same tempo, no competing glow blobs.
+ * ═══════════════════════════════════════════════════════════ */
+const SKY = {
+    dark: {
+        hex: '#c9a66e',
+        rgb: '201, 166, 110',
+        rgbBright: '245, 232, 210',
+        rgbDim: '170, 140, 95',
+        dotOp: 0.72,
+        lineOp: 0.38,
+        lineW: 1.15,
+        grabLineOp: 0.72,
+        countScale: 1,
+        sizeScale: 1,
+        distScale: 1,
+        starBgOp: [0.40, 0.90],
+        starMedOp: [0.50, 0.95],
+        sparkleOp: [0.55, 0.95]
+    },
+    light: {
+        // Warm terracotta (old site #8c4a32) — readable on cream, not muddy ink
+        hex: '#8c4a32',
+        rgb: '140, 74, 50',
+        rgbBright: '112, 56, 38',
+        rgbDim: '168, 102, 74',
+        dotOp: 0.78,
+        lineOp: 0.54,
+        lineW: 1.4,
+        grabLineOp: 0.65,
+        countScale: 1,
+        sizeScale: 1,
+        distScale: 1,
+        starBgOp: [0.50, 0.88],
+        starMedOp: [0.55, 0.92],
+        sparkleOp: [0.60, 0.95]
+    }
+};
+
+function getSky() {
+    return document.body.classList.contains('light-theme') ? SKY.light : SKY.dark;
+}
+
+/** Resolve palette from an explicit ink color (theme-flip safe). */
+function skyFromInk(hex) {
+    if (hex === SKY.light.hex) return SKY.light;
+    if (hex === SKY.dark.hex) return SKY.dark;
+    return getSky();
+}
+
+/* ═══════════════════════════════════════════════════════════
+ * PARTICLES — density locked to screen buckets (no swarm/cap fight)
+ *   • density.value_area sized so count ≈ number.value
+ *   • width buckets for base count (40–100)
+ *   • hard reinit on significant viewport area change
+ *   • SKY palette + pointer bridge for grab/click
+ * ═══════════════════════════════════════════════════════════ */
+
 const particleConfigBase = {
     particles: {
-        number: { 
+        number: {
             value: 80,
-            density: { enable: true, value_area: 800 } 
+            density: { enable: false, value_area: 800 }
         },
         shape: { type: 'circle' },
-        opacity: { value: 0.7, random: false, anim: { enable: false } },
-        size: { value: 2.2, random: true, anim: { enable: false } },
-        line_linked: { 
+        opacity: {
+            value: 0.7,
+            random: false,
+            anim: { enable: false }
+        },
+        size: {
+            value: 2.2,
+            random: true,
+            anim: { enable: false }
+        },
+        line_linked: {
             enable: true,
             distance: 140,
-            opacity: 0.40, // Reduced from 0.45 for a more balanced look
-            width: 1 
+            opacity: 0.40,
+            width: 1
         },
-        move: { 
-            enable: true, 
-            speed: 1.15,
-            direction: 'none', 
+        move: {
+            enable: true,
+            speed: 0.72,
+            direction: 'none',
             random: false,
             straight: false,
             out_mode: 'out',
-            bounce: false
+            bounce: false,
+            attract: { enable: false, rotateX: 0, rotateY: 0 }
         }
     },
     interactivity: {
-        detect_on: 'window',
+        // canvas + pointer-events:none → native listeners never fire; bridge owns coords
+        detect_on: 'canvas',
         events: {
-            onhover: { enable: window.matchMedia('(min-width: 768px)').matches, mode: 'grab' },
-            onclick: { enable: true, mode: 'push' },
+            onhover: { enable: true, mode: 'grab' },
+            // Native click off — pointer bridge pushes (canvas is pointer-events:none)
+            onclick: { enable: false, mode: 'push' },
             resize: false
         },
         modes: {
-            grab: { distance: 120, line_linked: { opacity: 0.55 } }, // Slightly reduced for harmony
+            grab: { distance: 120, line_linked: { opacity: 0.55 } },
             push: { particles_nb: 1 }
         }
     },
@@ -40,11 +111,14 @@ const particleConfigBase = {
     fps_limit: 60
 };
 
-let initialWindowArea;
-let initialParticleCanvasArea; 
+/**
+ * Width buckets only affect count/size/distance — never gate grab/click.
+ * (Browser zoom shrinks innerWidth below 768 and used to look like "mobile".)
+ */
 
 /**
- * Unified hardware and screen-size aware particle settings helper
+ * Hardware + viewport particle settings.
+ * Width buckets set baseline; area cap keeps zoomed-in / small screens clean.
  */
 function getParticleSettingsForScreen(screenWidth) {
     let count = 80;
@@ -60,9 +134,9 @@ function getParticleSettingsForScreen(screenWidth) {
     } else if (screenWidth >= 768) {
         count = 70;  size = 2.0; distance = 90;
     } else if (screenWidth >= 480) {
-        count = 60;  size = 1.8; distance = 80;
+        count = 55;  size = 1.8; distance = 80;
     } else {
-        count = 50;  size = 1.6; distance = 70;
+        count = 42;  size = 1.55; distance = 70;
     }
 
     const cores = navigator.hardwareConcurrency;
@@ -74,131 +148,344 @@ function getParticleSettingsForScreen(screenWidth) {
             count = Math.floor(count * 0.8);
         }
     }
+
+    // Area cap — zoom-in / tiny windows must drop count (not just width buckets)
+    const area = Math.max(1, (window.innerWidth || screenWidth) * (window.innerHeight || 1));
+    const areaCap = Math.max(40, Math.min(100, Math.round(area / 14000)));
+    count = Math.min(count, areaCap);
+
     count = Math.max(40, Math.min(count, 100));
     return { count, size, distance };
 }
 
+function hexToRgbSafe(hex) {
+    if (typeof hexToRgb === 'function') {
+        return hexToRgb(hex);
+    }
+    const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return m ? { r: parseInt(m[1], 16), g: parseInt(m[2], 16), b: parseInt(m[3], 16) } : { r: 194, g: 159, b: 104 };
+}
+
 /**
- * Safely handles particles.js lifecycle with hardware awareness
- * @param {string} particleColor - Color value to apply to particles/lines.
+ * Apply SKY ink to a live instance (colors/opacity/width only).
+ */
+function tintParticles(pJSInstance, particleColor) {
+    const sky = skyFromInk(particleColor);
+    const color = particleColor || sky.hex;
+
+    pJSInstance.particles.color.value = color;
+    pJSInstance.particles.color.rgb = hexToRgbSafe(color);
+
+    if (pJSInstance.particles.line_linked) {
+        pJSInstance.particles.line_linked.color = color;
+        pJSInstance.particles.line_linked.color_rgb_line = hexToRgbSafe(color);
+        pJSInstance.particles.line_linked.opacity = sky.lineOp;
+        pJSInstance.particles.line_linked.width = sky.lineW;
+    }
+
+    pJSInstance.particles.opacity.value = sky.dotOp;
+    pJSInstance.particles.opacity.random = false;
+    if (pJSInstance.particles.opacity.anim) {
+        pJSInstance.particles.opacity.anim.enable = false;
+    }
+    if (pJSInstance.interactivity?.modes?.grab?.line_linked) {
+        pJSInstance.interactivity.modes.grab.line_linked.opacity =
+            sky.grabLineOp || particleConfigBase.interactivity.modes.grab.line_linked.opacity;
+    }
+
+    const arr = pJSInstance.particles.array;
+    if (!arr) return;
+    for (let i = 0; i < arr.length; i++) {
+        const p = arr[i];
+        p.color.value = color;
+        p.color.rgb = hexToRgbSafe(color);
+        p.opacity = sky.dotOp;
+    }
+}
+
+/**
+ * Keep canvas buffer sized to the element (resize:false in particles.js).
+ */
+function syncParticleCanvasSize(pJSInstance) {
+    const el = pJSInstance.canvas && pJSInstance.canvas.el;
+    if (!el) return;
+    const pxratio = window.devicePixelRatio || 1;
+    const w = Math.round(el.offsetWidth * pxratio);
+    const h = Math.round(el.offsetHeight * pxratio);
+    if (pJSInstance.canvas.w === w && pJSInstance.canvas.h === h && pJSInstance.canvas.pxratio === pxratio) {
+        return;
+    }
+    pJSInstance.canvas.pxratio = pxratio;
+    pJSInstance.tmp = pJSInstance.tmp || {};
+    pJSInstance.tmp.retina = pxratio > 1;
+    pJSInstance.canvas.w = w;
+    pJSInstance.canvas.h = h;
+    el.width = w;
+    el.height = h;
+}
+
+/**
+ * Map viewport client coords → particles.js canvas buffer pixels.
+ * Uses the canvas bitmap size (el.width/height) as source of truth so
+ * stale pJS.canvas.w/h cannot create dead click zones.
+ */
+function clientToParticleCanvas(pJS, clientX, clientY) {
+    const el = pJS.canvas && pJS.canvas.el;
+    if (!el) return null;
+    const rect = el.getBoundingClientRect();
+    if (rect.width < 1 || rect.height < 1) return null;
+    const bw = el.width || pJS.canvas.w;
+    const bh = el.height || pJS.canvas.h;
+    if (!bw || !bh) return null;
+    // Keep particles.js bookkeeping aligned with the bitmap
+    if (pJS.canvas.w !== bw) pJS.canvas.w = bw;
+    if (pJS.canvas.h !== bh) pJS.canvas.h = bh;
+    return {
+        x: ((clientX - rect.left) / rect.width) * bw,
+        y: ((clientY - rect.top) / rect.height) * bh
+    };
+}
+
+/**
+ * Strip native particles.js mouse listeners — bridge is the only coordinate source.
+ * Clears both canvas and window targets (old detect_on:'window' leftovers).
+ */
+function detachNativeParticleMouse(pJS) {
+    if (!pJS || !pJS.fn) return;
+    const targets = [];
+    if (pJS.interactivity && pJS.interactivity.el) targets.push(pJS.interactivity.el);
+    if (pJS.canvas && pJS.canvas.el) targets.push(pJS.canvas.el);
+    targets.push(window);
+    for (let i = 0; i < targets.length; i++) {
+        const el = targets[i];
+        try {
+            if (pJS.fn.onMouseMove) el.removeEventListener('mousemove', pJS.fn.onMouseMove);
+            if (pJS.fn.onMouseLeave) el.removeEventListener('mouseleave', pJS.fn.onMouseLeave);
+            if (pJS.fn.onClick) el.removeEventListener('click', pJS.fn.onClick);
+        } catch (_) { /* ignore */ }
+    }
+}
+
+/**
+ * Pointer bridge — canvas is pointer-events:none; feeds grab + click/tap push.
+ * Works on mobile and when browser zoom shrinks innerWidth below 768.
+ */
+function ensureParticlePointerBridge() {
+    if (window.__pxeParticleBridge) return;
+    window.__pxeParticleBridge = true;
+
+    // Only real controls — NOT whole cards/terminal (those blocked sky clicks in half the viewport)
+    const interactiveSel =
+        'a,button,input,textarea,select,label,summary,' +
+        '[role="button"],[role="link"],[role="menuitem"],' +
+        '.header-btn,.contact-btn,.icon-button,.social-link,.tech-item,' +
+        '.theme-toggle,.vocalizer,.terminal-link,.terminal-btn,' +
+        '.resume-overlay,.resume-panel,.resume-window,.resume-header';
+
+    function livePJS() {
+        return window.pJSDom?.[0]?.pJS || null;
+    }
+
+    function setMouse(pJS, clientX, clientY) {
+        const pt = clientToParticleCanvas(pJS, clientX, clientY);
+        if (!pt) return false;
+        pJS.interactivity.mouse.pos_x = pt.x;
+        pJS.interactivity.mouse.pos_y = pt.y;
+        pJS.interactivity.status = 'mousemove';
+        return true;
+    }
+
+    function clearMouse(pJS) {
+        pJS.interactivity.mouse.pos_x = null;
+        pJS.interactivity.mouse.pos_y = null;
+        pJS.interactivity.status = 'mouseleave';
+    }
+
+    function isInteractiveTarget(target) {
+        return !!(target && target.closest && target.closest(interactiveSel));
+    }
+
+    function inCanvas(pJS, clientX, clientY) {
+        const el = pJS.canvas && pJS.canvas.el;
+        if (!el) return false;
+        const r = el.getBoundingClientRect();
+        return clientX >= r.left && clientX <= r.right && clientY >= r.top && clientY <= r.bottom;
+    }
+
+    function spawnAt(pJS, clientX, clientY) {
+        if (!pJS.fn?.modes?.pushParticles) return false;
+        if (!pJS.particles?.move?.enable) return false;
+
+        const pt = clientToParticleCanvas(pJS, clientX, clientY);
+        if (!pt) return false;
+        // Outside the visible canvas bitmap → no silent off-screen spawn
+        if (pt.x < 0 || pt.y < 0 || pt.x > pJS.canvas.w || pt.y > pJS.canvas.h) return false;
+
+        const base = pJS.particles.number.value || 80;
+        const max = base + 12;
+        const arr = pJS.particles.array;
+        const n = pJS.interactivity.modes.push.particles_nb || 1;
+        // Recycle oldest extras instead of hard-failing (felt like random dead zones)
+        if (arr && arr.length + n > max) {
+            const overflow = arr.length + n - max;
+            if (pJS.fn.modes.removeParticles) pJS.fn.modes.removeParticles(overflow);
+            else arr.splice(0, overflow);
+        }
+
+        // pushParticles reads mouse.pos_x/pos_y (NOT click_pos_*)
+        pJS.interactivity.mouse.pos_x = pt.x;
+        pJS.interactivity.mouse.pos_y = pt.y;
+        pJS.interactivity.mouse.click_pos_x = pt.x;
+        pJS.interactivity.mouse.click_pos_y = pt.y;
+        pJS.fn.modes.pushParticles(n, { pos_x: pt.x, pos_y: pt.y });
+        return true;
+    }
+
+    // Track touch taps so we can spawn on pointerup (mobile click is flaky / delayed)
+    let touchTap = null;
+
+    window.addEventListener('pointerdown', (e) => {
+        if (isInteractiveTarget(e.target)) return;
+        const pJS = livePJS();
+        if (!pJS || !pJS.interactivity?.events?.onhover?.enable) return;
+        if (!inCanvas(pJS, e.clientX, e.clientY)) return;
+
+        setMouse(pJS, e.clientX, e.clientY);
+
+        if (e.pointerType === 'touch' || e.pointerType === 'pen') {
+            touchTap = { x: e.clientX, y: e.clientY, id: e.pointerId, moved: false };
+        }
+    }, { passive: true });
+
+    window.addEventListener('pointermove', (e) => {
+        const pJS = livePJS();
+        if (!pJS || !pJS.interactivity?.events?.onhover?.enable) return;
+
+        if (touchTap && e.pointerId === touchTap.id) {
+            const dx = e.clientX - touchTap.x;
+            const dy = e.clientY - touchTap.y;
+            if (dx * dx + dy * dy > 100) touchTap.moved = true; // >10px → scroll/drag, not tap
+        }
+
+        // Grab still works over cards — only skip when leaving the viewport canvas
+        if (!inCanvas(pJS, e.clientX, e.clientY)) {
+            clearMouse(pJS);
+            return;
+        }
+        setMouse(pJS, e.clientX, e.clientY);
+    }, { passive: true });
+
+    function endPointer(e) {
+        const pJS = livePJS();
+        if (!pJS) return;
+
+        // Mobile/pen tap spawn (before click may or may not fire)
+        if (touchTap && e.pointerId === touchTap.id) {
+            const tap = touchTap;
+            touchTap = null;
+            if (!tap.moved && !isInteractiveTarget(e.target) && inCanvas(pJS, tap.x, tap.y)) {
+                spawnAt(pJS, tap.x, tap.y);
+                // Suppress the delayed synthetic click spawn for this gesture
+                window.__pxeSkipClickSpawnUntil = Date.now() + 500;
+            }
+            clearMouse(pJS);
+            return;
+        }
+
+        // Mouse: keep grab while cursor is over canvas; clear if left
+        if (e.pointerType === 'mouse' && !inCanvas(pJS, e.clientX, e.clientY)) {
+            clearMouse(pJS);
+        }
+    }
+
+    window.addEventListener('pointerup', endPointer, { passive: true });
+    window.addEventListener('pointercancel', (e) => {
+        touchTap = null;
+        const pJS = livePJS();
+        if (pJS) clearMouse(pJS);
+    }, { passive: true });
+
+    window.addEventListener('blur', () => {
+        touchTap = null;
+        const pJS = livePJS();
+        if (pJS) clearMouse(pJS);
+    });
+
+    document.documentElement.addEventListener('mouseleave', () => {
+        const pJS = livePJS();
+        if (pJS) clearMouse(pJS);
+    });
+
+    // Desktop / leftover click spawn (capture)
+    window.addEventListener('click', (e) => {
+        if (window.__pxeSkipClickSpawnUntil && Date.now() < window.__pxeSkipClickSpawnUntil) return;
+        if (isInteractiveTarget(e.target)) return;
+        const pJS = livePJS();
+        if (!pJS) return;
+        if (!inCanvas(pJS, e.clientX, e.clientY)) return;
+        spawnAt(pJS, e.clientX, e.clientY);
+    }, true);
+}
+
+/**
+ * particles.js lifecycle.
+ * Soft path = tint/retune only (NO canvas-size rebuild — that caused zoom clump/lag).
+ * Hard path = destroy + recreate (used after viewport settles).
  */
 function initializeParticles(particleColor, forceReinit = false) {
-    let pJSInstance;
     const particlesJSElement = document.getElementById('particles-js');
     if (!particlesJSElement) return;
 
-    // Check if particles.js is already initialized
-    if (!forceReinit && window.pJSDom && window.pJSDom[0] && window.pJSDom[0].pJS) {
-        pJSInstance = window.pJSDom[0].pJS;
-        // Update particle and line colors
-        pJSInstance.particles.color.value = particleColor;
-        if (pJSInstance.particles.line_linked) {
-            pJSInstance.particles.line_linked.color = particleColor;
-        }
+    ensureParticlePointerBridge();
 
-        // Update interaction settings for the existing instance
-        pJSInstance.interactivity.events.onclick.enable = particleConfigBase.interactivity.events.onclick.enable;
-        pJSInstance.interactivity.modes.push.particles_nb = particleConfigBase.interactivity.modes.push.particles_nb;
-        pJSInstance.interactivity.events.onhover.enable = particleConfigBase.interactivity.events.onhover.enable;
-        pJSInstance.interactivity.modes.grab.distance = particleConfigBase.interactivity.modes.grab.distance;
-        pJSInstance.interactivity.modes.grab.line_linked.opacity = particleConfigBase.interactivity.modes.grab.line_linked.opacity;
+    const live = window.pJSDom && window.pJSDom[0] && window.pJSDom[0].pJS;
+    const sky = skyFromInk(particleColor);
+    const color = particleColor || sky.hex;
 
-        const isLightTheme = (particleColor === '#8c4a32');
-        const targetDotOpacity = isLightTheme ? 0.78 : particleConfigBase.particles.opacity.value;
-        const targetLineOpacity = isLightTheme ? 0.54 : particleConfigBase.particles.line_linked.opacity;
-
-        // Apply opacity and line thickness values for rich visibility
-        pJSInstance.particles.opacity.value = targetDotOpacity;
-        if (pJSInstance.particles.line_linked) {
-            pJSInstance.particles.line_linked.opacity = targetLineOpacity;
-            pJSInstance.particles.line_linked.width = isLightTheme ? 1.4 : particleConfigBase.particles.line_linked.width;
-        }
-
-        const { count, size, distance } = getParticleSettingsForScreen(window.innerWidth);
-        const pxratio = pJSInstance.canvas.pxratio || window.devicePixelRatio || 1;
-        const targetParticleCount = count;
-        const targetParticleSize = size * pxratio;
-        const targetLineDistance = distance * pxratio;
-
-        // Update if particle count, size, or line distance changed
-        const numChanged = pJSInstance.particles.number.value !== targetParticleCount;
-        const sizeChanged = pJSInstance.particles.size.value !== targetParticleSize;
-        const lineDistChanged = pJSInstance.particles.line_linked.distance !== targetLineDistance;
-
-        if (numChanged || sizeChanged || lineDistChanged) {
-            pJSInstance.particles.number.value = targetParticleCount;
-            pJSInstance.particles.size.value = targetParticleSize;
-            pJSInstance.particles.line_linked.distance = targetLineDistance;
-            pJSInstance.fn.particlesRefresh();
-        } else {
-            pJSInstance.fn.particlesRefresh();
-        }
-
-        // Dynamic density adjustment for zoom/resize
-        const currentParticleCanvasArea = pJSInstance.canvas.w * pJSInstance.canvas.h;
-        if (initialParticleCanvasArea === undefined || initialParticleCanvasArea === 0) {
-            initialParticleCanvasArea = currentParticleCanvasArea;
-            if (initialParticleCanvasArea === 0) initialParticleCanvasArea = 1; // prevent division by zero
-        }
-
-        if (currentParticleCanvasArea > 0) {
-            const baseDensityArea = particleConfigBase.particles.number.density.value_area;
-            let calculatedDensityArea = baseDensityArea * (currentParticleCanvasArea / initialParticleCanvasArea);
-
-            calculatedDensityArea = Math.max(calculatedDensityArea, 200);
-            calculatedDensityArea = Math.min(calculatedDensityArea, 5000);
-
-            if (pJSInstance.particles.number.density.value_area !== calculatedDensityArea) {
-                pJSInstance.particles.number.density.value_area = calculatedDensityArea;
-                pJSInstance.fn.particlesRefresh();
-            }
-        } else {
-            pJSInstance.fn.particlesRefresh();
-        }
+    // Soft path: colors / grab opacity only — never particlesRefresh on live canvas
+    if (!forceReinit && live) {
+        const pJSInstance = live;
+        tintParticles(pJSInstance, color);
+        pJSInstance.interactivity.events.onhover.enable = true;
+        pJSInstance.interactivity.events.onclick.enable = false;
+        detachNativeParticleMouse(pJSInstance);
         return;
     }
 
-    // First-time or forced initialization
-    if (forceReinit && window.pJSDom && window.pJSDom[0]) {
+    // Hard reinit
+    if (window.pJSDom && window.pJSDom[0]) {
         try {
-            if (window.pJSDom[0].pJS && window.pJSDom[0].pJS.fn && window.pJSDom[0].pJS.fn.vendors && window.pJSDom[0].pJS.fn.vendors.destroypJS) {
+            if (window.pJSDom[0].pJS?.fn?.vendors?.destroypJS) {
                 window.pJSDom[0].pJS.fn.vendors.destroypJS();
             }
         } catch (e) {
             console.warn('Particles destroy failed:', e);
         }
         window.pJSDom = [];
-        initialParticleCanvasArea = undefined;
-        const oldCanvas = particlesJSElement.querySelector('canvas');
-        if (oldCanvas) oldCanvas.remove();
+        particlesJSElement.querySelectorAll('canvas').forEach(c => c.remove());
     }
 
     let currentParticleConfig = JSON.parse(JSON.stringify(particleConfigBase));
-    currentParticleConfig.particles.color = { value: particleColor };
-    currentParticleConfig.particles.line_linked.color = particleColor;
+    currentParticleConfig.particles.color = { value: color };
+    currentParticleConfig.particles.line_linked.color = color;
+    currentParticleConfig.particles.opacity.value = sky.dotOp;
+    currentParticleConfig.particles.opacity.random = false;
+    currentParticleConfig.particles.opacity.anim = { enable: false };
+    currentParticleConfig.particles.line_linked.opacity = sky.lineOp;
+    currentParticleConfig.particles.line_linked.width = sky.lineW;
+    currentParticleConfig.interactivity.modes.grab.line_linked.opacity =
+        sky.grabLineOp || particleConfigBase.interactivity.modes.grab.line_linked.opacity;
+    currentParticleConfig.interactivity.events.onhover.enable = true;
+    currentParticleConfig.interactivity.events.onclick.enable = false;
 
-    const isLightThemeConfig = (particleColor === '#8c4a32');
-    const configDotOpacity = isLightThemeConfig ? 0.78 : particleConfigBase.particles.opacity.value;
-    const configLineOpacity = isLightThemeConfig ? 0.54 : particleConfigBase.particles.line_linked.opacity;
-
-    // Apply desired opacity and line thickness values
-    currentParticleConfig.particles.opacity.value = configDotOpacity;
-    currentParticleConfig.particles.line_linked.opacity = configLineOpacity;
-    if (isLightThemeConfig) {
-        currentParticleConfig.particles.line_linked.width = 1.4;
-    }
-
-    // Initial particle count/size/line distance based on screen and device
     const { count, size, distance } = getParticleSettingsForScreen(window.innerWidth);
-
     currentParticleConfig.particles.number.value = count;
     currentParticleConfig.particles.size.value = size;
     currentParticleConfig.particles.line_linked.distance = distance;
-    currentParticleConfig.particles.number.density.enable = true;
+    // Exact count — density auto-push during zoom was flooding edges with fat nodes
+    currentParticleConfig.particles.number.density.enable = false;
 
-    // Initialize particlesJS with error handling
     try {
-        // Retry logic for older browsers
         if (typeof particlesJS === 'undefined') {
             let retries = 0;
             const maxRetries = 10;
@@ -214,7 +501,7 @@ function initializeParticles(particleColor, forceReinit = false) {
             }, 100);
             return;
         }
-        
+
         particlesJS('particles-js', currentParticleConfig);
         finalizeParticlesInit();
     } catch (error) {
@@ -222,9 +509,6 @@ function initializeParticles(particleColor, forceReinit = false) {
     }
 }
 
-/**
- * Handles particles.js fallback for browsers that fail to load the library.
- */
 function triggerParticlesFallback(error) {
     if (error) console.warn('Particles.js fallback triggered:', error.message);
     const particlesContainer = document.getElementById('particles-js');
@@ -234,28 +518,99 @@ function triggerParticlesFallback(error) {
     document.body.classList.add('fallback-mode');
 }
 
-/**
- * Ensures the particles canvas sits behind content and doesn't block interactions.
- */
 function finalizeParticlesInit() {
-    if (window.pJSDom && window.pJSDom[0] && window.pJSDom[0].pJS) {
-        const pJSInstance = window.pJSDom[0].pJS;
-        if (initialParticleCanvasArea === undefined) {
-            initialParticleCanvasArea = pJSInstance.canvas.w * pJSInstance.canvas.h;
-        }
+    if (!(window.pJSDom && window.pJSDom[0] && window.pJSDom[0].pJS)) return;
+    const pJSInstance = window.pJSDom[0].pJS;
 
-        const particlesJSElement = document.getElementById('particles-js');
-        if (particlesJSElement) {
-            particlesJSElement.style.pointerEvents = 'none';
-            particlesJSElement.style.zIndex = '-1';
-            particlesJSElement.style.position = 'fixed';
-        }
+    // Match buffer to element; keep exact number.value (density off — no edge flood)
+    syncParticleCanvasSize(pJSInstance);
+    pJSInstance.particles.number.density.enable = false;
+
+    // Drop any extras left from a previous session / race
+    const target = pJSInstance.particles.number.value || 80;
+    const arr = pJSInstance.particles.array;
+    if (arr && arr.length > target && pJSInstance.fn?.modes?.removeParticles) {
+        pJSInstance.fn.modes.removeParticles(arr.length - target);
+    }
+
+    pJSInstance.interactivity.detect_on = 'canvas';
+    pJSInstance.interactivity.el = pJSInstance.canvas.el;
+    detachNativeParticleMouse(pJSInstance);
+
+    const particlesJSElement = document.getElementById('particles-js');
+    if (particlesJSElement) {
+        particlesJSElement.style.pointerEvents = 'none';
+        particlesJSElement.style.zIndex = '-1';
+        particlesJSElement.style.position = 'fixed';
     }
 }
 
 // Theme toggle logic
 const themeToggleButton = document.getElementById('theme-toggle');
 const body = document.body;
+let initialWindowArea;
+
+/**
+ * Blackletter P — calligraphy ink-in (lamp), magnetism, spin.
+ */
+function initBrandMark() {
+    const mark = document.getElementById('brand-mark');
+    if (!mark) return;
+
+    const stage = mark.querySelector('.logo-stage');
+    const path = mark.querySelector('.logo-mark path');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (path && !reduced) {
+        const length = path.getTotalLength();
+        path.style.strokeDasharray = String(length);
+        path.style.strokeDashoffset = String(length);
+        mark.classList.add('is-inking');
+
+        requestAnimationFrame(() => {
+            path.style.transition = 'stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1)';
+            path.style.strokeDashoffset = '0';
+        });
+
+        window.setTimeout(() => {
+            mark.classList.remove('is-inking');
+            path.style.transition = '';
+            path.style.strokeDasharray = '';
+            path.style.strokeDashoffset = '';
+        }, 1300);
+    }
+
+    let spinning = false;
+    mark.addEventListener('click', () => {
+        mark.blur();
+        if (reduced || spinning) return;
+        spinning = true;
+        mark.classList.add('is-spinning');
+        window.setTimeout(() => {
+            mark.classList.remove('is-spinning');
+            spinning = false;
+        }, 920);
+    });
+
+    mark.addEventListener('mouseup', () => mark.blur());
+    mark.addEventListener('pointerup', () => mark.blur());
+
+    if (reduced || !stage || window.matchMedia('(pointer: coarse)').matches) return;
+
+    const maxTilt = 7;
+    mark.addEventListener('pointermove', (e) => {
+        const rect = mark.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        mark.style.setProperty('--logo-rx', `${(-y * maxTilt).toFixed(2)}deg`);
+        mark.style.setProperty('--logo-ry', `${(x * maxTilt).toFixed(2)}deg`);
+    });
+
+    mark.addEventListener('pointerleave', () => {
+        mark.style.setProperty('--logo-rx', '0deg');
+        mark.style.setProperty('--logo-ry', '0deg');
+    });
+}
 
 /**
  * Apply theme to body and update particle colors
@@ -272,11 +627,14 @@ function applyTheme(theme, isInitialLoad = false) {
     }
     localStorage.setItem('theme', theme);
 
-    // Smooth transition without particle lag
+    // Always rebuild constellation on theme change so SKY ink stays unified
     requestAnimationFrame(() => {
-        // Performance: Avoid layout-thrashing getComputedStyle(body) reads by mapping known variables directly
-        const particleColor = theme === 'light' ? '#8c4a32' : '#c29f68';
-        initializeParticles(particleColor, isInitialLoad);
+        initializeParticles(getSky().hex, true);
+        if (typeof window.__resizeStarfield === 'function') {
+            window.__resizeStarfield(true);
+        } else if (typeof window.__regenStarfield === 'function') {
+            window.__regenStarfield();
+        }
     });
 }
 
@@ -290,22 +648,20 @@ if (themeToggleButton) {
 
 // === Page Visibility API — pause/resume particles on tab switch ===
 document.addEventListener('visibilitychange', () => {
-    document.title = document.hidden ? 'System Offline!' : 'PxeCore';
+    document.title = document.hidden ? 'System Offline!' : 'pxecore';
 
     if (!window.pJSDom || !window.pJSDom[0] || !window.pJSDom[0].pJS) return;
 
     const pJS = window.pJSDom[0].pJS;
     try {
         if (document.hidden) {
-            // Freeze movement — safe, reversible, no internal hacks
             pJS.particles.move.enable = false;
         } else {
-            // Re-enable and do a full clean reinit to guarantee particles appear
             pJS.particles.move.enable = true;
-            const currentTheme = localStorage.getItem('theme') || 'dark';
-            const particleColor = currentTheme === 'light' ? '#8c4a32' : '#c29f68';
-            // Short delay so browser settles before reinitializing canvas
-            setTimeout(() => initializeParticles(particleColor, true), 150);
+            // Resume drift — do NOT destroy/recreate (that caused blink/clump cycles)
+            if (pJS.fn && pJS.fn.vendors && typeof pJS.fn.vendors.draw === 'function') {
+                pJS.fn.vendors.draw();
+            }
         }
     } catch(e) {
         console.warn('Visibility particle toggle failed:', e);
@@ -334,22 +690,40 @@ function debounce(func, wait, immediate) {
     };
 };
 
-// Heavily debounced resize handler for maximum performance
-const handleResize = debounce(function() {
-    // Only update if window area changed significantly (>15%)
-    const currentWindowArea = window.innerWidth * window.innerHeight;
-    const areaChangePercent = Math.abs(currentWindowArea - initialWindowArea) / initialWindowArea;
-    
-    if (areaChangePercent > 0.15) {
-        const currentTheme = localStorage.getItem('theme') || 'dark';
-        const particleColor = currentTheme === 'light' ? '#8c4a32' : '#c29f68';
-        initializeParticles(particleColor, true); // Force re-init on significant resize
-        initialWindowArea = currentWindowArea;
-    }
-}, 500); // Increased debounce for better performance
+// Debounced viewport settle — one hard rebuild for particles + starfield together.
+// Soft mid-zoom refresh was the lag/clump source (fat nodes flooding from edges).
+let settledViewport = { w: 0, h: 0, area: 0 };
 
-// Add resize listener
-window.addEventListener('resize', handleResize);
+function settleSkyViewport(force = false) {
+    const w = window.innerWidth || 1;
+    const h = window.innerHeight || 1;
+    const area = w * h;
+    const prev = settledViewport;
+
+    const dimChanged =
+        Math.abs(w - prev.w) >= 20 || Math.abs(h - prev.h) >= 20;
+    const areaChanged =
+        Math.abs(area - (prev.area || area)) / Math.max(prev.area || area, 1) >= 0.06;
+
+    if (!force && prev.w && !dimChanged && !areaChanged) return;
+
+    settledViewport = { w, h, area };
+    initialWindowArea = area;
+
+    initializeParticles(getSky().hex, true);
+    if (typeof window.__resizeStarfield === 'function') {
+        window.__resizeStarfield(true);
+    }
+}
+
+const handleResize = debounce(function () {
+    settleSkyViewport(false);
+}, 420);
+
+window.addEventListener('resize', handleResize, { passive: true });
+if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', handleResize, { passive: true });
+}
 
 
 
@@ -478,16 +852,17 @@ function toggleAudio() {
 // === Main Initialization ===
 document.addEventListener('DOMContentLoaded', () => {
     initialWindowArea = window.innerWidth * window.innerHeight;
+    settledViewport = {
+        w: window.innerWidth,
+        h: window.innerHeight,
+        area: initialWindowArea
+    };
 
     // Apply saved theme
     const savedTheme = localStorage.getItem('theme') || 'dark';
     applyTheme(savedTheme, true);
 
-    if (document.hidden) {
-        document.title = 'System Offline!';
-    }
-
-    // Start initial setup
+    // Terminal date (Europe/Istanbul, UTC+3)
     const staticDateElement = document.getElementById('static-date');
     if (staticDateElement) {
         const now = new Date();
@@ -529,6 +904,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+
+    // Brand mark — ink-in, magnetic tilt, Mel-style spin
+    initBrandMark();
 
     // Terminal buttons — blur after click
     ['terminal-btn-red', 'terminal-btn-yellow', 'terminal-btn-green'].forEach(id => {
@@ -679,4 +1057,677 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Initialize cosmic starfield (respects prefers-reduced-motion)
+    initCosmicStarfield();
 });
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * COSMIC STARFIELD — far layer of the unified SKY
+ *   Far pinpricks + mid nodes + rare sparkles
+ *   Same SKY palette / tempo as particles.js constellation
+ *   No nebula / dust burns — clean field only
+ *   Systems: supernova → black hole (coupled to particles)
+ * ═══════════════════════════════════════════════════════════════════════ */
+function initCosmicStarfield() {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ─── Canvas Setup ────────────────────────────────
+    const canvas = document.createElement('canvas');
+    canvas.id = 'starfield-canvas';
+    canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:-2;';
+    document.body.insertBefore(canvas, document.body.firstChild);
+
+    const ctx = canvas.getContext('2d');
+    let dpr = window.devicePixelRatio || 1;
+    let W, H;
+
+    function resize(forceRegen = true) {
+        dpr = window.devicePixelRatio || 1;
+        W = window.innerWidth;
+        H = window.innerHeight;
+        canvas.width  = Math.round(W * dpr);
+        canvas.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        if (forceRegen) generateAll();
+    }
+
+    // ─── Camera System (Static Screen) ───────────────
+    let currentPx = 0, currentPy = 0;
+
+    // ─── Theme Colors (shared SKY palette) ───────────
+    function getColors() {
+        const sky = getSky();
+        return {
+            star: sky.rgb,
+            starAlt: sky.rgbDim,
+            white: sky.rgbBright,
+        };
+    }
+
+    // ─── Stratified Distribution ─────────────────────
+    function stratifiedPlace(count, margin) {
+        const m = margin || 0;
+        const aspect = W / (H || 1);
+        let rows = Math.max(1, Math.round(Math.sqrt(count / aspect)));
+        let cols = Math.max(1, Math.round(rows * aspect));
+        while (rows * cols < count) {
+            if (cols / rows < aspect) cols++;
+            else rows++;
+        }
+        const cellW = W / cols;
+        const cellH = H / rows;
+        const pts = [];
+        for (let r = 0; r < rows && pts.length < count; r++) {
+            for (let c = 0; c < cols && pts.length < count; c++) {
+                const jx = m + Math.random() * (1 - 2 * m);
+                const jy = m + Math.random() * (1 - 2 * m);
+                pts.push({
+                    x: (c + jx) * cellW,
+                    y: (r + jy) * cellH,
+                });
+            }
+        }
+        return pts;
+    }
+
+    // ─── Star Data ───────────────────────────────────
+    let bgStars = [], medStars = [], brightStars = [];
+
+    function getStarCounts() {
+        const area = Math.max(1, W * H);
+        // Rich far field — still scales down on tiny/zoomed viewports, without looking empty
+        const densityScale = Math.min(1.15, Math.max(0.65, area / (1920 * 1080)));
+        return {
+            bg: Math.max(160, Math.min(320, Math.round(270 * densityScale))),
+            med: Math.max(18, Math.min(40, Math.round(32 * densityScale))),
+            br: Math.max(6, Math.min(12, Math.round(10 * densityScale)))
+        };
+    }
+
+    function generateAll() {
+        const counts = getStarCounts();
+        const sky = getSky();
+
+        // Far field: tiny pinpricks (same family as constellation nodes)
+        const bgPos = stratifiedPlace(counts.bg, 0.04);
+        bgStars = bgPos.map(p => ({
+            x: p.x, y: p.y, homeX: p.x, homeY: p.y,
+            vx: 0, vy: 0,
+            r: 0.4 + Math.random() * 1.05,
+            baseOp: sky.starBgOp[0] + Math.random() * (sky.starBgOp[1] - sky.starBgOp[0]),
+            twinkleSpeed: 0.001 + Math.random() * 0.0028,
+            twinklePhase: Math.random() * Math.PI * 2,
+            colorType: Math.random() < 0.7 ? 'star' : (Math.random() < 0.5 ? 'starAlt' : 'white'),
+            destroyed: false, respawnTimer: 0
+        }));
+
+        // Mid field: slightly larger nodes — no halo disks (burns)
+        const medPos = stratifiedPlace(counts.med, 0.08);
+        medStars = medPos.map(p => ({
+            x: p.x, y: p.y, homeX: p.x, homeY: p.y,
+            vx: 0, vy: 0,
+            r: 0.9 + Math.random() * 1.2,
+            op: sky.starMedOp[0] + Math.random() * (sky.starMedOp[1] - sky.starMedOp[0]),
+            target: Math.random() > 0.5 ? sky.starMedOp[1] : sky.starMedOp[0],
+            speed: 0.003 + Math.random() * 0.006,
+            colorType: Math.random() < 0.6 ? 'star' : 'white',
+            destroyed: false, respawnTimer: 0
+        }));
+
+        // Rare sparkles — crisp crosses, no fat radial burns; keep off chrome/hero
+        const brPos = stratifiedPlace(counts.br, 0.12).filter(p => {
+            const inHeader = p.y < 72 && p.x < 280;
+            const inHero = p.x < Math.min(520, W * 0.48) && p.y > 90 && p.y < Math.min(420, H * 0.55);
+            return !inHeader && !inHero;
+        });
+        while (brPos.length < Math.max(4, Math.floor(counts.br * 0.65))) {
+            brPos.push({
+                x: W * (0.52 + Math.random() * 0.42),
+                y: H * (0.12 + Math.random() * 0.72)
+            });
+        }
+        brightStars = brPos.map(p => ({
+            x: p.x, y: p.y, homeX: p.x, homeY: p.y,
+            vx: 0, vy: 0,
+            arm: 4.5 + Math.random() * 5.5,
+            op: sky.sparkleOp[0] + Math.random() * (sky.sparkleOp[1] - sky.sparkleOp[0]),
+            target: Math.random() > 0.5 ? sky.sparkleOp[1] : sky.sparkleOp[0],
+            speed: 0.0025 + Math.random() * 0.0045,
+            coreR: 1.1 + Math.random() * 1.0,
+            colorType: Math.random() < 0.65 ? 'star' : 'white',
+            destroyed: false, respawnTimer: 0
+        }));
+    }
+
+    // ─── Black Hole System ───────────────────────────
+    let blackHole = null;
+    let supernovaCount = 0;
+    let requiredSupernovas = 3; // First singularity triggers at 3 supernovas, subsequent at 6 (rarer)
+
+    function spawnBlackHole(x, y) {
+        const isMobile = window.innerWidth < 768;
+        blackHole = {
+            x, y,
+            mass: 0, maxMass: 600,
+            growthRate: 5,
+            age: 0, lifetime: 8000,
+            coreRadius: 0, maxCoreRadius: isMobile ? 12 : 22,
+            diskAngle: 0, diskSpeed: 0.03,
+            state: 'growing' // growing, stable, evaporating
+        };
+    }
+
+    function updateBlackHole(dtMs) {
+        if (!blackHole) return;
+        blackHole.age += dtMs;
+        const remaining = blackHole.lifetime - blackHole.age;
+
+        // Black Hole Lifecycle (Hawking Radiation / Evaporation)
+        if (remaining < 800) {
+            blackHole.state = 'evaporating';
+            blackHole.mass *= 0.85; // rapid mass loss
+            blackHole.diskSpeed += 0.02; // spin up wildly
+        } else if (blackHole.mass < blackHole.maxMass) {
+            blackHole.state = 'growing';
+            blackHole.mass = Math.min(
+                blackHole.maxMass,
+                blackHole.mass + blackHole.growthRate * (dtMs / 16.67)
+            );
+        } else {
+            blackHole.state = 'stable';
+        }
+
+        blackHole.coreRadius = (blackHole.mass / blackHole.maxMass) * blackHole.maxCoreRadius;
+        blackHole.diskAngle += blackHole.diskSpeed;
+
+        // Explode into a massive supernova flash & shockwave at the very end
+        if (blackHole.age >= blackHole.lifetime) {
+            explosions.push({ 
+                debris: [], flash: 1.6, x: blackHole.x, y: blackHole.y, flashRadius: 220,
+                shockwaveR: 10, maxShockwaveR: 350, shockwaveOp: 0.8
+            });
+            restoreParticlesJS(blackHole.x, blackHole.y);
+            blackHole = null;
+        }
+    }
+
+    // ─── Supernova System ────────────────────────────
+    let explosions = [];
+
+    function checkSupernova(cx, cy) {
+        // Bright stars — full supernova
+        for (const s of brightStars) {
+            if (s.destroyed) continue;
+            const dx = cx - s.x, dy = cy - s.y;
+            if (dx * dx + dy * dy < 40 * 40) {
+                triggerSupernova(s, 28, s.arm * 4);
+                return true;
+            }
+        }
+        // Medium stars — mini nova
+        for (const s of medStars) {
+            if (s.destroyed) continue;
+            const dx = cx - s.x, dy = cy - s.y;
+            if (dx * dx + dy * dy < 25 * 25) {
+                triggerSupernova(s, 14, s.r * 8);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function triggerSupernova(star, debrisCount, flashR) {
+        const debris = [];
+        for (let i = 0; i < debrisCount; i++) {
+            const angle = (Math.PI * 2 / debrisCount) * i + (Math.random() - 0.5) * 0.5;
+            const speed = 1.5 + Math.random() * 4.5;
+            debris.push({
+                x: star.x, y: star.y,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                r:  0.4 + Math.random() * 2.2,
+                life: 1.0,
+                decay: 0.006 + Math.random() * 0.014,
+                colorType: star.colorType
+            });
+        }
+        explosions.push({ 
+            debris, flash: 1.0, x: star.x, y: star.y, flashRadius: flashR,
+            shockwaveR: 5, maxShockwaveR: flashR * 2.5, shockwaveOp: 0.6
+        });
+        star.destroyed = true;
+        star.respawnTimer = 6000;
+    }
+
+    // ─── Physics Engine ──────────────────────────────
+    const G = 0.12; // Gravitational constant (tuned for visual feel)
+
+    function applyGravity(star, dt) {
+        if (!blackHole || star.destroyed) return;
+        const dx = blackHole.x - star.x;
+        const dy = blackHole.y - star.y;
+        const distSq = dx * dx + dy * dy;
+        const dist = Math.sqrt(distSq);
+        if (dist > 550) return; // influence radius
+
+        // F = G·M / r²
+        const radialForce = G * blackHole.mass / Math.max(distSq, 80);
+        // Orbital mechanics: tangential force for spiraling (cross product)
+        const tangentialForce = radialForce * 0.85;
+
+        const ux = dx / dist;
+        const uy = dy / dist;
+
+        star.vx += (ux * radialForce - uy * tangentialForce) * dt;
+        star.vy += (uy * radialForce + ux * tangentialForce) * dt;
+        star.x  += star.vx * dt;
+        star.y  += star.vy * dt;
+
+        // Absorbed into singularity
+        if (dist < blackHole.coreRadius + 2) {
+            star.destroyed = true;
+            star.respawnTimer = 10000;
+        }
+    }
+
+    function returnHome(star, dt) {
+        if (blackHole || star.destroyed) return;
+        if (star.homeX === undefined) return;
+        const dx = star.homeX - star.x;
+        const dy = star.homeY - star.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 0.5) {
+            star.x = star.homeX; star.y = star.homeY;
+            star.vx = 0; star.vy = 0;
+            return;
+        }
+        // Damped spring — stars drift home gently after black hole dies
+        star.vx = ((star.vx || 0) + dx * 0.015) * 0.94;
+        star.vy = ((star.vy || 0) + dy * 0.015) * 0.94;
+        star.x += star.vx * dt;
+        star.y += star.vy * dt;
+    }
+
+    function updateRespawn(star, dtMs) {
+        if (!star.destroyed) return;
+        star.respawnTimer -= dtMs;
+        if (star.respawnTimer <= 0) {
+            star.destroyed = false;
+            star.x = star.homeX; star.y = star.homeY;
+            star.vx = 0; star.vy = 0;
+            star.op = 0;
+            if (star.target !== undefined) star.target = 1;
+        }
+    }
+
+    // Pull particles.js constellation nodes into orbital rotation around black hole
+    function applyBlackHoleToParticlesJS() {
+        if (!blackHole) return;
+        const pJS = window.pJSDom?.[0]?.pJS;
+        if (!pJS?.particles?.array) return;
+
+        // blackHole is in CSS/client space (starfield); particles are in canvas buffer space
+        const origin = clientToParticleCanvas(pJS, blackHole.x, blackHole.y);
+        if (!origin) return;
+        const px = pJS.canvas.pxratio || 1;
+        const particles = pJS.particles.array;
+        const minSafeDist = Math.max(38, blackHole.coreRadius * 2.2) * px;
+        const maxDist = 520 * px;
+
+        particles.forEach(p => {
+            const dx = origin.x - p.x;
+            const dy = origin.y - p.y;
+            const distSq = dx * dx + dy * dy;
+            const dist = Math.sqrt(distSq);
+            if (dist > maxDist || dist < 2) return;
+
+            // Prevent O(N^2) line-clustering lag: orbit around event horizon instead of collapsing into point
+            if (dist < minSafeDist) {
+                const ux = dx / dist;
+                const uy = dy / dist;
+                p.vx = -uy * 2.2;
+                p.vy = ux * 2.2;
+                return;
+            }
+
+            const radialForce = G * blackHole.mass * 0.10 / Math.max(distSq, 400 * px * px);
+            const tangentialForce = radialForce * 0.70;
+            const ux = dx / dist;
+            const uy = dy / dist;
+
+            p.vx += (ux * radialForce - uy * tangentialForce);
+            p.vy += (uy * radialForce + ux * tangentialForce);
+        });
+    }
+
+    function restoreParticlesJS(originX, originY) {
+        const pJS = window.pJSDom?.[0]?.pJS;
+        if (!pJS?.particles?.array) return;
+        const px = pJS.canvas.pxratio || 1;
+        let ox = originX, oy = originY;
+        if (originX !== undefined && originY !== undefined) {
+            const mapped = clientToParticleCanvas(pJS, originX, originY);
+            if (mapped) { ox = mapped.x; oy = mapped.y; }
+        }
+        pJS.particles.array.forEach(p => {
+            p.vx = p.vx_i; p.vy = p.vy_i;
+            if (ox !== undefined && oy !== undefined) {
+                // Apply outward shockwave blast momentum
+                const dx = p.x - ox;
+                const dy = p.y - oy;
+                const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+                const blastForce = Math.max(0, 1 - dist / (300 * px)) * 4;
+                p.vx += (dx / dist) * blastForce;
+                p.vy += (dy / dist) * blastForce;
+            }
+        });
+    }
+
+    // ─── Click Handler ───────────────────────────────
+    document.addEventListener('click', (e) => {
+        if (reducedMotion) return;
+        // Skip UI element clicks
+        if (e.target.closest(
+            'a, button, .card, .terminal, .terminal-body, .resume-overlay, ' +
+            '.resume-card, nav, .profile-card, .nav-links, input, textarea, ' +
+            'select, .theme-toggle, .social-link, .contact-btn, .icon-button, ' +
+            '.vocalizer, .badge-container, .resume-header, .resume-panel'
+        )) return;
+
+        if (blackHole) return; // Prevent triggering supernovas while black hole is active
+
+        if (checkSupernova(e.clientX, e.clientY)) {
+            supernovaCount++;
+            if (supernovaCount >= requiredSupernovas) {
+                supernovaCount = 0;
+                requiredSupernovas = 6; // Subsequent black hole spawns require 6 supernovas (rarer event)
+                spawnBlackHole(e.clientX, e.clientY);
+            }
+        }
+    });
+
+    // ─── Drawing: Background Stars ───────────────────
+    function drawBgStars(time, colors) {
+        const sky = getSky();
+        const amp = 0.07;
+        bgStars.forEach(s => {
+            if (s.destroyed) return;
+            const twinkle = reducedMotion
+                ? s.baseOp
+                : s.baseOp + Math.sin(time * s.twinkleSpeed + s.twinklePhase) * amp;
+            const op = Math.max(sky.starBgOp[0] * 0.7, Math.min(sky.starBgOp[1], twinkle));
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${colors[s.colorType]}, ${op})`;
+            ctx.fill();
+        });
+    }
+
+    // ─── Drawing: Medium Stars (sharp nodes — no burn halos) ───
+    function drawMedStars(colors) {
+        const sky = getSky();
+        medStars.forEach(s => {
+            if (s.destroyed) return;
+            if (!reducedMotion) {
+                s.op += (s.target - s.op) * s.speed;
+                if (Math.abs(s.op - s.target) < 0.02) {
+                    s.target = s.target > 0.7 ? sky.starMedOp[0] : sky.starMedOp[1];
+                }
+            }
+            // Single crisp dot — matches particle node language
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${colors[s.colorType]}, ${s.op})`;
+            ctx.fill();
+        });
+    }
+
+    // ─── Drawing: Bright Sparkles (tight cross, no fat glow) ───
+    function drawBrightStars(colors) {
+        const sky = getSky();
+        brightStars.forEach(s => {
+            if (s.destroyed) return;
+            if (!reducedMotion) {
+                s.op += (s.target - s.op) * s.speed;
+                if (Math.abs(s.op - s.target) < 0.03) {
+                    s.target = s.target > 0.75 ? sky.sparkleOp[0] : sky.sparkleOp[1];
+                }
+            }
+            const { x, y, arm, op, coreR } = s;
+            if (op < 0.08) return;
+            const color = colors[s.colorType];
+
+            // Hairline 4-point — same accent ink as constellation, not a lens-flare VFX
+            ctx.save();
+            ctx.globalAlpha = op * 0.7;
+            ctx.strokeStyle = `rgba(${color}, 1)`;
+            ctx.lineWidth = 1.0;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(x, y - arm); ctx.lineTo(x, y + arm);
+            ctx.moveTo(x - arm, y); ctx.lineTo(x + arm, y);
+            ctx.stroke();
+            ctx.globalAlpha = op * 0.28;
+            ctx.lineWidth = 0.7;
+            const d = arm * 0.38;
+            ctx.beginPath();
+            ctx.moveTo(x - d, y - d); ctx.lineTo(x + d, y + d);
+            ctx.moveTo(x + d, y - d); ctx.lineTo(x - d, y + d);
+            ctx.stroke();
+            ctx.restore();
+
+            ctx.beginPath();
+            ctx.arc(x, y, coreR, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${color}, ${op * 0.9})`;
+            ctx.fill();
+        });
+    }
+
+    // ─── Drawing: Black Hole ─────────────────────────
+    function drawBlackHole(colors) {
+        if (!blackHole) return;
+        const { x, y, coreRadius, diskAngle, state } = blackHole;
+        const intensity = blackHole.mass / blackHole.maxMass;
+        if (intensity < 0.01) return;
+
+        // Evaporation flash/jitter (Hawking radiation collapse)
+        let jitterX = 0, jitterY = 0;
+        if (state === 'evaporating') {
+            jitterX = (Math.random() - 0.5) * 4;
+            jitterY = (Math.random() - 0.5) * 4;
+        }
+        const drawX = x + jitterX;
+        const drawY = y + jitterY;
+
+        // Gravitational lensing bloom
+        const lensR = coreRadius * 8;
+        const lens = ctx.createRadialGradient(drawX, drawY, coreRadius * 0.5, drawX, drawY, lensR);
+        lens.addColorStop(0,   `rgba(${colors.star}, ${intensity * 0.5})`);
+        lens.addColorStop(0.3, `rgba(${colors.star}, ${intensity * 0.15})`);
+        lens.addColorStop(1,   `rgba(${colors.star}, 0)`);
+        ctx.beginPath();
+        ctx.arc(drawX, drawY, lensR, 0, Math.PI * 2);
+        ctx.fillStyle = lens;
+        ctx.fill();
+
+        // Accretion disk — tilted ellipse with Relativistic Doppler Beaming
+        ctx.save();
+        ctx.translate(drawX, drawY);
+        ctx.rotate(diskAngle);
+        ctx.scale(1, 0.35);
+        
+        // Doppler Beaming Gradient: Blueshifted (brighter) on left, redshifted (dimmer) on right
+        const diskGrad = ctx.createLinearGradient(-coreRadius * 4, 0, coreRadius * 4, 0);
+        diskGrad.addColorStop(0, `rgba(${colors.white}, ${intensity * 0.95})`);
+        diskGrad.addColorStop(0.4, `rgba(${colors.star}, ${intensity * 0.6})`);
+        diskGrad.addColorStop(1, `rgba(${colors.starAlt}, ${intensity * 0.15})`);
+        
+        // Outer glow disk
+        ctx.beginPath();
+        ctx.arc(0, 0, coreRadius * 4, 0, Math.PI * 2);
+        ctx.fillStyle = diskGrad;
+        ctx.globalAlpha = 0.5;
+        ctx.fill();
+
+        // Outer accretion ring
+        ctx.globalAlpha = 1.0;
+        ctx.beginPath();
+        ctx.arc(0, 0, coreRadius * 3, 0, Math.PI * 2);
+        ctx.strokeStyle = diskGrad;
+        ctx.lineWidth = 4.0;
+        ctx.stroke();
+        
+        // Inner bright matter ring
+        ctx.beginPath();
+        ctx.arc(0, 0, coreRadius * 2, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(${colors.white}, ${intensity * 0.9})`;
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+        
+        // Photon ring (very bright, tightly wrapping the core)
+        ctx.beginPath();
+        ctx.arc(0, 0, coreRadius * 1.2, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(${colors.white}, ${intensity})`;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        ctx.restore();
+
+        // Dark core — the singularity itself
+        const coreGrad = ctx.createRadialGradient(drawX, drawY, 0, drawX, drawY, coreRadius);
+        coreGrad.addColorStop(0,   `rgba(0, 0, 0, ${intensity})`);
+        coreGrad.addColorStop(0.8, `rgba(0, 0, 0, ${intensity * 0.95})`);
+        coreGrad.addColorStop(1,   'rgba(0, 0, 0, 0)');
+        ctx.beginPath();
+        ctx.arc(drawX, drawY, coreRadius, 0, Math.PI * 2);
+        ctx.fillStyle = coreGrad;
+        ctx.fill();
+        
+        // Event Horizon boundary line
+        ctx.beginPath();
+        ctx.arc(drawX, drawY, coreRadius + 1, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(${colors.star}, ${intensity * 0.4})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    }
+
+    // ─── Drawing: Explosions & Shockwaves ────────────
+    function drawExplosions(colors) {
+        for (let i = explosions.length - 1; i >= 0; i--) {
+            const exp = explosions[i];
+            
+            // Gravitational Shockwave Ring
+            if (exp.shockwaveR !== undefined && exp.shockwaveR < exp.maxShockwaveR) {
+                exp.shockwaveR += (exp.maxShockwaveR - exp.shockwaveR) * 0.08 + 1.5;
+                exp.shockwaveOp *= 0.94;
+                if (exp.shockwaveOp > 0.01) {
+                    ctx.beginPath();
+                    ctx.arc(exp.x, exp.y, exp.shockwaveR, 0, Math.PI * 2);
+                    ctx.strokeStyle = `rgba(${colors.starAlt}, ${exp.shockwaveOp})`;
+                    ctx.lineWidth = Math.max(0.5, 2.5 * (1 - exp.shockwaveR / exp.maxShockwaveR));
+                    ctx.stroke();
+                }
+            }
+
+            // Flash
+            if (exp.flash > 0) {
+                const fg = ctx.createRadialGradient(
+                    exp.x, exp.y, 0, exp.x, exp.y, exp.flashRadius
+                );
+                fg.addColorStop(0,   `rgba(${colors.white}, ${exp.flash * 0.9})`);
+                fg.addColorStop(0.3, `rgba(${colors.star}, ${exp.flash * 0.5})`);
+                fg.addColorStop(1,   `rgba(${colors.star}, 0)`);
+                ctx.beginPath();
+                ctx.arc(exp.x, exp.y, exp.flashRadius, 0, Math.PI * 2);
+                ctx.fillStyle = fg;
+                ctx.fill();
+                exp.flash -= 0.025;
+            }
+            // Debris particles
+            let alive = false;
+            exp.debris.forEach(d => {
+                if (d.life <= 0) return;
+                alive = true;
+                d.x += d.vx;
+                d.y += d.vy;
+                d.vx *= 0.985; // space friction (slight deceleration)
+                d.vy *= 0.985;
+                d.life -= d.decay;
+                ctx.beginPath();
+                ctx.arc(d.x, d.y, d.r * Math.max(d.life, 0.1), 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${colors[d.colorType]}, ${d.life * 0.85})`;
+                ctx.fill();
+            });
+            if (!alive && exp.flash <= 0 && (exp.shockwaveOp === undefined || exp.shockwaveOp <= 0.01)) {
+                explosions.splice(i, 1);
+            }
+        }
+    }
+
+    // ─── Main Animation Loop ─────────────────────────
+    let rafId;
+    let lastTime = 0;
+
+    function loop(timestamp) {
+        const dtMs = lastTime ? Math.min(timestamp - lastTime, 50) : 16.67;
+        const dt = dtMs / 16.67; // normalized to ~60fps
+        lastTime = timestamp;
+
+        ctx.clearRect(0, 0, W, H);
+        const colors = getColors();
+
+        // Update systems
+        updateBlackHole(dtMs);
+
+        // Update all star physics
+        const allStars = bgStars.concat(medStars, brightStars);
+        for (let i = 0, len = allStars.length; i < len; i++) {
+            const s = allStars[i];
+            updateRespawn(s, dtMs);
+            if (!s.destroyed) {
+                applyGravity(s, dt);
+                returnHome(s, dt);
+            }
+        }
+
+        // Pull particles.js nodes too
+        applyBlackHoleToParticlesJS();
+
+        // Draw layers (back → front) — one sky language, no burn washes
+        drawBgStars(timestamp || 0, colors);
+        drawMedStars(colors);
+        drawBrightStars(colors);
+        drawExplosions(colors);
+        drawBlackHole(colors);
+
+        rafId = requestAnimationFrame(loop);
+    }
+
+    // ─── Bootstrap ───────────────────────────────────
+    // Own resize listener removed — settleSkyViewport owns zoom/resize regen
+    // so particles + starfield rebuild once together (no mid-zoom thrash).
+    resize(true);
+    window.__resizeStarfield = resize;
+    window.__regenStarfield = generateAll;
+
+    if (reducedMotion) {
+        const c = getColors();
+        drawBgStars(0, c);
+        drawMedStars(c);
+        drawBrightStars(c);
+    } else {
+        loop(0);
+    }
+
+    // Pause when tab is hidden — zero CPU waste
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            cancelAnimationFrame(rafId);
+            lastTime = 0;
+        } else if (!reducedMotion) {
+            loop(0);
+        }
+    });
+}
+
