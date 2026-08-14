@@ -6,8 +6,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="description" content="PxeCore (Pxe) - Cybersecurity Researcher. Explore my technical projects, malware analysis, and research.">
-    <meta name="keywords" content="PxeCore, pxecore, Pxe Core, Pxe, pxe, PixieCore, pixiecore, Pixie, pixie, cybersecurity researcher, cyber security, student, pxecore github, pxecore portfolio, malware analysis, reverse engineering">
+    <meta name="description" content="Personal site of PxeCore — cybersecurity research, reverse engineering, and notes.">
+    <meta name="keywords" content="PxeCore, pxecore, cybersecurity, malware analysis, reverse engineering, OSINT, OPSEC">
     <meta name="author" content="PxeCore">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="color-scheme" content="dark light">
@@ -16,54 +16,54 @@
     <!-- Resources -->
     <link rel="canonical" href="https://pxecore.github.io/">
     <link rel="sitemap" type="application/xml" href="/sitemap.xml">
-    <!-- normalize.css inlined to eliminate render-blocking network request -->
+    <!-- Critical normalize (inlined) -->
     <style>
       html{line-height:1.15;-webkit-text-size-adjust:100%;box-sizing:border-box;font-size:16px;scroll-behavior:smooth}*,*:before,*:after{box-sizing:inherit}body{margin:0;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.5;text-rendering:optimizeLegibility}main{display:block}h1{font-size:2em;margin:.67em 0}hr{box-sizing:content-box;height:0;overflow:visible}pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent}abbr[title]{border-bottom:none;text-decoration:underline dotted}b,strong{font-weight:bolder}code,kbd,samp{font-family:monospace,monospace;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none;max-width:100%;height:auto}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}button,[type="button"],[type="reset"],[type="submit"]{-webkit-appearance:button;appearance:button}fieldset{padding:.35em .75em .625em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{vertical-align:baseline}textarea{overflow:auto}[type="checkbox"],[type="radio"]{box-sizing:border-box;padding:0}[type="search"]{-webkit-appearance:textfield;appearance:textfield;outline-offset:-2px}[type="search"]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}details{display:block}summary{display:list-item}template,[hidden]{display:none}@media screen and (max-width:768px){html{font-size:14px}}
     </style>
-    <!-- Preconnect to high-priority third-party origins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preconnect" href="https://unavatar.io" crossorigin>
 
-    <!-- Preload LCP Banner image immediately -->
     <link rel="preload" href="media/banner.webp" as="image" fetchpriority="high">
-
-    <!-- Preload critical FontAwesome icon fonts early -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
 
-    <!-- Core Stylesheets -->
     <link rel="stylesheet" href="css/style.css">
 
-    <!-- Asynchronous loading of external fonts and icon stylesheets -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;600;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet"></noscript>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
 
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"></noscript>
     
-    <!-- Social Authority: Open Graph & Twitter -->
+    <!-- Open Graph / Twitter — image: media/og.jpg (1200×630) -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://pxecore.github.io/">
-    <meta property="og:title" content="PxeCore | Cybersecurity Researcher">
-    <meta property="og:description" content="Personal portfolio of PxeCore (Pxe). Cybersecurity Researcher focusing on malware and reverse engineering.">
-    <meta property="og:site_name" content="PxeCore Portfolio">
-    <meta property="og:image" content="https://unavatar.io/x/pxecore">
-    
-    <!-- Twitter Meta Tags -->
+    <meta property="og:title" content="pxecore">
+    <meta property="og:description" content="Personal site of PxeCore — cybersecurity research, reverse engineering, and notes.">
+    <meta property="og:site_name" content="pxecore">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="https://pxecore.github.io/media/og.jpg">
+    <meta property="og:image:secure_url" content="https://pxecore.github.io/media/og.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="pxecore">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://pxecore.github.io/">
-    <meta name="twitter:title" content="PxeCore">
-    <meta name="twitter:description" content="Come see PxeCore's personal website and cybersecurity insights.">
-    <meta property="twitter:image" content="https://unavatar.io/x/pxecore">
+    <meta name="twitter:title" content="pxecore">
+    <meta name="twitter:description" content="Personal site of PxeCore — cybersecurity research, reverse engineering, and notes.">
+    <meta name="twitter:image" content="https://pxecore.github.io/media/og.jpg">
+    <meta name="twitter:image:alt" content="pxecore">
+    <meta itemprop="image" content="https://pxecore.github.io/media/og.jpg">
     
-    <title>PxeCore | Portfolio</title>
+    <title>pxecore</title>
 
     <!-- Favicon -->
     <link rel="icon" href="https://unavatar.io/x/pxecore" type="image/jpeg">
     
-    <!-- External Scripts (Localized for Privacy) -->
+    <!-- Scripts -->
     <script src="script/particles.min.js" defer></script>
     <script src="script/script.js" defer></script>
     
@@ -93,7 +93,7 @@
         "https://tryhackme.com/p/pxecore",
         "https://www.youtube.com/@pxecore"
       ],
-      "description": "Cybersecurity Researcher focusing on advanced systems and digital defense."
+      "description": "Cybersecurity researcher focusing on malware analysis and reverse engineering."
     }
     </script>
 </head>
@@ -105,46 +105,13 @@
     <header class="header">
         <div class="header-inner">
             <div class="header-left">
-                <span class="header-logo" translate="no">
-                  <span class="navi-icon" aria-hidden="true" style="display:inline-flex;align-items:center;width:1.4em;height:1.4em;margin-right:0.5em;transform:translateY(0);">
-                    <svg viewBox="0 0 40 40" width="100%" height="100%" style="color: var(--accent); filter: drop-shadow(0 0 10px rgba(194, 159, 104, 0.35));" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                      <!-- 1. Sacred Triangle Frame -->
-                      <path d="M 20 2.5 L 37.5 33.5 L 2.5 33.5 Z" stroke-width="1.4" stroke-opacity="0.45" stroke-dasharray="3 2" />
-                      <path d="M 20 6 L 34 31 L 6 31 Z" stroke-width="1.2" stroke-opacity="0.25" />
-                      <!-- Capstone Glow Ring -->
-                      <circle cx="20" cy="7.5" r="1.5" fill="currentColor" stroke="none" />
-                      <line x1="20" y1="2.5" x2="20" y2="5.5" stroke-width="1.2" stroke-opacity="0.6" />
-
-                      <!-- 2. Royal Eyebrow Arch -->
-                      <path d="M 8 16 Q 20 8.5 32 16" stroke-width="2.2" />
-
-                      <!-- 3. Sacred Eyelid Contours -->
-                      <path d="M 7 21 C 13 15 27 15 33 21 C 27 27 13 27 7 21 Z" stroke-width="2.1" fill="currentColor" fill-opacity="0.06" />
-
-                      <!-- 4. Kohl Winged Temple Eyeliner -->
-                      <path d="M 33 21 Q 36 22.5 36.5 25" stroke-width="2.0" />
-                      <path d="M 7 21 Q 4.5 22 4 23.5" stroke-width="1.5" stroke-opacity="0.7" />
-
-                      <!-- 5. All-Seeing Eclipse Pupil / Diamond Core -->
-                      <circle cx="20" cy="21" r="4.5" stroke-width="1.8" />
-                      <circle cx="20" cy="21" r="2.2" fill="currentColor" stroke="none" />
-                      <circle cx="21.2" cy="19.8" r="0.7" fill="#181512" stroke="none" />
-                      <!-- Cyber Reticle inside Pupil -->
-                      <line x1="20" y1="15.5" x2="20" y2="17.5" stroke-width="1.2" stroke-opacity="0.8" />
-                      <line x1="20" y1="24.5" x2="20" y2="26.5" stroke-width="1.2" stroke-opacity="0.8" />
-                      <line x1="14.5" y1="21" x2="16.5" y2="21" stroke-width="1.2" stroke-opacity="0.8" />
-                      <line x1="23.5" y1="21" x2="25.5" y2="21" stroke-width="1.2" stroke-opacity="0.8" />
-
-                      <!-- 6. Vertical Teardrop Blade -->
-                      <path d="M 20 26.5 L 20 36.5" stroke-width="2.4" />
-                      <polygon points="18.8,26.5 21.2,26.5 20,36.5" fill="currentColor" stroke="none" opacity="0.8" />
-
-                      <!-- 7. Curled Falcon Tail Spiral -->
-                      <path d="M 25.5 25.5 Q 29.5 29.5 33 31.5 C 35.5 33 35.5 36.5 32 36.5 C 28.5 36.5 28 33.5 30 31.5" stroke-width="2.1" />
+                <button type="button" class="header-logo" id="brand-mark" translate="no" aria-label="pxecore">
+                  <span class="logo-stage" aria-hidden="true">
+                    <svg class="logo-mark" viewBox="0 0 1788 1823" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                      <path d="M568.0 708Q589.0 691 604.0 706.0Q619.0 721 593.0 748Q553.0 784 501.0 795.5Q449.0 807 396.0 808Q236.0 812 130.0 712.5Q24.0 613 24.0 441.5Q24.0 270 157.0 147.0Q290.0 24 518.0 24Q656.0 27 750.0 93.0Q844.0 159 897.0 249Q904.0 263 918.0 255L1351.0 30Q1380.0 17 1393.0 33.5Q1406.0 50 1386.0 66Q1315.0 117 1367.5 207.5Q1420.0 298 1539.0 394Q1776.0 590 1763.5 793.0Q1751.0 996 1616.0 1182Q1462.0 1391 1312.0 1459.5Q1162.0 1528 955.0 1413Q947.0 1408 939.5 1412.0Q932.0 1416 931.0 1424Q916.0 1550 879.5 1635.0Q843.0 1720 768.0 1791Q754.0 1804 742.0 1795.0Q730.0 1786 740.0 1769Q817.0 1608 791.0 1338Q791.0 1329 781.0 1325Q581.0 1247 482.0 1343Q465.0 1360 449.5 1348.5Q434.0 1337 448.0 1318Q604.0 1115 752.0 1103Q760.0 1102 763.5 1098.0Q767.0 1094 767.0 1085Q755.0 956 742.5 827.5Q730.0 699 718.0 570Q703.0 424 619.0 317.5Q535.0 211 410.0 209Q276.0 202 184.0 274.5Q92.0 347 92.0 478.0Q92.0 609 176.5 685.0Q261.0 761 402.0 761Q503.0 763 568.0 708ZM931.0 322Q948.0 368 954.5 414.0Q961.0 460 963.0 501Q969.0 714 960.5 862.0Q952.0 1010 949.0 1133Q949.0 1145 958.0 1148Q1007.0 1170 1065.0 1204Q1268.0 1321 1387.5 1297.0Q1507.0 1273 1579.0 1159Q1737.0 909 1382.0 622Q1261.0 526 1178.5 437.0Q1096.0 348 1090.0 250Q1090.0 238 1082.0 235.0Q1074.0 232 1066.0 236L939.0 302Q925.0 309 931.0 322Z"/>
                     </svg>
                   </span>
-                  Pxecore
-                </span>
+                </button>
                 <div class="header-btn-group">
                     <button onclick="window.open('https://pxecore.github.io/notes.html', '_blank')" class="header-btn" rel="noopener noreferrer">Notes</button>
                     <button id="resume-btn" class="header-btn">Resume</button>
@@ -165,7 +132,7 @@
             <div class="content">
                 <div class="left-section">
                     <div class="about">
-                             <h1 class="glitch pixel-text" data-text="PxeCore" translate="no">
+                             <h1 class="glitch pixel-text" data-text="pxecore" translate="no">
                             <span class="pixel-char" data-char="p">p</span><span class="pixel-char" data-char="x">x</span><span class="pixel-char" data-char="e">e</span><span class="pixel-char" data-char="c">c</span><span class="pixel-char" data-char="o">o</span><span class="pixel-char" data-char="r">r</span><span class="pixel-char" data-char="e">e</span>
                         </h1>
                         <div class="hero-subtext">
@@ -174,17 +141,17 @@
                         </div>
                         <div class="hi-text">Hey.</div>
                         <p>
-                        Well, This is my home hub. Click the top two buttons for my resume and blog posts; the buttons below highlight my focus areas. Reach me via email, Session, and Signal.<br><span class="highlight">All content provided is for educational purposes only. The user is solely responsible for any misuse of the content.</span>
+                        Well, this is my home hub. Click the top two buttons for my resume and blog posts; the buttons below highlight my focus areas. Reach me via email, Session, and Signal.<br><span class="highlight">All content provided is for educational purposes only. The user is solely responsible for any misuse of the content.</span>
                         </p>
                         
                         <div class="tech-stack" aria-label="Technical skills">
                             <button class="tech-item" data-tooltip="Research" aria-label="Research skill">
                                 <i class="fas fa-search" aria-hidden="true"></i>
                             </button>
-                            <button class="tech-item" data-tooltip="Osint" aria-label="OSINT skill">
+                            <button class="tech-item" data-tooltip="OSINT" aria-label="OSINT skill">
                                 <i class="fas fa-user-secret" aria-hidden="true"></i>
                             </button>
-                            <button class="tech-item" data-tooltip="Opsec" aria-label="OPSEC skill">
+                            <button class="tech-item" data-tooltip="OPSEC" aria-label="OPSEC skill">
                                 <i class="fas fa-user-shield" aria-hidden="true"></i>
                             </button>
                             <button class="tech-item" data-tooltip="Reverse Engineering" aria-label="Reverse Engineering skill">
@@ -225,7 +192,7 @@
                         </div>
                         <div class="card-body">
                             <div class="profile-info">
-                                <h2 translate="no">Pxe Core</h2>
+                                <h2 translate="no">Pxe/Core</h2>
                                 <div class="profile-meta">
                                     <span class="badge">Researcher</span>
                                     <span class="badge">Student</span>
@@ -236,7 +203,7 @@
                             </div>
                             
                             <!-- Audio Vocalizer -->
-                            <button type="button" class="audio-vocalizer" id="audio-vocalizer" onclick="toggleAudio()" aria-label="Music player visualizer">
+                            <button type="button" class="audio-vocalizer" id="audio-vocalizer" onclick="toggleAudio()" aria-label="Play or pause music">
                                 <div class="vocalizer-play-btn">
                                     <svg viewBox="0 0 448 512" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L448 256 73 39z"/></svg>
                                 </div>
@@ -332,37 +299,51 @@
         <div class="resume-overlay-content">
             <!-- About Section -->
             <div class="resume-section-box">
-                <h3><i class="fa-solid fa-circle-user" aria-hidden="true"></i> About Me</h3>
-                <div class="resume-card">
-                    <h4>PxeCore</h4>
-                    <p class="subheading">Cybersecurity Researcher</p>
-                    <p>Hi, I’m currently preparing for the university entrance exam at home. That’s why I haven’t been able to create much content lately.
-                     My main interests are Computer Science and Cybersecurity. Most of my days are spent studying and preparing for the exam. In my free time, I follow current events on Twitter.
-                     I’ll be back soon.</p>
+                <h3><i class="fa-solid fa-circle-user" aria-hidden="true"></i> About</h3>
+                <div class="resume-card resume-profile-hero">
+                    <div class="resume-profile-header">
+                        <img src="https://unavatar.io/x/pxecore?size=128" alt="PxeCore Avatar" class="resume-avatar" loading="lazy" decoding="async" width="64" height="64">
+                        <div class="resume-profile-details">
+                            <h4>Pxecore</h4>
+                            <p class="subheading">Cybersecurity Researcher</p>
+                            <span class="resume-status-badge">
+                                <span class="status-pulse"></span> Exam prep &amp; research
+                            </span>
+                        </div>
+                    </div>
+                    <p class="resume-bio-text">
+                        I'm preparing for the university entrance exam at home, so I haven't been posting much lately.
+                        Main interests are computer science and cybersecurity — most days are study, and free time is usually Twitter.
+                        I'll be back soon.
+                    </p>
                 </div>
             </div>
 
             <!-- Skills Section -->
             <div class="resume-section-box">
-                <h3><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Technical Skills</h3>
+                <h3><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Skills</h3>
                 <div class="resume-card">
                     <h4>Core Capabilities</h4>
-                    <p class="subheading">I'll tidy up this place in my free time.</p>
-                    <ul class="skill-chips" style="margin-top: var(--space-3);">
+                    <p class="subheading">What I study and work on.</p>
+                    <ul class="skill-chips" style="margin-top: var(--space-4);">
                         <li>GNU/Linux</li>
-                        <li>Osint</li>
-                        <li>Opsec</li>
+                        <li>OSINT</li>
+                        <li>OPSEC</li>
                         <li>Research</li>
+                        <li>Reverse Engineering</li>
+                        <li>Python</li>
+                        <li>Network Security</li>
+                        <li>Computer Science</li>
                     </ul>
                 </div>
             </div>
 
             <!-- Experience / Social Section -->
             <div class="resume-section-box">
-                <h3><i class="fa-solid fa-earth-europe" aria-hidden="true"></i> Network &amp; Presence</h3>
+                <h3><i class="fa-solid fa-earth-europe" aria-hidden="true"></i> Presence</h3>
                 <div class="resume-card">
                     <h4>Profiles</h4>
-                    <p class="subheading">Active communities and social presence.</p>
+                    <p class="subheading">Where I show up online.</p>
                     <ul class="resume-grid">
                         <!-- 1. GitHub -->
                         <li>
@@ -448,39 +429,65 @@
             <div class="resume-section-box">
                 <h3><i class="fa-solid fa-folder-open" aria-hidden="true"></i> Projects</h3>
                 <div class="resume-card">
-                    <h4>Main Repository</h4>
-                    <p>All my active research and code projects are public on GitHub.</p>
+                    <h4>GitHub</h4>
+                    <p>Public research and code.</p>
                     <a href="https://github.com/pxecore?tab=repositories" target="_blank" rel="noopener noreferrer" class="resume-link">
-                        <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right:0.4em;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg> View all repositories
+                        <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right:0.4em;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg> View repositories
                     </a>
                 </div>
             </div>
 
-            <!-- Web Badges -->
-            <div class="resume-footer-badges">
-                <div class="web-badges justify-center">
-                    <img src="media/badges/anybrowser3.webp" alt="Compatibility" loading="lazy">
-                    <img src="media/badges/coffee.webp" alt="Coffee" loading="lazy">
-                    <img src="media/badges/css3.webp" alt="Modern Styling" loading="lazy">
-                    <img src="media/badges/letsnotencrypt.webp" alt="Security" loading="lazy">
-                    <img src="media/badges/got_html.webp" alt="Structure" loading="lazy">
-                    <img src="media/badges/cyberrealmrefer.webp" alt="Realm" loading="lazy">
-                    <img src="media/badges/madewithnotepad2.webp" alt="Minimalism" loading="lazy">
-                    <img src="media/badges/volta.webp" alt="Energy" loading="lazy">
-                    <img src="media/badges/ie_rainbow.webp" alt="Legacy" loading="lazy">
-                    <img src="media/badges/pixel_art.webp" alt="Pixel Art" loading="lazy">
-                    <img src="media/badges/yumenikki.webp" alt="Yumenikki" loading="lazy">
-                    <img src="media/badges/000010.webp" alt="Cyber" loading="lazy">
-             
+            <!-- Web Badges — dual marquee (left / right), pause on hover -->
+            <div class="resume-footer-badges" aria-label="web badges">
+                <div class="web-badges-marquee">
+                    <div class="web-badges-row" data-dir="left">
+                        <div class="web-badges-track">
+                            <div class="web-badges-set">
+                                <img src="media/badges/anybrowser3.webp" alt="any browser" width="88" height="31" loading="lazy">
+                                <img src="media/badges/coffee.webp" alt="coffee" width="88" height="31" loading="lazy">
+                                <img src="media/badges/css3.webp" alt="css" width="88" height="31" loading="lazy">
+                                <img src="media/badges/letsnotencrypt.webp" alt="lets not encrypt" width="88" height="31" loading="lazy">
+                                <img src="media/badges/got_html.webp" alt="got html" width="88" height="31" loading="lazy">
+                                <img src="media/badges/cyberrealmrefer.webp" alt="cyber realm" width="88" height="31" loading="lazy">
+                            </div>
+                            <div class="web-badges-set" aria-hidden="true">
+                                <img src="media/badges/anybrowser3.webp" alt="" width="88" height="31" loading="lazy">
+                                <img src="media/badges/coffee.webp" alt="" width="88" height="31" loading="lazy">
+                                <img src="media/badges/css3.webp" alt="" width="88" height="31" loading="lazy">
+                                <img src="media/badges/letsnotencrypt.webp" alt="" width="88" height="31" loading="lazy">
+                                <img src="media/badges/got_html.webp" alt="" width="88" height="31" loading="lazy">
+                                <img src="media/badges/cyberrealmrefer.webp" alt="" width="88" height="31" loading="lazy">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="web-badges-row" data-dir="right">
+                        <div class="web-badges-track">
+                            <div class="web-badges-set">
+                                <img src="media/badges/madewithnotepad2.webp" alt="notepad" width="88" height="31" loading="lazy">
+                                <img src="media/badges/volta.webp" alt="volta" width="88" height="31" loading="lazy">
+                                <img src="media/badges/ie_rainbow.webp" alt="internet explorer" width="88" height="31" loading="lazy">
+                                <img src="media/badges/pixel_art.webp" alt="pixel art" width="88" height="31" loading="lazy">
+                                <img src="media/badges/yumenikki.webp" alt="yume nikki" width="88" height="31" loading="lazy">
+                                <img src="media/badges/000010.webp" alt="hit counter" width="88" height="31" loading="lazy">
+                            </div>
+                            <div class="web-badges-set" aria-hidden="true">
+                                <img src="media/badges/madewithnotepad2.webp" alt="" width="88" height="31" loading="lazy">
+                                <img src="media/badges/volta.webp" alt="" width="88" height="31" loading="lazy">
+                                <img src="media/badges/ie_rainbow.webp" alt="" width="88" height="31" loading="lazy">
+                                <img src="media/badges/pixel_art.webp" alt="" width="88" height="31" loading="lazy">
+                                <img src="media/badges/yumenikki.webp" alt="" width="88" height="31" loading="lazy">
+                                <img src="media/badges/000010.webp" alt="" width="88" height="31" loading="lazy">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <!-- Mobile Close Button (Bottom sticky/centered for ease of use) -->
+        <!-- Mobile Close Button -->
         <div class="mobile-resume-footer">
             <button id="mobile-close-resume" class="mobile-close-btn">Close Resume</button>
         </div>
     </div>
-</div>
 </body>
 </html>
