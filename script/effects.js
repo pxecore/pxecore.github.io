@@ -96,7 +96,7 @@ function initCosmicStarfield() {
     if (document.getElementById('starfield-canvas')) return;
     const canvas = document.createElement('canvas');
     canvas.id = 'starfield-canvas';
-    canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;';
+    canvas.style.cssText = 'position:fixed;top:0;left:0;right:0;width:100%;height:100vh;height:100lvh;pointer-events:none;z-index:1;';
     document.body.insertBefore(canvas, document.body.firstChild);
 
     let ctx = canvas.getContext('2d');
@@ -114,12 +114,18 @@ function initCosmicStarfield() {
         const newH = Math.round(rect?.height || canvas.clientHeight || window.innerHeight || 1);
         const oldW = W || newW;
         const oldH = H || newH;
+
+        // Ignore mobile URL bar height-only jitter (< 160px height delta with identical width)
+        if (!forceRegen && W && H && isCoarsePointer() && Math.abs(newW - oldW) < 4 && Math.abs(newH - oldH) < 160) {
+            return;
+        }
+
         W = newW;
         H = newH;
-        // Allow crisp HiDPI/zoom rendering up to 2.25x; only cap strictly on low battery or active thermal throttle
         const rawDpr = window.devicePixelRatio || 1;
         const lowBat = Boolean(window.HardwareProfiler?.isLowBattery?.());
-        const maxDpr = (lowBat || adaptiveThrottle) ? 1.25 : 2.25;
+        const isMobile = isCoarsePointer();
+        const maxDpr = (lowBat || adaptiveThrottle) ? 1.25 : (isMobile ? 1.5 : 2.25);
         dpr = Math.min(Math.max(1, rawDpr), maxDpr);
         const targetW = Math.round(W * dpr);
         const targetH = Math.round(H * dpr);
