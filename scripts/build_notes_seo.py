@@ -629,27 +629,15 @@ def make_og(n, path, state):
 
 # --------------------------------------------------------------------- page
 
-NOTE_THEME_SCRIPT = (
-    "\n(function(){var t=null,r=document.documentElement;"
-    "try{t=localStorage.getItem('pxecore_theme')||localStorage.getItem('theme');}catch(_){}"
-    "if(!t){try{t=sessionStorage.getItem('pxecore_theme')||sessionStorage.getItem('theme');}catch(_){}}"
-    "if(!t&&document.cookie){try{var m=document.cookie.match(/(?:^|;\\s*)pxecore_theme=([^;]+)/);"
-    "if(m)t=decodeURIComponent(m[1]);}catch(_){}}"
-    "var l=t==='light';r.className=l?'light':'dark';"
-    "r.style.backgroundColor=l?'#E2DBD0':'#0E0D0C';r.style.colorScheme=l?'light':'dark';"
-    "r.style.setProperty('--accent',l?'#84321A':'#D8B278');"
-    "r.style.setProperty('--accent-rgb',l?'132, 50, 26':'216, 178, 120');})();\n"
-)
-NOTE_THEME_CSP_HASH = base64.b64encode(hashlib.sha256(NOTE_THEME_SCRIPT.encode("utf-8")).digest()).decode("ascii")
 NOTE_PAGE_CSP = (
     "default-src 'self' file:; "
-    "script-src 'self' file: 'sha256-%s'; "
+    "script-src 'self' file:; "
     "style-src 'self' file: 'unsafe-inline'; "
     "font-src 'self' file: data:; "
     "img-src 'self' file: https: data:; "
     "connect-src 'self' file:; "
     "object-src 'none'; form-action 'none'; base-uri 'self';"
-) % NOTE_THEME_CSP_HASH
+)
 
 
 def page_html(n, has_og):
@@ -707,7 +695,7 @@ def page_html(n, has_og):
 <meta name="twitter:description" content="{desc}">
 <meta name="twitter:image" content="{image}">
 <script type="application/ld+json">{ld}</script>
-<script>{theme_script}</script>
+<script src="../../script/note-page.js"></script>
 <link rel="icon" href="../../media/avatar.webp" type="image/webp">
 <link rel="stylesheet" href="../../fonts/outfit.css">
 <link rel="stylesheet" href="../../css/base.css">
@@ -735,12 +723,12 @@ def page_html(n, has_og):
 </main>
 <footer class="note-foot"><a href="../../#notes">← All notes</a><a href="#note-progress">Top ↑</a></footer>
 </div>
-{katex_js}<script src="../../script/note-page.js" defer></script>
+{katex_js}
 </body>
 </html>
 """.format(csp=NOTE_PAGE_CSP, title=e(n["title"]), desc=e(n["description"]), author=e(n["author"]),
            kw=('<meta name="keywords" content="%s">\n' % e(", ".join(n["tags"]))) if n["tags"] else "",
-           url=url, image=image, iso=n["iso_date"], ld=ld, theme_script=NOTE_THEME_SCRIPT,
+           url=url, image=image, iso=n["iso_date"], ld=ld,
            cat=e(n["category"]),
            desc_p=('<p class="note-desc">%s</p>\n' % e(n["description"])) if n["description"] else "",
            meta=" · ".join(meta_bits), toc=toc, body=n["body_html"],
