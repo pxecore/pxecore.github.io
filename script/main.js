@@ -129,7 +129,7 @@ function applyTheme(theme, isInitialLoad = false, isViewTransition = false) {
         document.documentElement.classList.add('theme-in-transition');
         setTimeout(() => {
             document.documentElement.classList.remove('theme-in-transition');
-        }, 500);
+        }, 240);
     }
 
     if (!document.documentElement.classList.contains(targetClass)) {
@@ -225,9 +225,12 @@ if (themeToggleButton) {
         const originX = rect.width ? rect.left + rect.width / 2 : window.innerWidth - 30;
         const originY = rect.height ? rect.top + rect.height / 2 : 30;
 
-        // Circular theme reveal transition
+        // Circular theme reveal transition on desktop; fast direct transition on touch/low-tier hardware
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (!document.startViewTransition || reducedMotion) {
+        const isMobileOrLowTier = (typeof window.isCoarsePointer === 'function' && window.isCoarsePointer()) ||
+            window.matchMedia('(pointer: coarse)').matches ||
+            (window.HardwareProfiler && window.HardwareProfiler.getTier() <= 1);
+        if (!document.startViewTransition || reducedMotion || isMobileOrLowTier) {
             applyTheme(nextTheme, false);
         } else {
             const endRadius = Math.hypot(
@@ -249,7 +252,7 @@ if (themeToggleButton) {
                         ]
                     },
                     {
-                        duration: 520,
+                        duration: 360,
                         easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
                         pseudoElement: '::view-transition-new(root)'
                     }
@@ -658,7 +661,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.documentElement.classList.add('views-warmed', 'view-in-transition');
         setTimeout(() => {
             document.documentElement.classList.remove('view-in-transition');
-        }, 650);
+        }, 340);
 
         // Dynamically synchronize skip-to-content target
         const skipLink = document.getElementById('skip-to-content');
@@ -758,9 +761,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle back/forward navigation
     function handleRouting() {
         const rawHash = (window.location.hash || '').replace('#', '');
-        const hash = rawHash.split('?')[0];
+        const hash = rawHash.split('?')[0].split('/')[0];
         const params = new URLSearchParams(window.location.search);
-        if (rawHash.startsWith('notes?p=') || params.has('p')) {
+        if (rawHash.startsWith('notes?p=') || rawHash.startsWith('notes/') || params.has('p')) {
             if (currentActiveView !== 'notes') {
                 switchView('notes', false);
             }
@@ -780,7 +783,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('popstate', handleRouting);
 
     // Initial routing on load: defaults to home view unless explicit hash #resume or #notes or ?p= is provided
-    const initialHash = window.location.hash.replace('#', '').split('?')[0];
+    const initialHash = window.location.hash.replace('#', '').split('?')[0].split('/')[0];
     const urlParams = new URLSearchParams(window.location.search);
     if (initialHash === 'notes' || urlParams.has('p')) {
         switchView('notes', false, true);
