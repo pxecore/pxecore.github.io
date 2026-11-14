@@ -1730,18 +1730,18 @@
 
 /* Entrance animation on initial load and view switch — targeted to deck so .notes-container does not create an ancestor transform containing block for fixed side TOC */
 #view-notes.site-view-active #notes-deck-view {
-    animation: contentEnter 0.56s var(--ease-velvet) both;
+    animation: contentEnter 0.30s var(--ease-velvet) both;
 }
 
 /* Deck Re-enter when returning from reader to deck */
 #notes-deck-view.is-entering {
-    animation: notesFloatIn 0.54s var(--ease-velvet) both;
+    animation: notesFloatIn 0.28s var(--ease-velvet) both;
 }
 
 /* Card cascade on initial load, deck return, filter, and pagination parts */
 .notes-article-card.is-cascade {
-    animation: notesCascadeDown 0.50s var(--ease-velvet) both;
-    animation-delay: calc(var(--card-idx, 0) * 0.035s);
+    animation: notesCascadeDown 0.28s var(--ease-velvet) both;
+    animation-delay: calc(var(--card-idx, 0) * 0.02s);
 }
 
 .notes-reader {
@@ -1754,11 +1754,11 @@
 }
 
 .notes-reader.is-entering .notes-reader-toolbar {
-    animation: readerToolbarSlide 0.48s var(--ease-velvet) both;
+    animation: readerToolbarSlide 0.26s var(--ease-velvet) both;
 }
 
 .notes-reader.is-entering .notes-reader-card {
-    animation: readerCardExpand 0.56s var(--ease-velvet) 0.04s both;
+    animation: readerCardExpand 0.30s var(--ease-velvet) 0.02s both;
 }
 
 .notes-reader-toolbar {
