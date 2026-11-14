@@ -1,0 +1,653 @@
+/* Resume View */
+#view-resume {
+    position: relative;
+}
+
+.resume-container {
+    max-width: 1080px;
+    width: 100%;
+    margin: 0 auto;
+    padding-top: var(--space-4);
+    padding-bottom: max(var(--space-12), calc(var(--space-8) + var(--safe-bottom)));
+}
+
+.essay-container {
+    max-width: 880px;
+    width: 100%;
+    margin: 0 auto;
+    background: transparent;
+    border: none;
+    padding: 0;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+}
+
+/* 1. Header & Masthead */
+.resume-folio-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+    text-shadow: var(--text-halo);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--border);
+}
+
+.folio-stamp {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.essay-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+}
+
+.essay-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2.6rem, 5.5vw, 3.4rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: var(--text-primary);
+    text-shadow: var(--text-halo);
+    line-height: 1.08;
+    margin: 0;
+    text-wrap: balance;
+}
+
+.essay-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    text-shadow: var(--text-halo);
+    line-height: 1.68;
+    margin: 0;
+    max-width: 680px;
+}
+
+/* 2. Visual Banner */
+
+.essay-banner-plate {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.plate-frame {
+    position: relative;
+    width: 100%;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    background: var(--bg-secondary);
+    box-shadow: var(--shadow);
+}
+
+.essay-banner-img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1424 / 747;
+    max-height: 420px;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+}
+
+/* 3. Biography Content */
+
+.essay-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+}
+
+.resume-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.section-badge-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.76rem;
+    letter-spacing: 0.10em;
+    color: var(--text-secondary);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: var(--space-2);
+}
+
+.section-tag {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.section-meta {
+    opacity: 0.8;
+}
+
+.monograph-prose {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    font-size: 1.02rem;
+    line-height: 1.74;
+    color: var(--text-secondary);
+    max-width: 100%;
+    width: 100%;
+    text-align: left;
+}
+
+.monograph-prose p {
+    margin: 0;
+    text-shadow: var(--text-halo);
+    line-height: 1.74;
+    text-align: left;
+    text-wrap: pretty;
+}
+
+
+/* 6. Platforms & Identities */
+
+.verified-nodes-ledger {
+    padding: var(--space-6);
+    border-radius: var(--radius-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    transition: transform var(--duration-base) var(--ease-out), box-shadow var(--duration-base) var(--ease-out);
+}
+
+.github-portal-card-embedded {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+}
+
+.portal-header-left {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    min-width: 260px;
+    flex: 1;
+}
+
+.github-portal-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    background: var(--btn-bg);
+    border: 1px solid var(--btn-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    font-size: 1.6rem;
+    flex-shrink: 0;
+    box-shadow: inset 0 1px 1px var(--btn-specular), var(--shadow);
+}
+
+.github-portal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.github-portal-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.github-portal-desc {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin: 0;
+}
+
+.github-portal-action {
+    display: flex;
+    align-items: center;
+}
+
+.github-portal-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border-radius: var(--radius-full);
+    font-size: 0.84rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: none;
+}
+
+.glass-divider {
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
+    opacity: 0.5;
+}
+
+.nodes-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.nodes-sub-heading {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+.nodes-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+}
+
+.nodes-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.node-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    background: var(--btn-bg);
+    border: 1px solid var(--btn-border);
+    border-radius: var(--radius-full);
+    color: var(--text-primary) !important;
+    font-size: 0.84rem;
+    font-weight: 600;
+    text-decoration: none !important;
+    border-bottom: none !important;
+    box-shadow: inset 0 1px 1px 0 var(--btn-specular), var(--shadow-pill);
+    transition:
+        background-color var(--duration-base) var(--ease-cloud),
+        border-color var(--duration-base) var(--ease-cloud),
+        color var(--duration-base) var(--ease-cloud),
+        box-shadow var(--duration-base) var(--ease-cloud),
+        transform var(--duration-base) var(--ease-cloud);
+}
+
+.node-pill:hover {
+    background: var(--btn-hover);
+    border-color: var(--btn-border-hover);
+    color: var(--text-primary) !important;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: inset 0 1.5px 1.5px 0 var(--btn-specular-hover), var(--shadow-pill-hover);
+    transition:
+        background-color var(--duration-base) var(--ease-cloud),
+        border-color var(--duration-base) var(--ease-cloud),
+        color var(--duration-base) var(--ease-cloud),
+        box-shadow var(--duration-base) var(--ease-cloud),
+        transform var(--duration-base) var(--ease-spring);
+}
+
+.node-pill:active {
+    transform: translate3d(0, 1px, 0);
+    box-shadow: var(--shadow-pill-pressed);
+    transition: transform var(--duration-instant) var(--ease-out), box-shadow var(--duration-instant) var(--ease-out);
+}
+
+.node-pill i,
+.node-pill svg {
+    color: var(--accent);
+    font-size: 0.95rem;
+    width: 0.95rem;
+    height: 0.95rem;
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+    transition: transform var(--duration-fast) var(--ease-velvet);
+}
+
+.node-pill:hover i,
+.node-pill:hover svg {
+    transform: scale(1.12);
+}
+
+.direct-channel-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
+}
+
+.channel-item {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.channel-k {
+    color: var(--text-tertiary);
+    font-weight: 700;
+    font-size: 0.70rem;
+    letter-spacing: 0.06em;
+}
+
+.channel-v {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.channel-link,
+a.channel-link {
+    color: var(--text-primary) !important;
+    text-decoration: none !important;
+    border-bottom: none !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    transition: color var(--duration-fast) var(--ease-velvet), background-color var(--duration-fast) var(--ease-velvet);
+}
+
+.channel-link:hover,
+a.channel-link:hover {
+    color: var(--accent) !important;
+    text-decoration: none !important;
+    border-bottom: none !important;
+    background: var(--btn-bg);
+}
+
+.channel-link:visited,
+a.channel-link:visited,
+.channel-link:active,
+a.channel-link:active {
+    color: var(--text-primary);
+    text-decoration: none !important;
+    border-bottom: none !important;
+}
+
+.channel-link i {
+    font-size: 0.75rem;
+    color: var(--accent);
+}
+
+.channel-action-btn,
+a.channel-action-btn,
+button.channel-action-btn,
+.discord-inline-copy,
+a.discord-inline-copy,
+button.discord-inline-copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 4px 12px;
+    background: var(--btn-bg);
+    border: 1px solid var(--btn-border);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    color: var(--text-primary) !important;
+    font-weight: 600;
+    text-decoration: none !important;
+    border-bottom: none !important;
+    box-shadow: inset 0 1px 0 var(--btn-specular), var(--shadow-pill);
+    transition:
+        background-color var(--duration-base) var(--ease-cloud),
+        border-color var(--duration-base) var(--ease-cloud),
+        color var(--duration-base) var(--ease-cloud),
+        box-shadow var(--duration-base) var(--ease-cloud),
+        transform var(--duration-base) var(--ease-spring);
+}
+
+.channel-action-btn:hover,
+a.channel-action-btn:hover,
+button.channel-action-btn:hover,
+.discord-inline-copy:hover,
+a.discord-inline-copy:hover,
+button.discord-inline-copy:hover {
+    background: var(--btn-hover);
+    border-color: var(--btn-border-hover);
+    color: var(--text-primary) !important;
+    text-decoration: none !important;
+    border-bottom: none !important;
+    transform: none;
+    box-shadow: var(--shadow-pill), inset 0 1px 0 var(--btn-specular-hover);
+}
+
+.channel-action-btn:visited,
+a.channel-action-btn:visited,
+button.channel-action-btn:visited,
+.discord-inline-copy:visited,
+a.discord-inline-copy:visited,
+button.discord-inline-copy:visited {
+    color: var(--text-primary) !important;
+    text-decoration: none !important;
+    border-bottom: none !important;
+}
+
+.channel-action-btn:active,
+a.channel-action-btn:active,
+button.channel-action-btn:active,
+.discord-inline-copy:active,
+a.discord-inline-copy:active,
+button.discord-inline-copy:active {
+    transform: translateY(1.5px) scale(0.96) !important;
+    box-shadow: var(--shadow-btn-pressed) !important;
+    text-decoration: none !important;
+    border-bottom: none !important;
+    transition: transform var(--duration-instant) var(--ease-fluid), box-shadow var(--duration-instant) var(--ease-fluid) !important;
+}
+
+/* 7. Button Code Copy */
+.homestead-section .section-badge-row {
+    justify-content: space-between;
+    margin-bottom: var(--space-4);
+}
+
+.copy-btn-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--btn-bg);
+    border: 1px solid var(--btn-border);
+    border-radius: var(--radius-sm);
+    padding: 4px 10px;
+    color: var(--text-primary);
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    box-shadow: inset 0 1px 0 0 var(--btn-specular), var(--shadow-btn);
+    transition: background-color var(--duration-base) var(--ease-velvet), border-color var(--duration-base) var(--ease-velvet), color var(--duration-base) var(--ease-velvet), transform var(--duration-instant) var(--ease-velvet);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.copy-btn-inline:hover {
+    background: var(--btn-hover);
+    border-color: var(--btn-border-hover);
+    color: var(--text-primary);
+    transform: none;
+}
+
+.copy-btn-inline:active {
+    transform: translateY(1.5px) scale(0.96) !important;
+    box-shadow: var(--shadow-btn-pressed) !important;
+    transition: transform var(--duration-instant) var(--ease-fluid), box-shadow var(--duration-instant) var(--ease-fluid) !important;
+}
+
+/* 8. 88x31 Badges Marquee */
+
+.resume-footer-badges {
+    margin-top: var(--space-4);
+    width: 100%;
+}
+
+.web-badges-marquee {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+    padding: var(--space-2) 0;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.web-badges-row {
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+    overflow-x: clip;
+    contain: paint;
+    user-select: none;
+}
+
+.web-badges-track {
+    display: flex;
+    flex-shrink: 0;
+    animation: badgeMarqueeLeft 35s linear infinite;
+    will-change: transform;
+}
+
+.web-badges-row[data-dir="right"] .web-badges-track {
+    animation-name: badgeMarqueeRight;
+    animation-duration: 40s;
+}
+
+.web-badges-row:hover .web-badges-track,
+.web-badges-row.is-paused .web-badges-track {
+    animation-play-state: paused;
+}
+
+.web-badges-set {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-right: 10px;
+    flex-shrink: 0;
+}
+
+.web-badges-set img {
+    display: block;
+    height: 31px;
+    width: 88px;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 0;
+    transition: transform var(--duration-fast) var(--ease-velvet), opacity var(--duration-fast) var(--ease-velvet);
+    opacity: 0.88;
+}
+
+.web-badges-set img:hover {
+    transform: scale(1.08);
+    opacity: 1;
+    z-index: 2;
+}
+
+@keyframes badgeMarqueeLeft {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+
+@keyframes badgeMarqueeRight {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0); }
+}
+
+@media (max-width: 768px) {
+    .resume-container {
+        padding-top: var(--space-2);
+        padding-bottom: var(--space-8);
+    }
+
+    .essay-banner-img {
+        max-height: none;
+        aspect-ratio: 1424 / 747;
+        object-position: top center;
+    }
+
+    .direct-channel-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-3);
+    }
+
+    .channel-item {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+}
+
+@media (max-width: 420px) {
+    .resume-folio-topbar {
+        font-size: 0.68rem;
+    }
+
+    .essay-title {
+        font-size: clamp(2rem, 9vw, 2.5rem);
+    }
+
+}
+
+/* Resume view entrance cascade */
+#view-resume.site-view-active .resume-folio-topbar {
+    animation: contentEnter 0.52s var(--ease-velvet) both;
+}
+
+#view-resume.site-view-active .essay-header {
+    animation: contentEnter 0.54s var(--ease-velvet) 0.03s both;
+}
+
+#view-resume.site-view-active .essay-banner-plate {
+    animation: contentEnter 0.58s var(--ease-velvet) 0.06s both;
+}
+
+#view-resume.site-view-active .monograph-prose {
+    animation: contentEnter 0.60s var(--ease-velvet) 0.08s both;
+}
+
+#view-resume.site-view-active .profiles-section {
+    animation: contentEnter 0.62s var(--ease-velvet) 0.10s both;
+}
+
+#view-resume.site-view-active .homestead-section {
+    animation: contentEnter 0.64s var(--ease-velvet) 0.12s both;
+}
+
+#view-resume.site-view-active .resume-footer-badges {
+    animation: contentEnter 0.66s var(--ease-velvet) 0.14s both;
+}
+
+
