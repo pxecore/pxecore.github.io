@@ -81,9 +81,10 @@
             document.head.appendChild(fontLink);
         }
 
-        var hash = (window.location.hash || '').replace('#', '').split('?')[0];
+        var rawHash = (window.location.hash || '').replace('#', '');
+        var hash = rawHash.split('?')[0].split('/')[0];
         var params = new URLSearchParams(window.location.search);
-        if (hash === 'notes' || params.has('p')) {
+        if (hash === 'notes' || rawHash.indexOf('?p=') !== -1 || params.has('p')) {
             root.setAttribute('data-initial-view', 'notes');
         } else if (hash === 'resume') {
             root.setAttribute('data-initial-view', 'resume');
