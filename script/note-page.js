@@ -4,6 +4,57 @@
     var doc = document;
     var root = doc.documentElement;
 
+    // Synchronize saved theme immediately (no inline script required)
+    var THEME_CORE = {
+        dark: { bg: '#0E0D0C', accent: '#D8B278', rgb: '216, 178, 120' },
+        light: { bg: '#E2DBD0', accent: '#84321A', rgb: '132, 50, 26' }
+    };
+    function readSavedNoteTheme() {
+        var t = null;
+        try { t = localStorage.getItem('pxecore_theme') || localStorage.getItem('theme'); } catch (_) {}
+        if (!t) {
+            try { t = sessionStorage.getItem('pxecore_theme') || sessionStorage.getItem('theme'); } catch (_) {}
+        }
+        if (!t && doc.cookie) {
+            try {
+                var m = doc.cookie.match(/(?:^|;\s*)pxecore_theme=([^;]+)/);
+                if (m) t = decodeURIComponent(m[1]);
+            } catch (_) {}
+        }
+        return (t === 'light' || t === 'dark') ? t : null;
+    }
+    var bootTheme = readSavedNoteTheme() || 'dark';
+    var bootCfg = THEME_CORE[bootTheme] || THEME_CORE.dark;
+    root.classList.remove('light', 'dark');
+    root.classList.add(bootTheme);
+    root.style.backgroundColor = bootCfg.bg;
+    root.style.colorScheme = bootTheme;
+    root.style.setProperty('--accent', bootCfg.accent);
+    root.style.setProperty('--accent-rgb', bootCfg.rgb);
+
+    // Route human visitors directly into the main site's Notes Reader view
+    // while keeping static HTML intact for social link-preview crawlers and notes-sync fallback.
+    try {
+        var ua = (navigator.userAgent || '').toLowerCase();
+        var isBot = /bot|crawl|spider|slurp|facebookexternalhit|discordbot|twitterbot|telegrambot|whatsapp|linkedinbot|slackbot|embedly|quora|pinterest|vkshare/i.test(ua);
+        var params = new URLSearchParams(window.location.search || '');
+        if (!isBot && params.get('static') !== '1') {
+            var pathParts = (window.location.pathname || '').replace(/\/index\.html$/, '').replace(/\/+$/, '').split('/').filter(Boolean);
+            var notesIdx = pathParts.lastIndexOf('notes');
+            var slug = (notesIdx !== -1 && pathParts[notesIdx + 1]) ? pathParts[notesIdx + 1] : (pathParts[pathParts.length - 1] || '');
+            if (slug && slug !== 'notes') {
+                var rootPrefix = notesIdx > 0 ? '/' + pathParts.slice(0, notesIdx).join('/') + '/' : '/';
+                if (window.location.protocol === 'file:') {
+                    window.location.replace('../../index.html#notes?p=' + encodeURIComponent(slug));
+                } else {
+                    window.location.replace(rootPrefix + '#notes?p=' + encodeURIComponent(slug));
+                }
+                return;
+            }
+        }
+    } catch (_) {}
+
+    function initNotePageDom() {
     function copyText(text) {
         if (navigator.clipboard && window.isSecureContext && typeof navigator.clipboard.writeText === 'function') {
             return navigator.clipboard.writeText(text).catch(function () { return execCopy(text); });
@@ -99,27 +150,9 @@
     }
 
     // Theme toggle (same storage key, palette, and View Transitions reveal as the main site)
-    var THEME_CORE = {
-        dark: { bg: '#0E0D0C', accent: '#D8B278', rgb: '216, 178, 120' },
-        light: { bg: '#E2DBD0', accent: '#84321A', rgb: '132, 50, 26' }
-    };
     var toggle = doc.getElementById('note-theme');
     function label() {
         if (toggle) toggle.textContent = root.classList.contains('light') ? 'Dark' : 'Light';
-    }
-    function readSavedNoteTheme() {
-        var t = null;
-        try { t = localStorage.getItem('pxecore_theme') || localStorage.getItem('theme'); } catch (_) {}
-        if (!t) {
-            try { t = sessionStorage.getItem('pxecore_theme') || sessionStorage.getItem('theme'); } catch (_) {}
-        }
-        if (!t && doc.cookie) {
-            try {
-                var m = doc.cookie.match(/(?:^|;\s*)pxecore_theme=([^;]+)/);
-                if (m) t = decodeURIComponent(m[1]);
-            } catch (_) {}
-        }
-        return (t === 'light' || t === 'dark') ? t : null;
     }
     function applyNoteTheme(next) {
         var cfg = THEME_CORE[next] || THEME_CORE.dark;
@@ -181,15 +214,18 @@
     if (share) {
         share.addEventListener('click', function () {
             var url = location.href;
-            if (navigator.share) {
-                navigator.share({ title: doc.title, url: url }).catch(function () {});
-            } else {
-                copyText(url).then(function () {
-                    share.textContent = 'Copied';
-                    setTimeout(function () { share.textContent = 'Share'; }, 1800);
-                }, function () {});
-            }
+            copyText(url).then(function () {
+                share.textContent = 'Copied';
+                setTimeout(function () { share.textContent = 'Share'; }, 1800);
+            }, function () {});
         });
+    }
+    }
+
+    if (doc.readyState === 'loading') {
+        doc.addEventListener('DOMContentLoaded', initNotePageDom);
+    } else {
+        initNotePageDom();
     }
 })();
 
