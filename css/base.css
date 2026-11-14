@@ -185,10 +185,10 @@ img, video { max-width: 100%; height: auto; display: block; }
     --ease-velvet:      cubic-bezier(0.22, 1, 0.36, 1);
     --ease-spring:      cubic-bezier(0.34, 1.25, 0.64, 1);
     --ease-out:         cubic-bezier(0.16, 1, 0.3, 1);
-    --duration-instant: 120ms;
-    --duration-fast:    200ms;
-    --duration-base:    280ms;
-    --duration-smooth:  380ms;
+    --duration-instant: 90ms;
+    --duration-fast:    150ms;
+    --duration-base:    210ms;
+    --duration-smooth:  280ms;
     --card-idx:         0;
     --logo-rx:          0deg;
     --logo-ry:          0deg;
@@ -567,14 +567,14 @@ html.theme-in-transition .notes-center-deck,
 html.theme-in-transition .notes-article-card,
 html.theme-in-transition .resume-container {
     transition:
-        background-color 480ms var(--ease-velvet),
-        border-color 480ms var(--ease-velvet),
-        box-shadow 480ms var(--ease-velvet),
-        color 480ms var(--ease-velvet) !important;
+        background-color 200ms var(--ease-velvet),
+        border-color 200ms var(--ease-velvet),
+        box-shadow 200ms var(--ease-velvet),
+        color 200ms var(--ease-velvet) !important;
 }
 
 html.theme-in-transition .site-backdrop-layer {
-    transition: opacity 480ms var(--ease-velvet) !important;
+    transition: opacity 200ms var(--ease-velvet) !important;
 }
 
 html.theme-in-transition .site-view[hidden] {
@@ -701,16 +701,19 @@ textarea {
 
 .site-backdrop {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
     width: 100%;
     height: 100vh;
-    height: 100dvh;
-    min-height: 100%;
+    height: 100lvh;
     min-width: 100%;
     z-index: 0;
     pointer-events: none;
     background-color: var(--bg-primary);
     overflow: hidden;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
 }
 
 .site-backdrop-layer {
@@ -1086,18 +1089,24 @@ html.theme-instant-sync .site-backdrop-light {
 
 #starfield-canvas {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
+    height: 100lvh;
     z-index: 1;
     pointer-events: none;
 }
 
 #particles-js {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
+    height: 100lvh;
     z-index: 1;
     pointer-events: none;
     transition: opacity var(--duration-base) var(--ease-velvet);
@@ -1191,7 +1200,7 @@ img, picture, svg, canvas {
     z-index: 100;
     width: 100%;
     opacity: 1;
-    animation: headerCascadeDown 0.58s var(--ease-velvet) both;
+    animation: headerCascadeDown 0.34s var(--ease-velvet) both;
 }
 
 .header-inner {
@@ -1462,7 +1471,7 @@ html:not(.light) .theme-btn .theme-icon-light {
 @keyframes contentEnter {
     0% {
         opacity: 0;
-        transform: translate3d(0, -24px, 0);
+        transform: translate3d(0, -12px, 0);
     }
     100% {
         opacity: 1;
