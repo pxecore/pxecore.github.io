@@ -60,13 +60,18 @@
 
         .site-backdrop {
             position: fixed;
-            inset: 0;
+            top: 0;
+            left: 0;
+            right: 0;
             width: 100%;
-            height: 100%;
+            height: 100vh;
+            height: 100lvh;
             z-index: 0;
             pointer-events: none;
             overflow: hidden;
             background-color: #0E0D0C;
+            transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
         }
 
         html.light .site-backdrop {
@@ -108,6 +113,7 @@
 
     <meta name="application-name" content="pxecore">
     <meta name="apple-mobile-web-app-title" content="pxecore">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
@@ -440,11 +446,13 @@
                             </div>
                             <div class="terminal-input-row" id="terminal-input-row">
                                 <span class="prompt notranslate" translate="no">pxecore@system:~$</span>
-                                <span class="terminal-command-entry"><span class="terminal-input-display"
-                                        id="terminal-input-display"></span><span class="cursor"
+                                <span class="terminal-command-entry notranslate" translate="no"><span class="terminal-input-display notranslate"
+                                        id="terminal-input-display" translate="no"></span><span class="cursor"
                                         id="terminal-cursor"></span></span>
-                                <input type="text" id="terminal-hidden-input" class="terminal-hidden-input"
-                                    autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                                <input type="text" id="terminal-hidden-input" class="terminal-hidden-input notranslate"
+                                    translate="no" inputmode="url" enterkeyhint="send"
+                                    autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
+                                    data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false"
                                     aria-label="Terminal command input" aria-describedby="terminal-history"
                                     maxlength="256">
                             </div>
