@@ -1,0 +1,25 @@
+IDENTIFIER: pxecore
+GPG FP    : 1CA1 7F13 8778 193A 6E25 BB4E D6FF C8C1 71CF AD46
+
+[RESOURCES]
+- Mail      : contact@pxecore.anonaddy.com
+- Github    : github.com/pxecore
+- X         : x.com/pxecore
+- Youtube   : https://www.youtube.com/@pxecore
+
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mDMEauCIRBYJKwYBBAHaRw8BAQdAsCgNM/a2NPfNhhlVylq5ErxXVRFKtP5SL/Gd
+oOXwQP60NHB4ZWNvcmUgPDE3NTYzOTgxOCtweGVjb3JlQHVzZXJzLm5vcmVwbHku
+Z2l0aHViLmNvbT6IkAQTFgoAOBYhBByhfxOHeBk6biW7Ttb/yMFxz61GBQJq4IhE
+AhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJENb/yMFxz61GXVEA/0S4XQtV
+MmGWhiTxYA2BEykb1EfcM/4eb7nGAs32yLufAQCCyglbCbPq4Bnph2e+Av5k6Mcd
+EdC3MH/MhmozPbh8Brg4BGrgiEQSCisGAQQBl1UBBQEBB0AB/Z+I2qK7oWwXLlmV
+Y8owDYJWKLC5b7G5gNYubzkUPAMBCAeIeAQYFgoAIBYhBByhfxOHeBk6biW7Ttb/
+yMFxz61GBQJq4IhEAhsMAAoJENb/yMFxz61G7F8A/2yk0ybaQ7U/uLvEF9lu7uOl
+t9fbOrX6afwhDYAwqAuNAP9X1Gf33jUorfKt8PJ4liWz67s33eL34T6NyyxeaG/q
+Ag==
+=9/TT
+-----END PGP PUBLIC KEY BLOCK-----
+
+

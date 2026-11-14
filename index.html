@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" style="background-color: #0E0D0C; color-scheme: dark;">
+<!--
+          .--.
+         |o_o |
+         |:_/ |
+        //   \ \
+       (|     | )
+      /'\_   _/`\
+      \___)=(___/
+
+-->
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' file:; script-src 'self' file:; style-src 'self' file: 'unsafe-inline'; font-src 'self' file: data:; img-src 'self' file: https: data: blob:; connect-src 'self' file: https://api.github.com https://raw.githubusercontent.com; media-src 'self' file: data:; object-src 'none'; form-action 'none'; base-uri 'self';">
+    <meta http-equiv="Permissions-Policy"
+        content="camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()">
+    <meta name="description"
+        content="Personal site and research notes of pxecore — student, exploring systems and security.">
+    <meta name="keywords" content="pxecore, systems, reverse engineering, cybersecurity, malware analysis, notes">
+    <meta name="author" content="pxecore">
+    <meta name="robots" content="index, follow, noarchive">
+    <meta name="googlebot" content="index, follow, noarchive">
+    <meta name="bingbot" content="index, follow, noarchive">
+    <meta name="ia_archiver" content="noindex, nofollow, noarchive">
+    <meta name="color-scheme" content="dark light">
+    <meta name="theme-color" id="meta-theme-color" content="#0E0D0C">
+
+    <script src="script/boot-theme.js"></script>
+    <style>
+        html,
+        body {
+            background-color: #0E0D0C;
+            color-scheme: dark;
+            color: #F7F3EC;
+            margin: 0;
+            padding: 0;
+        }
+
+        html.dark,
+        html.dark body {
+            background-color: #0E0D0C;
+            color-scheme: dark;
+            color: #F7F3EC;
+        }
+
+        html.light,
+        html.light body {
+            background-color: #E2DBD0;
+            color-scheme: light;
+            color: #140D0A;
+        }
+
+        .site-backdrop {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            background-color: #0E0D0C;
+        }
+
+        html.light .site-backdrop {
+            background-color: #E2DBD0;
+        }
+    </style>
+
+    <link rel="canonical" href="https://pxecore.github.io/">
+    <link rel="alternate" type="application/rss+xml" title="pxecore notes" href="feed.xml">
+
+    <link rel="stylesheet" href="fonts/outfit.css">
+    <link rel="stylesheet" href="fonts/fontawesome.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/resume.css">
+    <link rel="stylesheet" href="css/notes.css">
+
+    <meta property="og:site_name" content="pxecore">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pxecore.github.io/">
+    <meta property="og:title" content="pxecore">
+    <meta property="og:description"
+        content="Personal site and research notes of pxecore — student, exploring systems and security.">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="https://pxecore.github.io/media/og.webp">
+    <meta property="og:image:secure_url" content="https://pxecore.github.io/media/og.webp">
+    <meta property="og:image:type" content="image/webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="675">
+    <meta property="og:image:alt" content="pxecore personal website and research notes">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@pxecore">
+    <meta name="twitter:creator" content="@pxecore">
+    <meta name="twitter:title" content="pxecore">
+    <meta name="twitter:description"
+        content="Personal site and research notes of pxecore — student, exploring systems and security.">
+    <meta name="twitter:image" content="https://pxecore.github.io/media/og.webp">
+
+    <meta name="application-name" content="pxecore">
+    <meta name="apple-mobile-web-app-title" content="pxecore">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>pxecore</title>
+
+    <link rel="icon" href="media/avatar.webp" type="image/webp">
+    <link rel="apple-touch-icon" href="media/avatar.webp">
+
+
+
+    <script src="script/hardware-profiler.js" defer></script>
+    <script src="script/theme-palettes.js" defer></script>
+
+    <script src="script/particles.min.js" defer></script>
+    <script src="script/particles-bridge.js" defer></script>
+    <script src="script/audio-player.js" defer></script>
+    <script src="script/effects-cosmos.js" defer></script>
+    <script src="script/effects-foliage.js" defer></script>
+    <script src="script/effects.js" defer></script>
+    <script src="script/chroma-engine.js" defer></script>
+    <script src="script/notes-markdown.js" defer></script>
+    <script src="script/notes-graph.js" defer></script>
+    <script src="script/notes-sync.js" defer></script>
+    <script src="script/notes.js" defer></script>
+    <script src="script/terminal.js" defer></script>
+    <script src="script/main.js" defer></script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://pxecore.github.io/#person",
+          "name": "pxecore",
+          "alternateName": ["PxeCore", "pxe", "Pxe"],
+          "url": "https://pxecore.github.io/",
+          "image": "https://pxecore.github.io/media/avatar.webp",
+          "jobTitle": "Student & Researcher",
+          "description": "Student and internet wanderer exploring systems, reverse engineering, and security.",
+          "sameAs": [
+            "https://github.com/pxecore",
+            "https://x.com/pxecore",
+            "https://tryhackme.com/p/pxecore",
+            "https://www.youtube.com/@pxecore"
+          ],
+          "knowsAbout": [
+            "Computer Science",
+            "Systems Architecture",
+            "Reverse Engineering",
+            "Cybersecurity",
+            "Malware Analysis",
+            "Linux"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://pxecore.github.io/#website",
+          "url": "https://pxecore.github.io/",
+          "name": "pxecore",
+          "description": "Personal website, technical research logbook, and portfolio of pxecore.",
+          "publisher": {
+            "@id": "https://pxecore.github.io/#person"
+          },
+          "inLanguage": "en"
+        }
+      ]
+    }
+    </script>
+</head>
+
+<body>
+    <a href="#view-home" class="sr-only sr-only-focusable" id="skip-to-content">Skip to main content</a>
+
+    <div class="site-reading-progress" id="site-reading-progress" aria-hidden="true">
+        <div class="site-reading-progress-bar" id="notes-reader-progress-bar"></div>
+    </div>
+
+    <div class="site-backdrop" id="site-backdrop" aria-hidden="true">
+        <div class="site-backdrop-layer site-backdrop-dark" aria-hidden="true"></div>
+        <div class="site-backdrop-layer site-backdrop-light" aria-hidden="true"></div>
+        <div class="site-backdrop-scrim" aria-hidden="true"></div>
+    </div>
+
+    <div id="particles-js" aria-hidden="true"></div>
+
+    <header class="header">
+        <div class="header-inner">
+            <div class="header-left">
+                <button type="button" class="header-logo" id="brand-mark" translate="no" aria-label="pxecore">
+                    <span class="logo-stage" aria-hidden="true">
+                        <svg class="logo-mark" viewBox="0 0 1788 1823" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor">
+                            <path pathLength="1000"
+                                d="M568.0 708Q589.0 691 604.0 706.0Q619.0 721 593.0 748Q553.0 784 501.0 795.5Q449.0 807 396.0 808Q236.0 812 130.0 712.5Q24.0 613 24.0 441.5Q24.0 270 157.0 147.0Q290.0 24 518.0 24Q656.0 27 750.0 93.0Q844.0 159 897.0 249Q904.0 263 918.0 255L1351.0 30Q1380.0 17 1393.0 33.5Q1406.0 50 1386.0 66Q1315.0 117 1367.5 207.5Q1420.0 298 1539.0 394Q1776.0 590 1763.5 793.0Q1751.0 996 1616.0 1182Q1462.0 1391 1312.0 1459.5Q1162.0 1528 955.0 1413Q947.0 1408 939.5 1412.0Q932.0 1416 931.0 1424Q916.0 1550 879.5 1635.0Q843.0 1720 768.0 1791Q754.0 1804 742.0 1795.0Q730.0 1786 740.0 1769Q817.0 1608 791.0 1338Q791.0 1329 781.0 1325Q581.0 1247 482.0 1343Q465.0 1360 449.5 1348.5Q434.0 1337 448.0 1318Q604.0 1115 752.0 1103Q760.0 1102 763.5 1098.0Q767.0 1094 767.0 1085Q755.0 956 742.5 827.5Q730.0 699 718.0 570Q703.0 424 619.0 317.5Q535.0 211 410.0 209Q276.0 202 184.0 274.5Q92.0 347 92.0 478.0Q92.0 609 176.5 685.0Q261.0 761 402.0 761Q503.0 763 568.0 708ZM931.0 322Q948.0 368 954.5 414.0Q961.0 460 963.0 501Q969.0 714 960.5 862.0Q952.0 1010 949.0 1133Q949.0 1145 958.0 1148Q1007.0 1170 1065.0 1204Q1268.0 1321 1387.5 1297.0Q1507.0 1273 1579.0 1159Q1737.0 909 1382.0 622Q1261.0 526 1178.5 437.0Q1096.0 348 1090.0 250Q1090.0 238 1082.0 235.0Q1074.0 232 1066.0 236L939.0 302Q925.0 309 931.0 322Z" />
+                        </svg>
+                    </span>
+                </button>
+                <nav class="header-nav" aria-label="Main Navigation">
+                    <button type="button" class="header-btn header-nav-btn" data-tab="home" id="tab-home">Home</button>
+                    <button type="button" class="header-btn header-nav-btn" data-tab="notes"
+                        id="tab-notes">Notes</button>
+                    <button type="button" class="header-btn header-nav-btn" data-tab="resume"
+                        id="tab-resume">Resume</button>
+                </nav>
+            </div>
+            <div class="header-right">
+                <button type="button" id="theme-toggle" class="header-btn theme-btn" aria-label="Switch to light theme"
+                    aria-pressed="false">
+                    <svg class="theme-icon theme-icon-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                    <svg class="theme-icon theme-icon-light" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="4.2" />
+                        <path
+                            d="M12 2.5v2.2M12 19.3v2.2M4.93 4.93l1.56 1.56M17.51 17.51l1.56 1.56M2.5 12h2.2M19.3 12h2.2M4.93 19.07l1.56-1.56M17.51 6.49l1.56-1.56" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <noscript>
+        <style>
+            .site-view[hidden] {
+                display: block !important;
+                margin-top: var(--space-8);
+                border-top: 1px solid var(--border);
+                padding-top: var(--space-8);
+            }
+
+            .noscript-banner {
+                position: relative;
+                z-index: 100;
+                text-align: center;
+                padding: 10px 16px;
+                background: var(--bg-elevated);
+                color: var(--accent);
+                font-family: var(--font-mono);
+                font-size: 0.82rem;
+                letter-spacing: 0.5px;
+                border-bottom: 1px solid var(--border-strong);
+            }
+        </style>
+        <div class="noscript-banner">
+            JavaScript is disabled. Showing Home, Resume, and Notes in static mode.
+        </div>
+    </noscript>
+
+    <main class="main-content">
+        <section class="site-view site-view-active" id="view-home" aria-label="Home">
+            <div class="container">
+                <div class="content">
+                    <div class="left-section">
+                        <div class="about">
+                            <h1 class="glitch pixel-text notranslate" data-text="pxecore" translate="no">
+                                <span class="pixel-char" data-char="p">p</span><span class="pixel-char"
+                                    data-char="x">x</span><span class="pixel-char" data-char="e">e</span><span
+                                    class="pixel-char" data-char="c">c</span><span class="pixel-char"
+                                    data-char="o">o</span><span class="pixel-char" data-char="r">r</span><span
+                                    class="pixel-char" data-char="e">e</span>
+                            </h1>
+                            <div class="hero-subtext">
+                                <span class="line"></span>
+                                <p>I wanna be a machine.</p>
+                            </div>
+                            <div class="hi-text">Hey.</div>
+                            <p>
+                                Well, think of this as my home on the internet — a spot for my notes, small tools, and
+                                whatever I happen to be tinkering with. Reach me via email, Session, or Signal.<br><span
+                                    class="highlight">All content provided is for educational purposes only. The user is
+                                    solely responsible for any misuse of the content.</span>
+                            </p>
+
+                            <div class="tech-stack" aria-label="Technical skills">
+                                <button type="button" class="tech-item" data-tooltip="Research"
+                                    aria-label="Research skill" data-cmd="skills research">
+                                    <i class="fas fa-search" aria-hidden="true"></i>
+                                </button>
+                                <button type="button" class="tech-item" data-tooltip="OSINT" aria-label="OSINT skill"
+                                    data-cmd="skills osint">
+                                    <i class="fas fa-user-secret" aria-hidden="true"></i>
+                                </button>
+                                <button type="button" class="tech-item" data-tooltip="OPSEC" aria-label="OPSEC skill"
+                                    data-cmd="skills opsec">
+                                    <i class="fas fa-user-shield" aria-hidden="true"></i>
+                                </button>
+                                <button type="button" class="tech-item" data-tooltip="Reverse Engineering"
+                                    aria-label="Reverse Engineering skill" data-cmd="skills re">
+                                    <i class="fas fa-sync-alt" aria-hidden="true"></i>
+                                </button>
+                                <button type="button" class="tech-item" data-tooltip="Computer Science"
+                                    aria-label="Computer Science skill" data-cmd="skills cs">
+                                    <i class="fas fa-microchip" aria-hidden="true"></i>
+                                </button>
+                            </div>
+
+                            <div class="contact-buttons">
+                                <a href="mailto:contact@pxecore.anonaddy.com" class="contact-btn"
+                                    aria-label="Send me an email at contact@pxecore.anonaddy.com">
+                                    <svg viewBox="0 0 512 512" fill="currentColor" aria-hidden="true">
+                                        <path
+                                            d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z" />
+                                    </svg>
+                                    <span>Contact Me</span>
+                                </a>
+                                <button type="button" class="contact-btn session-btn notranslate" translate="no"
+                                    aria-label="Copy my Session ID to clipboard">
+                                    <span class="session-icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                        </svg>
+                                    </span>
+                                    <span>Session</span>
+                                </button>
+                                <a href="https://signal.me/#eu/KIW3VH5Yp5zs2A1kbXV9mDJgS94QUkNK5sWyIhqK1dZV9uEza1dIHpcnYOniAXoe"
+                                    target="_blank" rel="noopener noreferrer" class="contact-btn" translate="no"
+                                    aria-label="Contact me on Signal (Opens in new tab)">
+                                    <svg viewBox="0 0 512 512" fill="currentColor" aria-hidden="true">
+                                        <path
+                                            d="M256 32a224 224 0 1 1 0 448 224 224 0 1 1 0-448zm0 272a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm-96 0a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm192 0a48 48 0 1 0 0-96 48 48 0 1 0 0 96z" />
+                                    </svg>
+                                    <span>Signal</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="right-section">
+                        <div class="profile-card">
+                            <div class="card-header" aria-label="Profile banner">
+                                <div class="site-harmony-banner" aria-hidden="true"></div>
+                                <img src="media/avatar.webp" alt="PxeCore - Cybersecurity Researcher Avatar"
+                                    class="profile-img" loading="eager" decoding="async" width="76" height="76">
+                            </div>
+                            <div class="card-body">
+                                <div class="profile-info">
+                                    <h2 translate="no">Pxe/Core</h2>
+                                    <div class="profile-meta">
+                                        <span class="badge">Researcher</span>
+                                        <span class="badge">Student</span>
+                                    </div>
+                                    <div class="profile-action">
+                                        <a href="404.html" class="profile-btn" aria-label="Open 404 page">404</a>
+                                    </div>
+                                </div>
+
+                                <button type="button" class="audio-vocalizer" id="audio-vocalizer"
+                                    aria-label="Play or pause music">
+                                    <div class="vocalizer-play-btn">
+                                        <svg viewBox="0 0 448 512" width="1em" height="1em" fill="currentColor"
+                                            aria-hidden="true">
+                                            <path
+                                                d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L448 256 73 39z" />
+                                        </svg>
+                                    </div>
+                                    <div class="vocalizer-bars">
+                                        <div class="vocalizer-bar"></div>
+                                        <div class="vocalizer-bar"></div>
+                                        <div class="vocalizer-bar"></div>
+                                        <div class="vocalizer-bar"></div>
+                                        <div class="vocalizer-bar"></div>
+                                        <div class="vocalizer-bar"></div>
+                                        <div class="vocalizer-bar"></div>
+                                        <div class="vocalizer-bar"></div>
+                                        <div class="vocalizer-bar"></div>
+                                        <div class="vocalizer-bar"></div>
+                                    </div>
+                                </button>
+
+                                <div class="interests" translate="no">
+                                    <h3>Interests</h3>
+                                    <div class="interest-tags">
+                                        <span translate="no">Cyber Security</span>
+                                        <span translate="no">Malware</span>
+                                        <span translate="no">Computer Science</span>
+                                    </div>
+                                </div>
+
+                                <div class="social-links">
+                                    <a href="https://github.com/pxecore" target="_blank" rel="noopener noreferrer"
+                                        class="social-link" aria-label="GitHub">
+                                        <i class="fab fa-github" aria-hidden="true"></i>
+                                    </a>
+                                    <a href="https://x.com/pxecore" target="_blank" rel="noopener noreferrer"
+                                        class="social-link" aria-label="X (Twitter)">
+                                        <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
+                                    </a>
+                                    <a href="https://www.youtube.com/@pxecore" target="_blank" rel="noopener noreferrer"
+                                        class="social-link" aria-label="YouTube">
+                                        <i class="fab fa-youtube" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="terminal-container">
+                    <div class="terminal" role="region" aria-label="Terminal Display" id="interactive-terminal">
+                        <div class="terminal-header">
+                            <div class="terminal-controls">
+                                <button type="button" class="terminal-btn red" id="terminal-btn-red"
+                                    aria-label="Clear terminal" title="Clear (cls)"></button>
+                                <button type="button" class="terminal-btn yellow" id="terminal-btn-yellow"
+                                    aria-label="Show help" title="Help"></button>
+                                <button type="button" class="terminal-btn green" id="terminal-btn-green"
+                                    aria-label="Run fastfetch" title="Run fastfetch"></button>
+                            </div>
+                        </div>
+                        <div class="terminal-body" id="terminal-body">
+                            <div id="terminal-history" role="log" aria-live="polite" aria-atomic="false">
+                                <p class="terminal-text"><span class="prompt notranslate"
+                                        translate="no">pxecore@system:~$</span>
+                                    <span class="command notranslate" translate="no">date</span>
+                                </p>
+                                <p class="terminal-output" id="static-date"></p>
+                                <p class="terminal-text"><span class="prompt notranslate"
+                                        translate="no">pxecore@system:~$</span>
+                                    <span class="command notranslate" translate="no">cat notice.txt</span>
+                                </p>
+                                <p class="terminal-output">Type <span class="terminal-cmd-highlight notranslate"
+                                        translate="no">help</span> for commands, or view <a href="ident.txt"
+                                        target="_blank" rel="noopener noreferrer" class="terminal-link notranslate"
+                                        translate="no">ident.txt</a>.</p>
+                            </div>
+                            <div class="terminal-input-row" id="terminal-input-row">
+                                <span class="prompt notranslate" translate="no">pxecore@system:~$</span>
+                                <span class="terminal-command-entry"><span class="terminal-input-display"
+                                        id="terminal-input-display"></span><span class="cursor"
+                                        id="terminal-cursor"></span></span>
+                                <input type="text" id="terminal-hidden-input" class="terminal-hidden-input"
+                                    autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                                    aria-label="Terminal command input" aria-describedby="terminal-history"
+                                    maxlength="256">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="site-view" id="view-resume" aria-label="Resume" hidden>
+            <div class="container resume-container">
+
+                <article class="essay-container">
+                    <div class="resume-folio-topbar font-mono">
+                        <span class="folio-stamp">[ABOUT ME]</span>
+                        <span class="folio-loc">SAFE PLACE</span>
+                    </div>
+
+                    <header class="essay-header">
+                        <div class="essay-title-group">
+                            <h1 class="essay-title">hey, i'm pxecore</h1>
+                            <p class="essay-subtitle">
+                                i spend most of my time learning by researching and experimenting with things i'm curious
+                                about. i share whatever interests me in notes — this site serves as a hub for me.
+                            </p>
+                        </div>
+                    </header>
+
+                    <figure class="essay-banner-plate">
+                        <div class="plate-frame">
+                            <img src="media/og.webp" alt="" class="essay-banner-img"
+                                loading="lazy" decoding="async" width="1200" height="675">
+                        </div>
+                    </figure>
+
+                    <div class="essay-body">
+                        <div class="monograph-prose">
+                            <p>
+                                just a small corner to keep my notes, socials, and projects together in one place.
+                            </p>
+                            <p>
+                                these days i spend most of my time at home studying for the university entrance exam. in
+                                my free time, you can find me on twitter.
+                            </p>
+                            <p>
+                                outside of studying, i'm interested in systems, siem platforms, computer science, and
+                                cybersecurity. i don't have any grand ambitions right now — i'm just going at my own
+                                pace in my own corner, and once the exam is over, i'll start filling this place up.
+                            </p>
+                            <p>
+                                that's about it. feel free to look around, read my notes, or reach out if you want to
+                                talk.
+                            </p>
+                        </div>
+
+                        <section class="resume-block profiles-section">
+                            <div class="section-badge-row font-mono">
+                                <span class="section-tag">NETWORKS</span>
+                                <span class="section-meta">WHERE TO FIND ME</span>
+                            </div>
+                            <div class="verified-nodes-ledger">
+                                <div class="github-portal-card-embedded">
+                                    <div class="portal-header-left">
+                                        <div class="github-portal-icon" aria-hidden="true">
+                                            <i class="fa-brands fa-github"></i>
+                                        </div>
+                                        <div class="github-portal-content">
+                                            <h3 class="github-portal-title">Projects & Repositories</h3>
+                                            <p class="github-portal-desc">
+                                                Open-source tools, personal projects, experiments, and code.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="github-portal-action">
+                                        <a href="https://github.com/pxecore?tab=repositories" target="_blank"
+                                            rel="noopener noreferrer" class="github-portal-btn">
+                                            <span>Explore Repos</span>
+                                            <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="glass-divider" aria-hidden="true"></div>
+
+                                <div class="nodes-section">
+                                    <div class="nodes-sub-heading font-mono">
+                                        <span class="nodes-badge-dot" aria-hidden="true"></span>
+                                        <span>PLATFORMS</span>
+                                    </div>
+
+                                    <div class="nodes-grid notranslate" translate="no">
+                                        <a href="https://youtube.com/@pxecore" target="_blank" rel="noopener noreferrer"
+                                            class="node-pill notranslate" translate="no"><i
+                                                class="fa-brands fa-youtube"></i> <span>YouTube</span></a>
+                                        <a href="https://x.com/pxecore" target="_blank" rel="noopener noreferrer"
+                                            class="node-pill notranslate" translate="no"><i
+                                                class="fa-brands fa-x-twitter"></i> <span>X (Twitter)</span></a>
+                                        <a href="https://github.com/pxecore" target="_blank" rel="noopener noreferrer"
+                                            class="node-pill notranslate" translate="no"><i
+                                                class="fa-brands fa-github"></i> <span>GitHub</span></a>
+                                        <a href="https://g.dev/pxecore" target="_blank" rel="noopener noreferrer"
+                                            class="node-pill notranslate" translate="no"><i
+                                                class="fa-brands fa-google"></i> <span>Google Dev</span></a>
+                                        <a href="https://leetcode.com/u/pxecore/" target="_blank"
+                                            rel="noopener noreferrer" class="node-pill notranslate" translate="no"><svg
+                                                class="node-icon-svg" viewBox="0 0 24 24" width="1em" height="1em"
+                                                fill="currentColor" aria-hidden="true">
+                                                <path
+                                                    d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.38 1.38 0 0 0-1.951-.003l-2.396 2.392a3.32 3.32 0 0 1-4.757.074l-.04-.039-4.277-4.193a3.3 3.3 0 0 1-.72-1.026 3.1 3.1 0 0 1-.21-.611 3.336 3.336 0 0 1-.03-1.372 3.195 3.195 0 0 1 .374-1.129 3.394 3.394 0 0 1 .773-1.026l3.854-4.126 5.356-5.788a1.38 1.38 0 0 0-.022-1.95 1.37 1.37 0 0 0-.97-.414Zm-4.957 14.5a1.378 1.378 0 0 0-.977 2.35l5.962 5.965a1.378 1.378 0 1 0 1.95-1.95l-5.961-5.966a1.374 1.374 0 0 0-.974-.399Z" />
+                                            </svg> <span>LeetCode</span></a>
+                                        <a href="https://www.hackerrank.com/profile/pxecore" target="_blank"
+                                            rel="noopener noreferrer" class="node-pill notranslate" translate="no"><i
+                                                class="fa-brands fa-hackerrank"></i> <span>HackerRank</span></a>
+                                        <a href="https://huggingface.co/Pxecore" target="_blank"
+                                            rel="noopener noreferrer" class="node-pill notranslate" translate="no"><i
+                                                class="fa-solid fa-face-smile"></i> <span>HuggingFace</span></a>
+                                        <a href="https://news.ycombinator.com/user?id=pxecore" target="_blank"
+                                            rel="noopener noreferrer" class="node-pill notranslate" translate="no"><i
+                                                class="fa-brands fa-y-combinator"></i> <span>Hacker News</span></a>
+                                        <a href="https://tryhackme.com/p/pxecore" target="_blank"
+                                            rel="noopener noreferrer" class="node-pill notranslate" translate="no"><i
+                                                class="fa-solid fa-flag"></i> <span>TryHackMe</span></a>
+                                        <a href="https://hackerone.com/pxecore" target="_blank"
+                                            rel="noopener noreferrer" class="node-pill notranslate" translate="no"><i
+                                                class="fa-solid fa-crosshairs"></i> <span>HackerOne</span></a>
+                                        <a href="https://bugcrowd.com/h/Pxecore" target="_blank"
+                                            rel="noopener noreferrer" class="node-pill notranslate" translate="no"><i
+                                                class="fa-solid fa-shield-virus"></i> <span>Bugcrowd</span></a>
+                                        <a href="https://bughunters.google.com/profile/c435c089-543e-4449-9d9b-05179f6bcb0a"
+                                            target="_blank" rel="noopener noreferrer" class="node-pill notranslate"
+                                            translate="no"><i class="fa-solid fa-bug"></i> <span>Google VRP</span></a>
+                                    </div>
+                                </div>
+
+                                <div class="direct-channel-footer font-mono">
+                                    <div class="channel-item">
+                                        <span class="channel-k">DIRECT CHAT</span>
+                                        <button type="button" class="channel-action-btn discord-inline-copy notranslate"
+                                            translate="no" id="copy-discord-btn" title="Click to copy Discord handle"
+                                            aria-label="Copy Discord handle"><i class="fa-brands fa-discord"></i>
+                                            pxecore</button>
+                                        <a href="https://signal.me/#eu/KIW3VH5Yp5zs2A1kbXV9mDJgS94QUkNK5sWyIhqK1dZV9uEza1dIHpcnYOniAXoe"
+                                            target="_blank" rel="noopener noreferrer"
+                                            class="channel-action-btn notranslate" translate="no"
+                                            title="Contact on Signal"><i class="fa-solid fa-comment-dots"></i>
+                                            Signal</a>
+                                        <button type="button" class="channel-action-btn notranslate" translate="no"
+                                            id="copy-session-btn" title="Click to copy Session ID"
+                                            aria-label="Copy Session ID"><i class="fa-solid fa-message"></i>
+                                            Session</button>
+                                    </div>
+                                    <div class="channel-item channels-right">
+                                        <span class="channel-k">CHANNELS</span>
+                                        <a href="ident.txt" target="_blank" rel="noopener noreferrer"
+                                            class="channel-v channel-link font-mono notranslate" translate="no"
+                                            title="View PGP Public Key in ident.txt"><i class="fa-solid fa-key"></i> PGP
+                                            Key (ident.txt)</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+
+                        <section class="resume-block homestead-section">
+                            <div class="section-badge-row font-mono">
+                                <span class="section-tag">COOL PEOPLE & COOL STUFF</span>
+                                <button type="button" class="copy-btn-inline font-mono" id="copy-my-badge-btn"
+                                    title="Copy badge embed code">COPY MY BADGE</button>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="resume-footer-badges" aria-label="web badges">
+                        <div class="web-badges-marquee">
+                            <div class="web-badges-row" data-dir="left">
+                                <div class="web-badges-track">
+                                    <div class="web-badges-set">
+                                        <a href="https://pxecore.github.io" target="_blank" rel="noopener noreferrer"
+                                            title="pxecore"><img src="media/badges/pxecore.webp" alt="pxecore"
+                                                width="88" height="31" loading="lazy" decoding="async"></a>
+                                        <a href="https://melqtx.com" target="_blank" rel="noopener noreferrer"
+                                            title="melqtx"><img src="media/badges/mel.webp" alt="melqtx" width="88"
+                                                height="31" loading="lazy" decoding="async"></a>
+                                        <img src="media/badges/anybrowser3.webp" alt="any browser" width="88"
+                                            height="31" loading="lazy" decoding="async">
+                                        <img src="media/badges/coffee.webp" alt="coffee" width="88" height="31"
+                                            loading="lazy" decoding="async">
+                                        <img src="media/badges/css3.webp" alt="css" width="88" height="31"
+                                            loading="lazy" decoding="async">
+                                        <img src="media/badges/letsnotencrypt.webp" alt="lets not encrypt" width="88"
+                                            height="31" loading="lazy" decoding="async">
+                                        <img src="media/badges/got_html.webp" alt="got html" width="88" height="31"
+                                            loading="lazy" decoding="async">
+                                        <img src="media/badges/cyberrealmrefer.webp" alt="cyber realm" width="88"
+                                            height="31" loading="lazy" decoding="async">
+                                    </div>
+                                    <div class="web-badges-set" aria-hidden="true">
+                                        <a href="https://pxecore.github.io" target="_blank" rel="noopener noreferrer"
+                                            tabindex="-1"><img src="media/badges/pxecore.webp" alt="" width="88"
+                                                height="31" loading="lazy" decoding="async"></a>
+                                        <a href="https://melqtx.com" target="_blank" rel="noopener noreferrer"
+                                            tabindex="-1"><img src="media/badges/mel.webp" alt="" width="88" height="31"
+                                                loading="lazy" decoding="async"></a>
+                                        <img src="media/badges/anybrowser3.webp" alt="" width="88" height="31"
+                                            loading="lazy" decoding="async">
+                                        <img src="media/badges/coffee.webp" alt="" width="88" height="31" loading="lazy"
+                                            decoding="async">
+                                        <img src="media/badges/css3.webp" alt="" width="88" height="31" loading="lazy"
+                                            decoding="async">
+                                        <img src="media/badges/letsnotencrypt.webp" alt="" width="88" height="31"
+                                            loading="lazy" decoding="async">
+                                        <img src="media/badges/got_html.webp" alt="" width="88" height="31"
+                                            loading="lazy" decoding="async">
+                                        <img src="media/badges/cyberrealmrefer.webp" alt="" width="88" height="31"
+                                            loading="lazy" decoding="async">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="web-badges-row" data-dir="right">
+                                <div class="web-badges-track">
+                                    <div class="web-badges-set">
+                                        <a href="https://ghostty.org" target="_blank" rel="noopener noreferrer"
+                                            title="ghostty"><img src="media/badges/ghostty.webp" alt="ghostty"
+                                                width="88" height="31" loading="lazy" decoding="async"></a>
+                                        <img src="media/badges/madewithnotepad2.webp" alt="notepad" width="88"
+                                            height="31" loading="lazy" decoding="async">
+                                        <img src="media/badges/volta.webp" alt="volta" width="88" height="31"
+                                            loading="lazy" decoding="async">
+                                        <img src="media/badges/ie_rainbow.webp" alt="internet explorer" width="88"
+                                            height="31" loading="lazy" decoding="async">
+                                        <img src="media/badges/pixel_art.webp" alt="pixel art" width="88" height="31"
+                                            loading="lazy" decoding="async">
+                                        <img src="media/badges/yumenikki.webp" alt="yume nikki" width="88" height="31"
+                                            loading="lazy" decoding="async">
+                                        <img src="media/badges/000010.webp" alt="hit counter" width="88" height="31"
+                                            loading="lazy" decoding="async">
+                                        <img src="media/badges/vim.webp" alt="vim" width="88" height="31" loading="lazy"
+                                            decoding="async">
+                                    </div>
+                                    <div class="web-badges-set" aria-hidden="true">
+                                        <a href="https://ghostty.org" target="_blank" rel="noopener noreferrer"
+                                            tabindex="-1"><img src="media/badges/ghostty.webp" alt="" width="88"
+                                                height="31" loading="lazy" decoding="async"></a>
+                                        <img src="media/badges/madewithnotepad2.webp" alt="" width="88" height="31"
+                                            loading="lazy" decoding="async">
+                                        <img src="media/badges/volta.webp" alt="" width="88" height="31" loading="lazy"
+                                            decoding="async">
+                                        <img src="media/badges/ie_rainbow.webp" alt="" width="88" height="31"
+                                            loading="lazy" decoding="async">
+                                        <img src="media/badges/pixel_art.webp" alt="" width="88" height="31"
+                                            loading="lazy" decoding="async">
+                                        <img src="media/badges/yumenikki.webp" alt="" width="88" height="31"
+                                            loading="lazy" decoding="async">
+                                        <img src="media/badges/000010.webp" alt="" width="88" height="31" loading="lazy"
+                                            decoding="async">
+                                        <img src="media/badges/vim.webp" alt="" width="88" height="31" loading="lazy"
+                                            decoding="async">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <section class="site-view" id="view-notes" aria-label="Notes" hidden>
+            <div class="notes-container">
+                <div id="notes-deck-view" class="notes-grid notes-deck">
+                    <aside class="notes-sidebar-left">
+                        <div class="notes-profile-card">
+                            <div class="notes-profile-header">
+                                <img src="media/avatar.webp" alt="pxecore" class="notes-profile-avatar" width="52"
+                                    height="52">
+                                <div>
+                                    <h2 class="notes-profile-name">Pxecore</h2>
+                                    <p class="notes-profile-role">Researcher</p>
+                                </div>
+                            </div>
+                            <div class="notes-profile-quote">
+                                <span class="notes-quote-dot" aria-hidden="true"></span>
+                                <p class="notes-quote-text">Freedom of expression is fundamental.</p>
+                            </div>
+                            <p class="notes-profile-bio">
+                                A personal notebook for technical notes, experiments, ideas, and thoughts worth writing
+                                down.
+                            </p>
+                            <div class="notes-profile-links">
+                                <a href="https://github.com/pxecore" target="_blank" rel="noopener noreferrer"
+                                    class="notes-link-btn notranslate" translate="no">
+                                    <i class="fa-brands fa-github"></i> GitHub
+                                </a>
+                                <a href="ident.txt" target="_blank" rel="noopener noreferrer"
+                                    class="notes-link-btn notranslate" translate="no"
+                                    aria-label="Cryptographic Identity Verification (ident.txt)">
+                                    <svg class="ident-fingerprint-icon" width="15" height="15" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4" />
+                                        <path d="M14 13.12c0 2.38 0 6.38-1 8.88" />
+                                        <path d="M17.29 21.02c.12-.6.43-2.3.5-3.02" />
+                                        <path d="M2 12a10 10 0 0 1 18-6" />
+                                        <path d="M2 16h.01" />
+                                        <path d="M21.8 16c.2-2 .131-5.354 0-6" />
+                                        <path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2" />
+                                        <path d="M8.65 22c.21-.66.45-1.32.57-2" />
+                                        <path d="M9 6.8a6 6 0 0 1 9 5.2c0 .47 0 1.17-.02 2" />
+                                    </svg>
+                                    <span>ident</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="notes-filter-card">
+                            <h3 class="notes-filter-heading">
+                                <i class="fa-solid fa-sliders"></i> Filtering Deck
+                            </h3>
+                            <div class="notes-filter-group">
+                                <label for="notes-search-input" class="notes-filter-label">Keywords</label>
+                                <div class="notes-search-wrapper">
+                                    <i class="fa-solid fa-magnifying-glass notes-search-icon"></i>
+                                    <input type="text" id="notes-search-input" placeholder="Search notes..."
+                                        autocomplete="off">
+                                    <span class="notes-search-key font-mono" title="Press '/' to search">/</span>
+                                </div>
+                            </div>
+                            <div class="notes-filter-group" id="notes-category-group">
+                                <div class="notes-filter-header">
+                                    <span class="notes-filter-label">Categories</span>
+                                    <button type="button" class="notes-clear-btn" id="clear-category-btn"
+                                        style="display: none;">✕ clear</button>
+                                </div>
+                                <div class="notes-filter-chips" id="notes-category-chips"></div>
+                            </div>
+                            <div class="notes-filter-group" id="notes-tag-group">
+                                <div class="notes-filter-header">
+                                    <span class="notes-filter-label">Hashtags</span>
+                                    <button type="button" class="notes-clear-btn" id="clear-tag-btn"
+                                        style="display: none;">✕ clear</button>
+                                </div>
+                                <div class="notes-filter-chips" id="notes-tag-chips"></div>
+                                <button type="button" class="notes-show-more-btn" id="notes-tags-show-more"
+                                    style="display: none;">SHOW MORE (+0)</button>
+                            </div>
+                            <div class="notes-filter-group">
+                                <span class="notes-filter-label" id="notes-sort-label">Sorting</span>
+                                <div class="notes-custom-select" id="notes-custom-sort">
+                                    <button type="button" class="notes-custom-select-trigger" id="notes-sort-trigger"
+                                        aria-haspopup="listbox" aria-expanded="false"
+                                        aria-labelledby="notes-sort-label notes-sort-trigger">
+                                        <span class="notes-sort-selected-label" id="notes-sort-selected-label">Newest
+                                            first</span>
+                                        <i class="fa-solid fa-chevron-down notes-sort-chevron" aria-hidden="true"></i>
+                                    </button>
+                                    <ul class="notes-custom-select-menu" role="listbox" id="notes-sort-menu"
+                                        aria-labelledby="notes-sort-label" aria-hidden="true">
+                                        <li class="notes-custom-select-option is-selected" role="option"
+                                            data-value="newest" aria-selected="true" tabindex="0">
+                                            <span class="notes-sort-option-text">Newest first</span>
+                                            <span class="notes-sort-check" aria-hidden="true">✓</span>
+                                        </li>
+                                        <li class="notes-custom-select-option" role="option" data-value="oldest"
+                                            aria-selected="false" tabindex="0">
+                                            <span class="notes-sort-option-text">Oldest first</span>
+                                            <span class="notes-sort-check" aria-hidden="true">✓</span>
+                                        </li>
+                                        <li class="notes-custom-select-option" role="option" data-value="alphabetical"
+                                            aria-selected="false" tabindex="0">
+                                            <span class="notes-sort-option-text">Alphabetical A-Z</span>
+                                            <span class="notes-sort-check" aria-hidden="true">✓</span>
+                                        </li>
+                                    </ul>
+                                    <select id="notes-sort-select" class="notes-select-hidden" aria-hidden="true"
+                                        tabindex="-1">
+                                        <option value="newest">Newest first</option>
+                                        <option value="oldest">Oldest first</option>
+                                        <option value="alphabetical">Alphabetical A-Z</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <div class="notes-center-deck">
+                        <div class="notes-deck-header">
+                            <div>
+                                <h2 class="notes-deck-title">Notes</h2>
+                                <p class="notes-deck-subtitle">Thoughts, experiments &amp; technical writing</p>
+                            </div>
+                            <span class="notes-count-badge notranslate" translate="no" id="notes-count-badge"></span>
+                        </div>
+                        <div class="notes-articles-list" id="notes-articles-list">
+                        </div>
+                        <div class="notes-pagination" id="notes-pagination"></div>
+                    </div>
+
+                    <aside class="notes-sidebar-right">
+                        <div class="notes-telemetry-card">
+                            <div class="notes-telemetry-header">
+                                <div class="notes-telemetry-title">
+                                    <span class="notes-live-pulse"></span>
+                                    <span>I'm just too lonely</span>
+                                </div>
+                                <span class="notes-live-badge notranslate" translate="no">Live</span>
+                            </div>
+                            <div class="notes-telemetry-stat">
+                                <span class="notes-stat-label"><i class="fa-solid fa-location-dot"></i> Wired</span>
+                                <span class="notes-stat-value bpm-val notranslate" translate="no"><span
+                                        class="notes-heart-pulse">♥</span> <span id="notes-bpm">74</span> bpm</span>
+                            </div>
+                            <div class="notes-telemetry-editing">
+                                <div class="notes-editing-top">
+                                    <div class="notes-editing-label">Currently Editing</div>
+                                    <button type="button" class="notes-resync-mini-btn notranslate" translate="no"
+                                        id="notes-resync-btn" title="Resync latest posts from GitHub">
+                                        <i class="fa-solid fa-rotate" id="notes-sync-icon" aria-hidden="true"></i>
+                                        <span id="notes-sync-btn-text" class="notranslate" translate="no">Sync</span>
+                                    </button>
+                                </div>
+                                <div class="notes-editing-content">
+                                    <i class="fa-solid fa-code-branch"></i>
+                                    <div class="notes-editing-details">
+                                        <div class="notes-editing-val notranslate" translate="no">pxecore/notes</div>
+                                        <div class="notes-editing-branch notranslate" translate="no">main workspace
+                                            branch</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="notes-telemetry-card">
+                            <div class="notes-telemetry-header">
+                                <div class="notes-telemetry-title">
+                                    <span class="notes-telemetry-dot"></span>
+                                    <span>Session Telemetry</span>
+                                </div>
+                            </div>
+                            <div class="notes-viewers-grid">
+                                <div class="notes-viewer-box">
+                                    <div class="notes-viewer-num green notranslate" translate="no">1</div>
+                                    <div class="notes-viewer-label notranslate" translate="no">SESSION</div>
+                                </div>
+                                <div class="notes-viewer-box">
+                                    <div class="notes-viewer-num blue notranslate" id="notes-reading-count"
+                                        translate="no">0</div>
+                                    <div class="notes-viewer-label notranslate" translate="no">READER</div>
+                                </div>
+                            </div>
+                            <div class="notes-telemetry-row">
+                                <div>
+                                    <div class="notes-row-label">Local Views</div>
+                                    <div class="notes-row-value notranslate" translate="no" id="notes-cumulative-views">
+                                        23 <span class="dim">total</span></div>
+                                </div>
+                                <svg class="notes-sparkline-svg" viewBox="0 0 100 30" width="80" height="24">
+                                    <path d="M 0 15 L 20 18 L 40 12 L 60 22 L 80 20 L 100 20" fill="none"
+                                        stroke="var(--accent)" stroke-width="2" stroke-linecap="round" />
+                                    <circle cx="100" cy="20" r="2.5" fill="var(--accent)" />
+                                </svg>
+                            </div>
+                            <div class="notes-telemetry-row">
+                                <div>
+                                    <div class="notes-row-label">Matches Count</div>
+                                    <div class="notes-row-value notranslate" translate="no" id="notes-matches-count">5
+                                        <span class="dim">loaded</span>
+                                    </div>
+                                </div>
+                                <svg class="notes-sparkline-svg" viewBox="0 0 100 30" width="80" height="24">
+                                    <path d="M 0 16 L 30 16 L 60 16 L 80 16 L 100 16" fill="none" stroke="var(--accent)"
+                                        stroke-width="2" stroke-linecap="round" />
+                                    <circle cx="100" cy="16" r="2.5" fill="var(--accent)" />
+                                </svg>
+                            </div>
+                            <div class="notes-traffic-section notranslate" translate="no">
+                                <div class="notes-traffic-header notranslate" translate="no">
+                                    <span class="notes-traffic-title notranslate" translate="no">TOP 3 READS
+                                        (LOCAL)</span>
+                                    <span class="notes-top3-badge notranslate" translate="no">TOP 3</span>
+                                </div>
+                                <div class="notes-traffic-list notranslate" translate="no" id="notes-traffic-list">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="notes-telemetry-card" id="notes-mindmap-card">
+                            <div class="notes-telemetry-header">
+                                <div class="notes-telemetry-title">
+                                    <i class="fa-solid fa-share-nodes"></i>
+                                    <span class="notranslate" translate="no">GRAPH VIEW</span>
+                                </div>
+                                <button type="button" class="notes-mindmap-expand-btn" id="notes-expand-mindmap-btn"
+                                    title="Expand Graph View">
+                                    <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+                                </button>
+                            </div>
+                            <div class="notes-mindmap-container" id="notes-mindmap-container">
+                                <svg id="notes-mindmap-svg" width="100%" height="320"></svg>
+                            </div>
+                            <div class="notes-mindmap-legend">
+                                <span><span class="dot-tag"></span> Topics</span>
+                                <span><span class="dot-post"></span> Articles</span>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+
+                <article id="notes-reader-view" class="notes-reader" style="display: none;">
+                    <div class="notes-reader-toolbar">
+                        <div class="notes-reader-toolbar-left">
+                            <button type="button" class="notes-btn" id="reader-return-btn">
+                                <i class="fa-solid fa-arrow-left"></i> Return to Deck
+                            </button>
+                            <button type="button" class="notes-btn" id="reader-share-btn">
+                                <i class="fa-solid fa-share-nodes"></i> <span id="reader-share-text">Share Post</span>
+                            </button>
+                        </div>
+                        <div class="notes-reader-toolbar-stats font-mono">
+                            <div class="notes-reader-stat-item">
+                                <span class="dim">Active:</span> <strong><span class="notranslate"
+                                        translate="no">1</span> reading</strong>
+                            </div>
+                            <span class="notes-sep">•</span>
+                            <div class="notes-reader-stat-item">
+                                <span class="dim">Views:</span> <strong id="reader-views-count" class="notranslate"
+                                    translate="no">1</strong>
+                            </div>
+                            <span class="notes-sep">•</span>
+                            <div class="notes-reader-stat-item">
+                                <span class="dim">Share:</span> <strong id="reader-share-pct" class="notranslate"
+                                    translate="no">0.0%</strong>
+                            </div>
+                            <svg class="notes-sparkline-svg" id="reader-sparkline" viewBox="0 0 100 30" width="48"
+                                height="20">
+                                <path d="M 0 15 L 30 18 L 60 12 L 100 15" fill="none" stroke="var(--accent)"
+                                    stroke-width="2" stroke-linecap="round" />
+                                <circle cx="100" cy="15" r="2.5" fill="var(--accent)" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <aside class="notes-side-toc" id="notes-side-toc" aria-label="Article sections" hidden>
+                        <button type="button" class="notes-side-toc-back font-mono notranslate" translate="no"
+                            id="notes-side-toc-back" aria-label="Return to notes deck">← Index</button>
+                        <nav class="notes-side-toc-nav" id="notes-side-toc-nav"></nav>
+                    </aside>
+
+                    <div class="notes-reader-card" id="notes-reader-card">
+                        <header class="notes-reader-header">
+                            <div class="notes-reader-meta">
+                                <span class="notes-reader-category" id="reader-category">RESEARCH</span>
+                                <span class="notes-sep">•</span>
+                                <span class="notes-reader-date" id="reader-date">Aug 21, 2026</span>
+                                <span class="notes-sep">•</span>
+                                <span class="notes-reader-read-time" id="reader-read-time">1 min read</span>
+                            </div>
+                            <h1 class="notes-reader-title" id="reader-title"></h1>
+                            <p class="notes-reader-description" id="reader-description"></p>
+                        </header>
+
+                        <div class="notes-reader-toc-box" id="notes-reader-toc-box" style="display: none;">
+                            <div class="notes-toc-header font-mono notranslate" translate="no">
+                                <span class="notes-toc-pulse"></span>
+                                <span>CONTENTS</span>
+                            </div>
+                            <nav class="notes-toc-list" id="notes-reader-toc"></nav>
+                        </div>
+
+                        <div class="notes-reader-body markdown-body" id="reader-content"></div>
+                        <footer class="notes-reader-footer">
+                            <div class="notes-reader-signer notranslate" translate="no">
+                                <span>SIGNER:</span>
+                                <span class="notes-badge notranslate" translate="no" id="reader-signer">@pxecore</span>
+                            </div>
+                        </footer>
+                        <div class="notes-reader-topics-box">
+                            <div class="notes-topics-header notranslate" translate="no">
+                                <div class="notes-topics-title"><i class="fa-solid fa-hashtag"></i> Indexed Topics &
+                                    Metadata</div>
+                                <span class="notes-badge text-xs notranslate" translate="no">Topic Map Index</span>
+                            </div>
+                            <div class="notes-topics-list notranslate" translate="no" id="reader-topics-list"></div>
+                        </div>
+
+                        <div class="notes-reader-bottom-nav">
+                            <button type="button" class="notes-btn" id="reader-bottom-return-btn">
+                                <i class="fa-solid fa-arrow-left"></i> Return to Deck
+                            </button>
+                            <button type="button" class="notes-btn" id="reader-top-btn">
+                                Back to Top <i class="fa-solid fa-arrow-up"></i>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <footer class="notes-footer-reference notranslate" translate="no">
+                    <span id="current-year">2026</span> PXECORE • BLACK MESA RESEARCH FACILITY
+                </footer>
+
+            </div>
+        </section>
+    </main>
+    <script src="script/boot-view.js"></script>
+
+    <div class="notes-mindmap-modal" id="notes-mindmap-modal" style="display: none;" role="dialog"
+        aria-label="Graph View Explorer" aria-modal="true">
+        <div class="notes-mindmap-modal-backdrop" id="notes-mindmap-backdrop"></div>
+        <div class="notes-mindmap-modal-dialog">
+            <div class="notes-mindmap-modal-header">
+                <div class="notes-modal-title">
+                    <span class="notes-status-dot live"></span>
+                    <i class="fa-solid fa-share-nodes"></i>
+                    <span class="notes-modal-heading">Graph View</span>
+                </div>
+                <div class="notes-modal-actions">
+                    <button type="button" class="notes-modal-inline-btn" id="notes-close-mindmap-btn"
+                        title="Return to Inline View">
+                        <i class="fa-solid fa-down-left-and-up-right-to-center"></i>
+                        <span class="btn-text">Inline View</span>
+                    </button>
+                </div>
+            </div>
+            <div class="notes-mindmap-modal-body" id="notes-modal-svg-container">
+                <div class="notes-mindmap-zoom-controls">
+                    <button type="button" class="notes-zoom-btn" id="modal-zoom-out" title="Zoom Out (-)"><i
+                            class="fa-solid fa-magnifying-glass-minus"></i></button>
+                    <button type="button" class="notes-zoom-btn" id="modal-zoom-in" title="Zoom In (+)"><i
+                            class="fa-solid fa-magnifying-glass-plus"></i></button>
+                    <div class="notes-zoom-divider"></div>
+                    <button type="button" class="notes-zoom-btn" id="modal-zoom-reset" title="Recenter & Reset View"><i
+                            class="fa-solid fa-compress"></i></button>
+                </div>
+                <svg id="notes-modal-mindmap-svg" width="100%" height="100%"></svg>
+                <div class="notes-mindmap-modal-legend">
+                    <span><span class="dot-tag"></span> Topics</span>
+                    <span><span class="dot-post"></span> Articles</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="background-audio" src="media/hmm.opus" loop preload="none">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div class="notes-lightbox-modal" id="notes-lightbox-modal" style="display: none;" aria-hidden="true" role="dialog"
+        aria-label="Image Preview">
+        <div class="notes-lightbox-backdrop" id="notes-lightbox-backdrop"></div>
+        <div class="notes-lightbox-content">
+            <button type="button" class="notes-lightbox-close" id="notes-lightbox-close"
+                aria-label="Close image preview">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <img class="notes-lightbox-img" id="notes-lightbox-img" alt="Enlarged diagram" referrerpolicy="no-referrer"
+                decoding="async" />
+            <div class="notes-lightbox-caption font-mono" id="notes-lightbox-caption"></div>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+User-agent: ia_archiver
+Disallow: /
+
+User-agent: ia_archiver-web.archive.org
+Disallow: /
+
+User-agent: archive.org_bot
+Disallow: /
+
+User-agent: Wayback
+Disallow: /
+
+User-agent: heritrix
+Disallow: /
+
+User-agent: special_archiver
+Disallow: /
+
+Sitemap: https://pxecore.github.io/sitemap.xml
