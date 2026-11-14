@@ -15,15 +15,49 @@ function initInteractiveTerminal() {
     const commandHistory = [];
     let historyIndex = -1;
 
+    let lastExecutedAt = 0;
+
+    function syncInputDisplay() {
+        const val = hiddenInput.value || '';
+        if (val.includes('\n') || val.includes('\r')) {
+            const clean = val.replace(/[\r\n]+/g, '');
+            hiddenInput.value = '';
+            inputDisplay.textContent = '';
+            const now = Date.now();
+            if (now - lastExecutedAt > 40) {
+                lastExecutedAt = now;
+                executeCommand(clean);
+            }
+            return;
+        }
+        inputDisplay.textContent = val;
+        const len = val.length;
+        try {
+            if (hiddenInput.selectionStart !== len || hiddenInput.selectionEnd !== len) {
+                hiddenInput.setSelectionRange(len, len);
+            }
+        } catch (_) {}
+    }
+
     term.addEventListener('click', (e) => {
         if (window.getSelection && window.getSelection().toString().length > 0) return;
         if (e.target.closest('button') || e.target.closest('a')) return;
-        hiddenInput.focus();
+        try {
+            hiddenInput.focus({ preventScroll: true });
+            const len = hiddenInput.value.length;
+            hiddenInput.setSelectionRange(len, len);
+        } catch (_) {
+            hiddenInput.focus();
+        }
     });
 
     term.classList.add('terminal-unfocused');
     const handleTermFocus = () => {
         term.classList.remove('terminal-unfocused');
+        try {
+            const len = hiddenInput.value.length;
+            hiddenInput.setSelectionRange(len, len);
+        } catch (_) {}
     };
     const handleTermBlur = () => {
         term.classList.add('terminal-unfocused');
@@ -32,9 +66,19 @@ function initInteractiveTerminal() {
     hiddenInput.addEventListener('focus', handleTermFocus);
     hiddenInput.addEventListener('blur', handleTermBlur);
 
-    hiddenInput.addEventListener('input', () => {
-        inputDisplay.textContent = hiddenInput.value;
+    hiddenInput.addEventListener('beforeinput', (e) => {
+        if (e.inputType === 'insertLineBreak' || e.inputType === 'insertParagraph') {
+            e.preventDefault();
+            const val = hiddenInput.value;
+            hiddenInput.value = '';
+            inputDisplay.textContent = '';
+            lastExecutedAt = Date.now();
+            executeCommand(val);
+        }
     });
+
+    hiddenInput.addEventListener('input', syncInputDisplay);
+    hiddenInput.addEventListener('compositionend', syncInputDisplay);
 
     const MAX_HISTORY = 50;
     const MAX_OUTPUT_NODES = 120;
@@ -726,8 +770,11 @@ tree etag : ${escapeHtml(cleanEtag)} [RFC 7232 / 304 cached]</pre>`;
     }
 
     hiddenInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' || e.keyCode === 13) {
             e.preventDefault();
+            const now = Date.now();
+            if (now - lastExecutedAt <= 40) return;
+            lastExecutedAt = now;
             const val = hiddenInput.value;
             hiddenInput.value = '';
             inputDisplay.textContent = '';
