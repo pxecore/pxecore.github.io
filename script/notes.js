@@ -1391,6 +1391,8 @@ function initResearchNotes() {
 
         if (hash.includes('?p=')) {
             targetSlug = hash.split('?p=')[1]?.split('&')[0];
+        } else if (/^#notes\/([^?#]+)/i.test(hash)) {
+            targetSlug = hash.replace(/^#notes\//i, '').split(/[?&]/)[0];
         } else {
             const params = new URLSearchParams(window.location.search);
             targetSlug = params.get('p');
@@ -1587,16 +1589,6 @@ function initResearchNotes() {
     async function shareOrCopyPost(slug, btnEl, labelEl, idleHtml, idleText) {
         if (!slug) return;
         const postUrl = getCleanPostUrl(slug);
-        const post = posts.find(p => p.slug === slug);
-        const postTitle = post?.meta?.title || slug || 'Research Note';
-        if (navigator.share && navigator.canShare && navigator.canShare({ url: postUrl })) {
-            try {
-                await navigator.share({ title: postTitle, text: postTitle, url: postUrl });
-                return;
-            } catch (err) {
-                if (err.name === 'AbortError') return;
-            }
-        }
         try {
             await copyTextToClipboard(postUrl);
             if (btnEl) btnEl.classList.add('is-copied');
@@ -1823,9 +1815,9 @@ function initResearchNotes() {
     // Popstate & hashchange event for back/forward navigation & deep-linking
     function handleNotesRouting() {
         const rawHash = window.location.hash || '';
-        const h = rawHash.replace('#', '').split('?')[0];
+        const h = rawHash.replace('#', '').split('?')[0].split('/')[0];
         const params = new URLSearchParams(window.location.search);
-        const hasPost = rawHash.includes('?p=') || params.has('p');
+        const hasPost = rawHash.includes('?p=') || /^#notes\/[^?#]+/i.test(rawHash) || params.has('p');
 
         if (h === 'notes' || hasPost) {
             ensureNotesRendered();
@@ -1869,12 +1861,14 @@ function initResearchNotes() {
     };
     window.__ensureNotesPrewarmed = ensureNotesRendered;
 
-    const activeHash = (window.location.hash || '').replace('#', '').split('?')[0];
-    const isNotesActive = activeHash === 'notes' || new URLSearchParams(window.location.search).has('p');
+    const activeHashRaw = (window.location.hash || '').replace('#', '');
+    const activeHash = activeHashRaw.split('?')[0].split('/')[0];
+    const isNotesActive = activeHash === 'notes' || activeHashRaw.includes('?p=') || new URLSearchParams(window.location.search).has('p');
     const shouldForceSync = !posts || posts.length === 0;
 
     if (isNotesActive) {
         ensureNotesRendered();
+        checkUrlForPost();
         syncFromGitHub(shouldForceSync).catch(err => {
             console.warn('[Notes] Initial background sync handled:', err);
         });
