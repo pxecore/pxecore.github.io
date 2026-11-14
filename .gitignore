@@ -1,0 +1,22 @@
+# Byte-compiled / optimized files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local environment & review artifacts
+.screenshots/
+*.log
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Generated at deploy time (GitHub Actions)
+notes/
+_site/
+sitemap.xml
+feed.xml
+llms.txt
+llms-full.txt
+scripts/notes_state.json
+
