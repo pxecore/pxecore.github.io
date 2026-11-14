@@ -22,6 +22,14 @@ function ensureAudioAnalyser(audio) {
         return null;
     }
     try {
+        const isMobile = (typeof window.isCoarsePointer === 'function' && window.isCoarsePointer()) ||
+            (window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+        if (isMobile) {
+            // Mobile browsers frequently return flat/zeroed FFT bins for createMediaElementSource on <audio>;
+            // use the time-synced rhythmic synthesizer envelope directly on mobile so bars always animate.
+            analyserFailed = true;
+            return null;
+        }
         const Ctx = window.AudioContext || window.webkitAudioContext;
         if (!Ctx) {
             analyserFailed = true;
@@ -147,14 +155,24 @@ function startAudioVisualizer() {
         lastVisualizerUpdateTime = typeof now === 'number' ? now : performance.now();
 
         let hasLiveFft = false;
+        let maxFftBin = 0;
         if (analyserNode && analyserData && analyserCtx && analyserCtx.state === 'running') {
             analyserNode.getByteFrequencyData(analyserData);
             let sum = 0;
-            for (let k = 0; k < analyserData.length; k++) sum += analyserData[k];
-            if (sum > 0) hasLiveFft = true;
+            for (let k = 0; k < analyserData.length; k++) {
+                const v = analyserData[k];
+                sum += v;
+                if (v > maxFftBin) maxFftBin = v;
+            }
+            if (sum > 60 && maxFftBin > 12) hasLiveFft = true;
         }
 
         const count = Math.min(BAR_COUNT, visualizerBars.length);
+        const t = (audioElement && audioElement.currentTime) ? audioElement.currentTime : (performance.now() * 0.001);
+        const beat = t * 2.1;
+        const kick = Math.pow(Math.max(0, Math.sin(beat * Math.PI)), 4);
+        const snare = Math.pow(Math.max(0, Math.sin((beat + 1.0) * Math.PI * 0.5)), 3);
+
         if (hasLiveFft) {
             // Map 64 FFT bins across 10 bars using logarithmic-like bands (bass -> mid -> high)
             const bands = [
@@ -162,6 +180,7 @@ function startAudioVisualizer() {
                 [6, 9], [9, 13], [13, 18], [18, 24],
                 [24, 32], [32, 44], [44, 60]
             ];
+            const refPeak = Math.max(110, maxFftBin);
             let bassAcc = 0, midAcc = 0, highAcc = 0;
             for (let i = 0; i < count; i++) {
                 const [lo, hi] = bands[i];
@@ -169,7 +188,7 @@ function startAudioVisualizer() {
                 for (let b = lo; b < hi && b < analyserData.length; b++) {
                     if (analyserData[b] > peak) peak = analyserData[b];
                 }
-                const norm = peak / 255;
+                const norm = Math.min(1, peak / refPeak);
                 if (i < 3) bassAcc += norm;
                 else if (i < 7) midAcc += norm;
                 else highAcc += norm;
@@ -186,11 +205,6 @@ function startAudioVisualizer() {
             audioEnvelope.energy = audioEnvelope.bass * 0.50 + audioEnvelope.mid * 0.35 + audioEnvelope.high * 0.15;
             audioEnvelope.bpm = Math.round(118 + audioEnvelope.bass * 18);
         } else {
-            const t = audioElement.currentTime || 0;
-            const beat = t * 2.1;
-            const kick = Math.pow(Math.max(0, Math.sin(beat * Math.PI)), 4);
-            const snare = Math.pow(Math.max(0, Math.sin((beat + 1.0) * Math.PI * 0.5)), 3);
-
             audioEnvelope.active = true;
             audioEnvelope.bass = kick;
             audioEnvelope.mid = snare;
@@ -212,7 +226,7 @@ function startAudioVisualizer() {
                 }
 
                 const targetScale = 0.35 + energy * 1.50;
-                const speed = targetScale > currentScales[i] ? 0.40 : 0.22;
+                const speed = targetScale > currentScales[i] ? 0.42 : 0.24;
                 currentScales[i] += (targetScale - currentScales[i]) * speed;
 
                 visualizerBars[i].style.transform = `scaleY(${currentScales[i].toFixed(2)})`;
