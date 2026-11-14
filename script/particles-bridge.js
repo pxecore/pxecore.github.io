@@ -153,7 +153,8 @@ window.tintParticles = tintParticles;
 function getTargetParticlePxRatio() {
     const rawDpr = window.devicePixelRatio || 1;
     const lowBat = Boolean(window.HardwareProfiler?.isLowBattery?.());
-    const maxPxRatio = lowBat ? 1.25 : 2.25;
+    const isMobile = typeof isCoarsePointer === 'function' && isCoarsePointer();
+    const maxPxRatio = lowBat ? 1.25 : (isMobile ? 1.5 : 2.25);
     return Math.min(Math.max(1, rawDpr), maxPxRatio);
 }
 
@@ -974,10 +975,20 @@ window.addEventListener('focus', () => {
 });
 
 let particleResizeRaf = null;
+let lastParticleResizeW = window.innerWidth || 0;
+let lastParticleResizeH = window.innerHeight || 0;
 window.addEventListener('resize', () => {
     if (isParticlesTornDown || particleResizeRaf) return;
+    const curW = window.innerWidth || 0;
+    const curH = window.innerHeight || 0;
+    if (typeof isCoarsePointer === 'function' && isCoarsePointer() && lastParticleResizeW > 0 &&
+        Math.abs(curW - lastParticleResizeW) < 4 && Math.abs(curH - lastParticleResizeH) < 160) {
+        return;
+    }
     particleResizeRaf = requestAnimationFrame(() => {
         particleResizeRaf = null;
+        lastParticleResizeW = window.innerWidth || 0;
+        lastParticleResizeH = window.innerHeight || 0;
         const pJS = window.pJSDom?.[0]?.pJS;
         if (!pJS) return;
         const isLight = document.documentElement.classList.contains('light') ||
