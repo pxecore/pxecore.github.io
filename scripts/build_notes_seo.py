@@ -642,6 +642,7 @@ NOTE_PAGE_CSP = (
 
 def page_html(n, has_og):
     url = "%s/notes/%s/" % (SITE, n["slug"])
+    reader_url = "../../#notes?p=%s" % urllib.parse.quote(n["slug"])
     image = "%s/notes/%s/og.png" % (SITE, n["slug"]) if has_og else SITE + "/media/og.webp"
     e = lambda s: html.escape(s, quote=True)
     ld = json.dumps({
@@ -654,14 +655,6 @@ def page_html(n, has_og):
         "publisher": {"@type": "Person", "name": AUTHOR, "url": SITE + "/"},
     }, ensure_ascii=False).replace("</", "<\\/")
 
-    toc = ""
-    sub = [h for h in n["headings"] if h[0] in (2, 3)]
-    if len(sub) >= 3:
-        toc = '<nav class="note-toc" aria-label="Contents"><strong>CONTENTS</strong>%s</nav>' % "".join(
-            '<a href="#%s"%s>%s</a>' % (h[2], ' class="sub"' if h[0] == 3 else "", e(h[1])) for h in sub)
-
-    katex_css = '<link rel="stylesheet" href="../../vendor/katex/katex.min.css">' if n["has_math"] else ""
-    katex_js = '<script src="../../vendor/katex/katex.min.js" defer></script>' if n["has_math"] else ""
     meta_bits = [b for b in (e(n["category"]), n["friendly_date"], e(n["read_time"]), "@" + e(n["author"])) if b]
 
     return """<!DOCTYPE html>
@@ -678,7 +671,7 @@ def page_html(n, has_og):
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="author" content="{author}">
 {kw}<link rel="canonical" href="{url}">
-<link rel="alternate" type="application/rss+xml" title="pxecore notes" href="../../feed.xml">
+<meta http-equiv="refresh" content="0; url={reader_url}">
 <meta name="theme-color" content="#0E0D0C">
 <meta property="og:site_name" content="pxecore">
 <meta property="og:type" content="article">
@@ -697,42 +690,26 @@ def page_html(n, has_og):
 <script type="application/ld+json">{ld}</script>
 <script src="../../script/note-page.js"></script>
 <link rel="icon" href="../../media/avatar.webp" type="image/webp">
-<link rel="stylesheet" href="../../fonts/outfit.css">
-<link rel="stylesheet" href="../../css/base.css">
-<link rel="stylesheet" href="../../css/notes.css">
-<link rel="stylesheet" href="../../css/note-page.css">
-{katex_css}</head>
-<body>
-<div id="note-progress"></div>
-<div class="note-wrap">
-<header class="note-top">
-<a class="note-brand" href="../../">pxecore</a>
-<nav class="note-nav"><a href="../../">Home</a><a href="../../#notes" aria-current="page">Notes</a><a href="../../#resume">Resume</a>
-<button type="button" id="note-theme" class="note-btn" aria-label="Toggle theme">Light</button></nav>
-</header>
-<main>
+</head>
+<body style="margin:0;background:#0E0D0C;color:#F7F3EC">
+<main hidden>
 <article>
-<p class="note-crumbs"><a href="../../#notes">notes</a> / {cat}</p>
+<p class="note-crumbs">notes / {cat}</p>
 <h1 class="note-title">{title}</h1>
-{desc_p}<div class="note-meta"><span>{meta}</span><button type="button" id="note-share" class="note-btn">Share</button></div>
-{toc}
+{desc_p}<div class="note-meta"><span>{meta}</span></div>
 <div class="notes-reader-body markdown-body">
 {body}
 </div>
 </article>
 </main>
-<footer class="note-foot"><a href="../../#notes">← All notes</a><a href="#note-progress">Top ↑</a></footer>
-</div>
-{katex_js}
 </body>
 </html>
 """.format(csp=NOTE_PAGE_CSP, title=e(n["title"]), desc=e(n["description"]), author=e(n["author"]),
            kw=('<meta name="keywords" content="%s">\n' % e(", ".join(n["tags"]))) if n["tags"] else "",
-           url=url, image=image, iso=n["iso_date"], ld=ld,
+           url=url, reader_url=e(reader_url), image=image, iso=n["iso_date"], ld=ld,
            cat=e(n["category"]),
            desc_p=('<p class="note-desc">%s</p>\n' % e(n["description"])) if n["description"] else "",
-           meta=" · ".join(meta_bits), toc=toc, body=n["body_html"],
-           katex_css=katex_css, katex_js=katex_js)
+           meta=" · ".join(meta_bits), body=n["body_html"])
 
 
 # ------------------------------------------------------------------ outputs
