@@ -383,7 +383,7 @@ function initResearchNotes() {
             const safeImage = sanitizeURL(meta.image);
 
             return `
-                <article class="notes-article-card ${hasImage ? 'has-thumb' : 'no-thumb'} is-cascade" style="--card-idx: ${idx};" data-slug="${safeSlug}" tabindex="0" role="link" aria-label="${safeTitle}">
+                <article class="notes-article-card ${hasImage ? 'has-thumb' : 'no-thumb'} is-cascade" style="--card-idx: ${idx};" data-slug="${safeSlug}" tabindex="0" aria-label="${safeTitle}">
                     <div class="notes-article-left">
                         <div class="notes-article-icon">${logoIcon}</div>
                         <div class="notes-article-content">
