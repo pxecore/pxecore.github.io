@@ -52,6 +52,7 @@ function getSky() {
     if (document.documentElement.classList.contains('light') || (document.body && document.body.classList.contains('light-theme'))) return SKY.light;
     return SKY.dark;
 }
+window.getSky = getSky;
 
 /** Resolve palette from an explicit ink color (theme-flip safe). */
 function skyFromInk(hex) {
@@ -1044,3 +1045,4 @@ function initCosmicStarfield() {
         }, 150);
     });
 }
+window.initCosmicStarfield = initCosmicStarfield;
