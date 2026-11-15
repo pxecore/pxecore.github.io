@@ -270,6 +270,12 @@ def make_description(meta, body):
         t = strip_markdown(chunk)
         if len(t) > 20:
             return clip(t, 200)
+    for chunk in re.split(r"\n{2,}", plain_body):
+        if re.match(r"^\s*(#|```|\$\$|[-*+] |\d+\. |>)", chunk):
+            continue
+        t = strip_markdown(chunk)
+        if t:
+            return clip(t, 200)
     return ""
 
 
@@ -535,33 +541,83 @@ def tspans(lines, line_height_em):
         "0" if i == 0 else line_height_em, html.escape(l)) for i, l in enumerate(lines))
 
 
-def og_svg(n, has_bg=False, card_alpha=0.44):
-    t_lines = wrap(n["title"], 28, 3)
-    size = 56 if len(t_lines) < 3 else 46
-    d_lines = wrap(n["description"], 62, 3)
+def og_svg(n, has_bg=False, has_avatar=False, card_alpha=0.44):
+    t_lines = wrap(n["title"], 26, 3)
+    size = 58 if len(t_lines) < 3 else 46
+    d_lines = wrap(n["description"], 54, 3)
     if not d_lines and n.get("tags"):
-        d_lines = wrap("  ".join("#" + t for t in n["tags"][:4]), 62, 2)
-    d_y = int(205 + size * 1.25 * (len(t_lines) - 1) + 90)
-    meta = " · ".join(x for x in (n["category"].upper(), n["friendly_date"], n["read_time"]) if x)
+        d_lines = wrap("  ".join("#" + t for t in n["tags"][:4]), 54, 2)
+    d_y = int(204 + size * 1.24 * (len(t_lines) - 1) + 64)
     font = "DejaVu Sans, Liberation Sans, Arial, sans-serif"
     bg_rect = "" if has_bg else '<rect width="1200" height="630" fill="#0E0D0C"/>'
     card_fill = ("rgba(14,13,12,%.2f)" % card_alpha) if has_bg else "#141312"
-    card_stroke = "rgba(216,178,120,0.36)" if has_bg else "#3a3328"
-    title_spans = tspans(t_lines, "1.25em")
+    title_spans = tspans(t_lines, "1.22em")
+
+    # Header: avatar ring + site/notes label on left, category pill on right
+    brand_x = 144 if has_avatar else 90
+    avatar_ring = '<circle cx="110" cy="98" r="21" fill="none" stroke="#D8B278" stroke-opacity="0.48" stroke-width="1.5"/>' if has_avatar else ""
+    cat_label = (n["category"] or "RESEARCH").upper()[:18]
+    cat_w = max(72, int(len(cat_label) * 10.6 + 30))
+    cat_x = 1110 - cat_w
+    cat_pill = (
+        '<rect x="%d" y="81" width="%d" height="34" rx="10" fill="#D8B278" fill-opacity="0.14" stroke="#D8B278" stroke-opacity="0.38" stroke-width="1"/>'
+        '<text x="%d" y="103" text-anchor="middle" fill="#D8B278" font-family="%s" font-size="15" font-weight="bold">%s</text>'
+        % (cat_x, cat_w, cat_x + cat_w // 2, font, html.escape(cat_label))
+    )
+
+    # Footer left: calendar icon + date, clock icon + read time (solid filled paths for 100% IM SVG compatibility)
+    date_str = n["friendly_date"] or ""
+    read_str = n["read_time"] or ""
+    cal_svg = (
+        '<path fill="#D8B278" d="M93 517h2v2h6v-2h2v2h1.5a2.5 2.5 0 0 1 2.5 2.5v11a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 89 532.5v-11A2.5 2.5 0 0 1 91.5 519H93v-2zm-2 6.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9H91zm.5-2.5a.5.5 0 0 0-.5.5v.5h14v-.5a.5.5 0 0 0-.5-.5h-13z"/>'
+    ) if date_str else ""
+    date_svg = '<text x="118" y="534" text-anchor="start" fill="#D8CFC2" font-family="%s" font-size="20">%s</text>' % (
+        font, html.escape(date_str)) if date_str else ""
+    clock_x = (118 + int(len(date_str) * 11.2) + 28) if date_str else 90
+    clock_svg = (
+        '<path fill="#D8B278" d="M%d 518a9 9 0 1 1 0 18 9 9 0 0 1 0-18zm0 2a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm-.8 2.5h1.6v4.2l3 1.8-.8 1.3-3.8-2.3V522.5z"/>'
+        % (clock_x + 9)
+    ) if read_str else ""
+    read_svg = '<text x="%d" y="534" text-anchor="start" fill="#D8CFC2" font-family="%s" font-size="20">%s</text>' % (
+        clock_x + 27, font, html.escape(read_str)) if read_str else ""
+
+    # Footer right: up to 3 #tag pills laid out left-to-right, right-aligned at x=1110
+    min_x = clock_x + (27 + int(len(read_str) * 10.6) + 24 if read_str else 0)
+    chosen_tags = []
+    total_w = 0
+    for tag in (n.get("tags") or [])[:3]:
+        label = "#" + tag[:16]
+        tw = max(64, int(len(label) * 10.2 + 26))
+        needed = tw + (10 if chosen_tags else 0)
+        if 1110 - (total_w + needed) < max(560, min_x):
+            break
+        chosen_tags.append((label, tw))
+        total_w += needed
+    tags_svg = []
+    cur_x = 1110 - total_w
+    for label, tw in chosen_tags:
+        tags_svg.append(
+            '<rect x="%d" y="510" width="%d" height="34" rx="10" fill="#F7F3EC" fill-opacity="0.08" stroke="#F7F3EC" stroke-opacity="0.16" stroke-width="1"/>'
+            '<text x="%d" y="533" text-anchor="middle" fill="#EAE2D6" font-family="%s" font-size="16">%s</text>'
+            % (cur_x, tw, cur_x + tw // 2, font, html.escape(label))
+        )
+        cur_x += tw + 10
+
     return """<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
 {bg}
-<rect x="34" y="34" width="1132" height="562" rx="22" fill="{cf}" stroke="{cs}" stroke-width="1.5"/>
-<rect x="90" y="92" width="6" height="22" rx="3" fill="#D8B278"/>
-<text x="108" y="110" text-anchor="start" fill="#D8B278" font-family="{f}" font-size="20" font-weight="bold">PXECORE · NOTES</text>
-<text x="90" y="207" text-anchor="start" fill="rgba(0,0,0,0.55)" font-family="{f}" font-size="{s}" font-weight="bold">{t}</text>
-<text x="90" y="205" text-anchor="start" fill="#F7F3EC" font-family="{f}" font-size="{s}" font-weight="bold">{t}</text>
-<text x="90" y="{dy}" text-anchor="start" fill="#DDD6CA" font-family="{f}" font-size="24">{d}</text>
-<line x1="90" y1="485" x2="1110" y2="485" stroke="rgba(216,178,120,0.26)" stroke-width="1"/>
-<text x="90" y="535" text-anchor="start" fill="#C4BDB1" font-family="{f}" font-size="20">{m}</text>
-<text x="1110" y="535" text-anchor="end" fill="#D8B278" font-family="{f}" font-size="20" font-weight="bold">pxecore.github.io</text>
-</svg>""".format(bg=bg_rect, cf=card_fill, cs=card_stroke, f=font, s=size,
-                 t=title_spans, d=tspans(d_lines, "1.35em"), dy=d_y,
-                 m=html.escape(meta))
+<rect x="34" y="34" width="1132" height="562" rx="22" fill="{cf}" stroke="#D8B278" stroke-opacity="0.34" stroke-width="1.5"/>
+{av_ring}
+<text x="{bx}" y="105" text-anchor="start" fill="#F2ECE1" font-family="{f}" font-size="22" font-weight="bold">pxecore.github.io</text>
+<text x="{nx}" y="105" text-anchor="start" fill="#D8B278" font-family="{f}" font-size="22">· notes</text>
+{cat}
+<text x="90" y="207" text-anchor="start" fill="#000000" fill-opacity="0.52" font-family="{f}" font-size="{s}" font-weight="bold">{t}</text>
+<text x="90" y="204" text-anchor="start" fill="#F7F3EC" font-family="{f}" font-size="{s}" font-weight="bold">{t}</text>
+<text x="90" y="{dy}" text-anchor="start" fill="#CFC7BA" font-family="{f}" font-size="28">{d}</text>
+<line x1="90" y1="482" x2="1110" y2="482" stroke="#D8B278" stroke-opacity="0.28" stroke-width="1"/>
+{cal}{dt}{clk}{rd}{tags}
+</svg>""".format(bg=bg_rect, cf=card_fill, av_ring=avatar_ring, bx=brand_x, nx=brand_x + 206, f=font,
+                 cat=cat_pill, s=size, t=title_spans, d=tspans(d_lines, "1.38em"), dy=d_y,
+                 cal=cal_svg, dt=date_svg, clk=clock_svg, rd=read_svg, tags="".join(tags_svg))
 
 
 def bg_og_digest(bg_path):
@@ -588,12 +644,16 @@ def measure_bg_luminance(bg_path):
 
 def make_og(n, path, state):
     bg_path = os.path.join(ROOT, "media", "og.webp")
+    av_path = os.path.join(ROOT, "media", "avatar-152.webp")
+    if not os.path.exists(av_path):
+        av_path = os.path.join(ROOT, "media", "avatar.webp")
     has_bg = os.path.exists(bg_path)
+    has_av = os.path.exists(av_path)
     luma = measure_bg_luminance(bg_path) if has_bg else 0.25
     colorize_pct = int(round(48 + luma * 34))
     card_alpha = round(0.38 + luma * 0.24, 2)
-    svg = og_svg(n, has_bg=has_bg, card_alpha=card_alpha)
-    digest = hashlib.sha256((bg_og_digest(bg_path) + ":v3:" + svg).encode()).hexdigest()[:16]
+    svg = og_svg(n, has_bg=has_bg, has_avatar=has_av, card_alpha=card_alpha)
+    digest = hashlib.sha256((bg_og_digest(bg_path) + bg_og_digest(av_path) + ":v4:" + svg).encode()).hexdigest()[:16]
     if os.path.exists(path) and state["og"].get(n["slug"]) == digest:
         return True
     tmp = path + ".svg"
@@ -602,17 +662,25 @@ def make_og(n, path, state):
     ok = False
     for tool in (["magick"], ["convert"]):
         try:
+            cmd = list(tool)
             if has_bg:
-                cmd = tool + [
+                cmd += [
                     bg_path, "-resize", "1200x630^", "-gravity", "center", "-extent", "1200x630",
                     "-blur", "0x4.5", "-fill", "#0E0D0C", "-colorize", f"{colorize_pct}%",
                     "-gravity", "northwest",
                     "(", "-background", "none", tmp, ")",
                     "-compose", "Over", "-composite",
-                    "-define", "png:exclude-chunks=date,time,tIME", path
                 ]
             else:
-                cmd = tool + [tmp, "-define", "png:exclude-chunks=date,time,tIME", path]
+                cmd += ["-background", "none", tmp]
+            if has_av:
+                cmd += [
+                    "(", av_path, "-resize", "40x40^", "-gravity", "center", "-extent", "40x40",
+                    "(", "-size", "40x40", "xc:none", "-fill", "white", "-draw", "circle 20,20 20,1", ")",
+                    "-alpha", "off", "-compose", "CopyOpacity", "-composite", ")",
+                    "-gravity", "northwest", "-geometry", "+90+78", "-compose", "Over", "-composite",
+                ]
+            cmd += ["-define", "png:exclude-chunks=date,time,tIME", path]
             subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             ok = os.path.getsize(path) > 2000
             if ok:
@@ -679,7 +747,7 @@ def page_html(n, has_og):
 <meta property="og:description" content="{desc}">
 <meta property="og:url" content="{url}">
 <meta property="og:image" content="{image}">
-<meta property="og:image:width" content="1200">
+{og_type}<meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="article:published_time" content="{iso}">
 <meta property="article:author" content="{author}">
@@ -706,7 +774,9 @@ def page_html(n, has_og):
 </html>
 """.format(csp=NOTE_PAGE_CSP, title=e(n["title"]), desc=e(n["description"]), author=e(n["author"]),
            kw=('<meta name="keywords" content="%s">\n' % e(", ".join(n["tags"]))) if n["tags"] else "",
-           url=url, reader_url=e(reader_url), image=image, iso=n["iso_date"], ld=ld,
+           url=url, reader_url=e(reader_url), image=image,
+           og_type='<meta property="og:image:type" content="image/png">\n' if has_og else "",
+           iso=n["iso_date"], ld=ld,
            cat=e(n["category"]),
            desc_p=('<p class="note-desc">%s</p>\n' % e(n["description"])) if n["description"] else "",
            meta=" · ".join(meta_bits), body=n["body_html"])
