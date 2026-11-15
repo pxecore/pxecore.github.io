@@ -1887,3 +1887,5 @@ function initResearchNotes() {
     }
 }
 
+window.initResearchNotes = initResearchNotes;
+
