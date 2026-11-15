@@ -812,7 +812,9 @@ function initCosmicStarfield() {
 
     // bootstrap
     const initialTheme = getCurrentTheme();
-    resize(initialTheme === 'dark');
+    requestAnimationFrame(() => {
+        if (!isTornDown) resize(initialTheme === 'dark');
+    });
     if (initialTheme === 'light') {
         foliage.initLeaves();
     }
