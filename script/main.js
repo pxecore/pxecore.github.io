@@ -25,32 +25,20 @@ function initBrandMark() {
     const path = mark.querySelector('.logo-mark path');
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // logo ink-in animation
-    if (path && !reduced) {
-        try {
-            const pathLenAttr = Number(path.getAttribute('pathLength'));
-            const length = pathLenAttr > 0 ? pathLenAttr : path.getTotalLength();
-            if (length && length > 0) {
-                path.style.strokeDasharray = String(length);
-                path.style.strokeDashoffset = String(length);
-                mark.classList.add('is-inking');
-
-                requestAnimationFrame(() => {
-                    path.style.transition = 'stroke-dashoffset 1.25s var(--ease-velvet, cubic-bezier(0.22, 1, 0.36, 1))';
-                    path.style.strokeDashoffset = '0';
-                });
-
-                window.setTimeout(() => {
-                    mark.classList.remove('is-inking');
-                    path.style.transition = '';
-                    path.style.strokeDasharray = '';
-                    path.style.strokeDashoffset = '';
-                }, 1350);
-            }
-        } catch (e) {
-            console.warn('Brand mark inking initialization error:', e);
-            mark.classList.remove('is-inking');
-        }
+    // GPU-composited logo entrance (avoids non-composited SVG stroke-dashoffset/fill-opacity warnings)
+    if (stage && !reduced) {
+        stage.style.opacity = '0';
+        stage.style.transform = 'scale3d(0.9, 0.9, 1) translate3d(0, -4px, 0)';
+        requestAnimationFrame(() => {
+            stage.style.transition = 'opacity 520ms var(--ease-velvet, cubic-bezier(0.22, 1, 0.36, 1)), transform 520ms var(--ease-velvet, cubic-bezier(0.22, 1, 0.36, 1))';
+            stage.style.opacity = '1';
+            stage.style.transform = 'scale3d(1, 1, 1) translate3d(0, 0, 0)';
+        });
+        window.setTimeout(() => {
+            stage.style.transition = '';
+            stage.style.opacity = '';
+            stage.style.transform = '';
+        }, 560);
     }
 
     let pulsing = false;
@@ -252,7 +240,7 @@ if (themeToggleButton) {
                         ]
                     },
                     {
-                        duration: 360,
+                        duration: 460,
                         easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
                         pseudoElement: '::view-transition-new(root)'
                     }
@@ -545,11 +533,13 @@ window.copyMyButton = copyMyButton;
 
 // bootstrap
 document.addEventListener('DOMContentLoaded', () => {
-    settledViewport = {
-        w: window.innerWidth,
-        h: window.innerHeight,
-        area: window.innerWidth * window.innerHeight
-    };
+    requestAnimationFrame(() => {
+        settledViewport = {
+            w: window.innerWidth,
+            h: window.innerHeight,
+            area: window.innerWidth * window.innerHeight
+        };
+    });
 
     // theme
     const savedTheme = (window.__pxecoreThemeBoot && window.__pxecoreThemeBoot.readSavedTheme()) || 'dark';
