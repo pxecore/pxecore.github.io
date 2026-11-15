@@ -644,9 +644,7 @@ def measure_bg_luminance(bg_path):
 
 def make_og(n, path, state):
     bg_path = os.path.join(ROOT, "media", "og.webp")
-    av_path = os.path.join(ROOT, "media", "avatar-152.webp")
-    if not os.path.exists(av_path):
-        av_path = os.path.join(ROOT, "media", "avatar.webp")
+    av_path = os.path.join(ROOT, "media", "avatar.webp")
     has_bg = os.path.exists(bg_path)
     has_av = os.path.exists(av_path)
     luma = measure_bg_luminance(bg_path) if has_bg else 0.25
