@@ -498,11 +498,12 @@ body.light-theme .profile-img {
 .terminal-controls {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
 /* window controls */
 .terminal-btn {
+    position: relative;
     width: 11px;
     height: 11px;
     border-radius: 50%;
@@ -513,6 +514,18 @@ body.light-theme .profile-img {
     -webkit-tap-highlight-color: transparent;
     padding: 0;
     border: none;
+}
+
+.terminal-btn::after {
+    content: '';
+    position: absolute;
+    inset: -7px;
+}
+
+@media (max-width: 768px), (pointer: coarse) {
+    .terminal-controls {
+        gap: 14px;
+    }
 }
 
 .terminal-btn.red {
@@ -762,7 +775,7 @@ body.light-theme .profile-img {
     position: relative;
     color: var(--text-primary);
     animation:
-        letterDrop 0.72s var(--ease-velvet) both,
+        letterDrop 0.68s var(--ease-velvet) backwards,
         letterHop 8s ease-in-out infinite;
 }
 
@@ -982,11 +995,11 @@ html.theme-in-transition .site-view[hidden] {
 
 /* Hero entrance animation */
 #view-home.site-view-active .content {
-    animation: contentEnter 0.30s var(--ease-velvet) both;
+    animation: contentEnter 0.44s var(--ease-velvet) both;
 }
 
 #view-home.site-view-active .terminal-container {
-    animation: terminalEnter 0.32s var(--ease-velvet) 0.02s both;
+    animation: terminalEnter 0.48s var(--ease-velvet) 0.04s both;
 }
 
 #view-home.site-view-active .left-section,
