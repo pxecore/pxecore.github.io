@@ -623,31 +623,31 @@ button.discord-inline-copy:active {
 
 /* Resume view entrance cascade */
 #view-resume.site-view-active .resume-folio-topbar {
-    animation: contentEnter 0.28s var(--ease-velvet) both;
+    animation: contentEnter 0.40s var(--ease-velvet) both;
 }
 
 #view-resume.site-view-active .essay-header {
-    animation: contentEnter 0.30s var(--ease-velvet) 0.02s both;
+    animation: contentEnter 0.42s var(--ease-velvet) 0.03s both;
 }
 
 #view-resume.site-view-active .essay-banner-plate {
-    animation: contentEnter 0.32s var(--ease-velvet) 0.04s both;
+    animation: contentEnter 0.44s var(--ease-velvet) 0.05s both;
 }
 
 #view-resume.site-view-active .monograph-prose {
-    animation: contentEnter 0.34s var(--ease-velvet) 0.05s both;
+    animation: contentEnter 0.46s var(--ease-velvet) 0.07s both;
 }
 
 #view-resume.site-view-active .profiles-section {
-    animation: contentEnter 0.36s var(--ease-velvet) 0.06s both;
+    animation: contentEnter 0.48s var(--ease-velvet) 0.09s both;
 }
 
 #view-resume.site-view-active .homestead-section {
-    animation: contentEnter 0.38s var(--ease-velvet) 0.07s both;
+    animation: contentEnter 0.50s var(--ease-velvet) 0.11s both;
 }
 
 #view-resume.site-view-active .resume-footer-badges {
-    animation: contentEnter 0.40s var(--ease-velvet) 0.08s both;
+    animation: contentEnter 0.52s var(--ease-velvet) 0.13s both;
 }
 
 
