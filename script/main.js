@@ -532,7 +532,9 @@ window.copyMyButton = copyMyButton;
 
 
 // bootstrap
-document.addEventListener('DOMContentLoaded', () => {
+function bootstrapSite() {
+    if (window.__pxecoreBootstrapped) return;
+    window.__pxecoreBootstrapped = true;
     requestAnimationFrame(() => {
         settledViewport = {
             w: window.innerWidth,
@@ -860,7 +862,13 @@ document.addEventListener('DOMContentLoaded', () => {
             for (const reg of regs) reg.unregister();
         }).catch(() => {});
     }
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootstrapSite);
+} else {
+    bootstrapSite();
+}
 
 // devtools console banner & helper api
 function initDevToolsConsoleBanner() {
