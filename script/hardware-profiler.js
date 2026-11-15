@@ -24,7 +24,7 @@
         return true;
     }
 
-    function evaluateTier() {
+    function evaluateTier(skipLayoutRead) {
         try {
             isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         } catch (_) {}
@@ -41,8 +41,8 @@
         const hasDeviceMemory = typeof navigator.deviceMemory === 'number';
         const memory = hasDeviceMemory ? navigator.deviceMemory : 8;
         const isCoarse = isCoarsePointer();
-        const innerW = window.innerWidth || 1024;
-        const screenW = (!isCoarse && window.screen && typeof window.screen.width === 'number') ? window.screen.width : 0;
+        const screenW = (window.screen && typeof window.screen.width === 'number') ? window.screen.width : 1024;
+        const innerW = (skipLayoutRead || isCoarse) ? screenW : (window.innerWidth || screenW);
         const width = isCoarse ? innerW : Math.max(innerW, screenW);
 
         // Tier determination: mobile/software (1), standard desktop (2), high-spec desktop (3)
@@ -112,8 +112,8 @@
     window.addEventListener('resize', handleResizeOrOrientation, { passive: true });
     window.addEventListener('orientationchange', handleResizeOrOrientation, { passive: true });
 
-    // Evaluate initially
-    evaluateTier();
+    // Evaluate initially without forcing synchronous layout reflow
+    evaluateTier(true);
     scheduleDeferredChecks();
 
     window.isCoarsePointer = isCoarsePointer;
