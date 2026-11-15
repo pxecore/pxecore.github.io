@@ -51,6 +51,9 @@
     border-radius: var(--radius-xl);
     padding: clamp(1.75rem, 3.2vw, 2.75rem) clamp(1.75rem, 3.2vw, 2.75rem) clamp(3rem, 5vw, 4.25rem);
     position: relative;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 .notes-reader-card h1,
@@ -1683,7 +1686,7 @@
 @keyframes notesFloatIn {
     0% {
         opacity: 0;
-        transform: translate3d(0, -24px, 0);
+        transform: translate3d(0, -16px, 0);
     }
     100% {
         opacity: 1;
@@ -1694,7 +1697,7 @@
 @keyframes readerCardExpand {
     0% {
         opacity: 0;
-        transform: translate3d(0, -22px, 0);
+        transform: translate3d(0, -14px, 0);
     }
     100% {
         opacity: 1;
@@ -1705,11 +1708,11 @@
 @keyframes readerToolbarSlide {
     0% {
         opacity: 0;
-        transform: translate3d(0, -16px, 0);
+        transform: translate3d(0, -12px, 0);
     }
     100% {
         opacity: 1;
-        transform: none;
+        transform: translate3d(0, 0, 0);
     }
 }
 
@@ -1730,35 +1733,36 @@
 
 /* Entrance animation on initial load and view switch — targeted to deck so .notes-container does not create an ancestor transform containing block for fixed side TOC */
 #view-notes.site-view-active #notes-deck-view {
-    animation: contentEnter 0.30s var(--ease-velvet) both;
+    animation: contentEnter 0.44s var(--ease-velvet) both;
 }
 
 /* Deck Re-enter when returning from reader to deck */
 #notes-deck-view.is-entering {
-    animation: notesFloatIn 0.28s var(--ease-velvet) both;
+    animation: notesFloatIn 0.44s var(--ease-velvet) both;
 }
 
 /* Card cascade on initial load, deck return, filter, and pagination parts */
 .notes-article-card.is-cascade {
-    animation: notesCascadeDown 0.28s var(--ease-velvet) both;
-    animation-delay: calc(var(--card-idx, 0) * 0.02s);
+    animation: notesCascadeDown 0.42s var(--ease-velvet) both;
+    animation-delay: calc(var(--card-idx, 0) * 0.032s);
 }
 
 .notes-reader {
     max-width: clamp(740px, 86vw, 820px);
     margin: 0 auto;
     width: 100%;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: var(--space-5);
 }
 
 .notes-reader.is-entering .notes-reader-toolbar {
-    animation: readerToolbarSlide 0.26s var(--ease-velvet) both;
+    animation: readerToolbarSlide 0.38s var(--ease-velvet) both;
 }
 
 .notes-reader.is-entering .notes-reader-card {
-    animation: readerCardExpand 0.30s var(--ease-velvet) 0.02s both;
+    animation: readerCardExpand 0.46s var(--ease-velvet) 0.03s both;
 }
 
 .notes-reader-toolbar {
@@ -1881,7 +1885,22 @@
     font-size: 1.02rem;
     line-height: 1.76;
     color: var(--text-primary);
-    max-width: 68ch;
+    width: 100%;
+    max-width: min(68ch, 100%);
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.notes-reader-body p,
+.notes-reader-body li,
+.notes-reader-body blockquote,
+.notes-reader-body h1,
+.notes-reader-body h2,
+.notes-reader-body h3,
+.notes-reader-body h4,
+.notes-reader-body a {
+    max-width: 100%;
     overflow-wrap: anywhere;
     word-break: break-word;
 }
@@ -2646,13 +2665,17 @@ body.reader-focused .site-reading-progress {
         border-top: 1px solid var(--border);
     }
 
-    /* Thumbnail on mobile: compact and clean on the left */
+    /* Thumbnail on mobile: clean full-width cover above footer meta row */
     .notes-article-thumb {
         order: 1;
-        width: 88px;
-        height: 52px;
-        min-width: 88px;
-        border-radius: var(--radius-sm);
+        flex: 0 0 100%;
+        width: 100%;
+        height: auto;
+        min-width: 0;
+        aspect-ratio: 16 / 9;
+        max-height: 175px;
+        border-radius: var(--radius-md);
+        margin-bottom: var(--space-1);
     }
 
     .notes-thumb-stats {
@@ -2699,8 +2722,14 @@ body.reader-focused .site-reading-progress {
 
     .notes-reader-toolbar-stats {
         justify-content: center;
+        flex-wrap: wrap;
+        gap: 4px 10px;
         padding-top: var(--space-2);
         border-top: 1px solid var(--border);
+    }
+
+    .notes-reader-stat-item {
+        white-space: nowrap;
     }
 
     .notes-reader-card {
