@@ -899,14 +899,28 @@ function resumeParticleLoop(pJS, tier) {
     if (document.body?.classList?.contains('light-theme') || document.documentElement.classList.contains('light')) return;
     pJS.fps_limit = getDesiredParticleFps(tier);
     syncParticleCanvasSize(pJS);
-    if (isParticlesPausedByLifecycle && pJS.particles?.move) {
+    if (pJS.particles?.move) {
         pJS.particles.move.enable = true;
-        if (pJS.fn && !pJS.fn.drawAnimFrame && typeof pJS.fn.vendors?.draw === 'function') {
+    }
+    if (pJS.fn && typeof pJS.fn.vendors?.draw === 'function') {
+        if (!pJS.fn.drawAnimFrame) {
             pJS.fn.vendors.draw();
         }
     }
     isParticlesPausedByLifecycle = false;
 }
+
+window.__pauseParticles = function() {
+    pauseParticleLoop(window.pJSDom?.[0]?.pJS);
+};
+window.__resumeParticles = function() {
+    const pJS = window.pJSDom?.[0]?.pJS;
+    if (pJS) {
+        resumeParticleLoop(pJS);
+    } else if (!isParticlesTornDown && !document.hidden && !document.documentElement.classList.contains('light') && typeof initializeParticles === 'function') {
+        initializeParticles(getSky().hex, false);
+    }
+};
 
 function applyParticlePowerProfile(tier) {
     const pJSInstance = window.pJSDom?.[0]?.pJS;
