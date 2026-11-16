@@ -279,51 +279,20 @@ function resumeAllVisualPipelines() {
         window.__resumeStarfield();
     }
     const currentTheme = (document.documentElement.classList.contains('light') || (document.body && document.body.classList.contains('light-theme'))) ? 'light' : 'dark';
-    const pJS = window.pJSDom?.[0]?.pJS;
-    if (pJS) {
-        if (currentTheme === 'dark') {
-            if (typeof initializeParticles === 'function') {
-                initializeParticles(getSky().hex, false);
-            } else {
-                syncParticleCanvasSize(pJS);
-            }
-            pJS.particles.move.enable = true;
-            if (pJS.fn) {
-                if (pJS.fn.drawAnimFrame) {
-                    const cancel = window.cancelRequestAnimFrame || window.cancelAnimationFrame;
-                    if (cancel) cancel(pJS.fn.drawAnimFrame);
-                    pJS.fn.drawAnimFrame = null;
-                }
-                if (typeof pJS.fn.vendors?.draw === 'function') {
-                    pJS.fn.vendors.draw();
-                }
-            }
-        } else {
-            pJS.particles.move.enable = false;
-            if (pJS.fn?.drawAnimFrame) {
-                const cancel = window.cancelRequestAnimFrame || window.cancelAnimationFrame;
-                if (cancel) cancel(pJS.fn.drawAnimFrame);
-                pJS.fn.drawAnimFrame = null;
-            }
+    if (currentTheme === 'dark') {
+        if (typeof window.__resumeParticles === 'function') {
+            window.__resumeParticles();
         }
-    } else if (currentTheme === 'dark') {
-        initializeParticles(getSky().hex, false);
+    } else if (typeof window.__pauseParticles === 'function') {
+        window.__pauseParticles();
     }
 }
 
 document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
         document.title = 'System Offline!';
-        const pJS = window.pJSDom?.[0]?.pJS;
-        if (pJS) {
-            if (pJS.particles?.move) {
-                pJS.particles.move.enable = false;
-            }
-            if (pJS.fn?.drawAnimFrame) {
-                const cancel = window.cancelRequestAnimFrame || window.cancelAnimationFrame;
-                if (cancel) cancel(pJS.fn.drawAnimFrame);
-                pJS.fn.drawAnimFrame = null;
-            }
+        if (typeof window.__pauseParticles === 'function') {
+            window.__pauseParticles();
         }
         if (typeof window.__pauseStarfield === 'function') {
             window.__pauseStarfield();
