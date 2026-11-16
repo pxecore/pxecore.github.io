@@ -439,8 +439,8 @@
     background-color: var(--card-bg);
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    backdrop-filter: blur(16px) saturate(130%);
-    -webkit-backdrop-filter: blur(16px) saturate(130%);
+    backdrop-filter: var(--liquid-glass-blur);
+    -webkit-backdrop-filter: var(--liquid-glass-blur);
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
     box-shadow:
@@ -1851,7 +1851,7 @@
     font-size: 1.85rem;
     font-weight: 800;
     color: var(--text-primary);
-    text-shadow: var(--text-halo);
+    text-shadow: none;
     line-height: 1.35;
     letter-spacing: -0.5px;
     font-variant-numeric: tabular-nums;
@@ -1875,7 +1875,7 @@
 .notes-reader-description {
     font-size: 0.98rem;
     color: var(--text-secondary);
-    text-shadow: var(--text-halo);
+    text-shadow: none;
     line-height: 1.68;
     margin-top: var(--space-3);
     font-weight: 400;
@@ -2037,7 +2037,7 @@ body.reader-focused .site-reading-progress {
 
 .notes-code-frame {
     position: relative;
-    background: var(--telemetry-tile-bg, var(--code-block-bg));
+    background: var(--code-block-bg);
     border: 1px solid var(--telemetry-tile-border, var(--border));
     border-radius: var(--radius-lg);
     margin: var(--space-5) 0;
@@ -2068,7 +2068,7 @@ body.reader-focused .site-reading-progress {
 
 .notes-reader-body pre {
     position: relative;
-    background: var(--telemetry-tile-bg, var(--code-block-bg));
+    background: var(--code-block-bg);
     border: 1px solid var(--telemetry-tile-border, var(--border));
     border-radius: var(--radius-lg);
     padding: var(--space-4);
@@ -2196,7 +2196,7 @@ body.reader-focused .site-reading-progress {
 .notes-reader-body code {
     font-family: var(--font-mono, monospace);
     font-size: 0.85em;
-    background: var(--btn-bg);
+    background: var(--code-block-bg);
     color: var(--accent);
     padding: 2px 6px;
     border: 1px solid var(--border);
@@ -2220,6 +2220,63 @@ body.reader-focused .site-reading-progress {
     color: var(--text-secondary);
     font-style: italic;
     margin: var(--space-5) 0;
+}
+
+.notes-reader-body blockquote.alert {
+    font-style: normal;
+    border-left-width: 3px;
+}
+
+.notes-reader-body blockquote.alert strong {
+    text-transform: uppercase;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+}
+
+.notes-reader-body blockquote.alert-note {
+    border-left-color: var(--accent);
+    background: rgba(var(--accent-rgb, 216, 178, 120), 0.07);
+}
+.notes-reader-body blockquote.alert-note strong { color: var(--accent); }
+
+.notes-reader-body blockquote.alert-tip {
+    border-left-color: var(--status-success);
+    background: rgba(16, 185, 129, 0.07);
+}
+.notes-reader-body blockquote.alert-tip strong { color: var(--status-success); }
+
+.notes-reader-body blockquote.alert-important {
+    border-left-color: var(--status-info);
+    background: rgba(99, 102, 241, 0.08);
+}
+.notes-reader-body blockquote.alert-important strong { color: var(--status-info); }
+
+.notes-reader-body blockquote.alert-warning {
+    border-left-color: #D0A358;
+    background: rgba(208, 163, 88, 0.08);
+}
+.notes-reader-body blockquote.alert-warning strong { color: #D0A358; }
+
+html.light .notes-reader-body blockquote.alert-warning,
+body.light-theme .notes-reader-body blockquote.alert-warning {
+    border-left-color: #9A6B16;
+    background: rgba(154, 107, 22, 0.08);
+}
+html.light .notes-reader-body blockquote.alert-warning strong,
+body.light-theme .notes-reader-body blockquote.alert-warning strong {
+    color: #8A5E10;
+}
+
+.notes-reader-body blockquote.alert-caution {
+    border-left-color: var(--status-error);
+    background: rgba(229, 115, 115, 0.08);
+}
+.notes-reader-body blockquote.alert-caution strong { color: var(--status-error); }
+
+html.light .notes-reader-body blockquote.alert-caution,
+body.light-theme .notes-reader-body blockquote.alert-caution {
+    background: rgba(185, 28, 28, 0.06);
 }
 
 /* KaTeX math layout */
