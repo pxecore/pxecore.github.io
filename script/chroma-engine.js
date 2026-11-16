@@ -20,6 +20,8 @@
         };
 
         updateVar('--accent', palette.accent);
+        updateVar('--accent-secondary', palette.accent_secondary);
+        updateVar('--accent-hover', palette.accent_hover);
         updateVar('--accent-rgb', palette.accent_rgb);
         updateVar('--terminal-prompt', palette.accent);
         updateVar('--particle-color', palette.particle_color);
