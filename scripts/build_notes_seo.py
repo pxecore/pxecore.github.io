@@ -541,13 +541,14 @@ def tspans(lines, line_height_em):
         "0" if i == 0 else line_height_em, html.escape(l)) for i, l in enumerate(lines))
 
 
-def og_svg(n, has_bg=False, has_avatar=False, card_alpha=0.44):
+def og_svg(n, has_bg=False, has_avatar=False, card_alpha=0.52):
     t_lines = wrap(n["title"], 26, 3)
     size = 58 if len(t_lines) < 3 else 46
-    d_lines = wrap(n["description"], 54, 3)
+    desc_limit = 2 if len(t_lines) >= 3 else 3
+    d_lines = wrap(n["description"], 52, desc_limit)
     if not d_lines and n.get("tags"):
-        d_lines = wrap("  ".join("#" + t for t in n["tags"][:4]), 54, 2)
-    d_y = int(204 + size * 1.24 * (len(t_lines) - 1) + 64)
+        d_lines = wrap("  ".join("#" + t for t in n["tags"][:4]), 52, 2)
+    d_y = int(204 + size * 1.24 * (len(t_lines) - 1) + 60)
     font = "DejaVu Sans, Liberation Sans, Arial, sans-serif"
     bg_rect = "" if has_bg else '<rect width="1200" height="630" fill="#0E0D0C"/>'
     card_fill = ("rgba(14,13,12,%.2f)" % card_alpha) if has_bg else "#141312"
@@ -555,13 +556,13 @@ def og_svg(n, has_bg=False, has_avatar=False, card_alpha=0.44):
 
     # Header: avatar ring + site/notes label on left, category pill on right
     brand_x = 144 if has_avatar else 90
-    avatar_ring = '<circle cx="110" cy="98" r="21" fill="none" stroke="#D8B278" stroke-opacity="0.48" stroke-width="1.5"/>' if has_avatar else ""
+    avatar_ring = '<circle cx="110" cy="98" r="21" fill="none" stroke="#E5BF85" stroke-opacity="0.58" stroke-width="1.5"/>' if has_avatar else ""
     cat_label = (n["category"] or "RESEARCH").upper()[:18]
-    cat_w = max(72, int(len(cat_label) * 10.6 + 30))
+    cat_w = max(76, int(len(cat_label) * 11.2 + 32))
     cat_x = 1110 - cat_w
     cat_pill = (
-        '<rect x="%d" y="81" width="%d" height="34" rx="10" fill="#D8B278" fill-opacity="0.14" stroke="#D8B278" stroke-opacity="0.38" stroke-width="1"/>'
-        '<text x="%d" y="103" text-anchor="middle" fill="#D8B278" font-family="%s" font-size="15" font-weight="bold">%s</text>'
+        '<rect x="%d" y="80" width="%d" height="36" rx="10" fill="#D8B278" fill-opacity="0.18" stroke="#D8B278" stroke-opacity="0.52" stroke-width="1.2"/>'
+        '<text x="%d" y="104" text-anchor="middle" fill="#E5BF85" font-family="%s" font-size="16" font-weight="bold">%s</text>'
         % (cat_x, cat_w, cat_x + cat_w // 2, font, html.escape(cat_label))
     )
 
@@ -597,23 +598,23 @@ def og_svg(n, has_bg=False, has_avatar=False, card_alpha=0.44):
     cur_x = 1110 - total_w
     for label, tw in chosen_tags:
         tags_svg.append(
-            '<rect x="%d" y="510" width="%d" height="34" rx="10" fill="#F7F3EC" fill-opacity="0.08" stroke="#F7F3EC" stroke-opacity="0.16" stroke-width="1"/>'
-            '<text x="%d" y="533" text-anchor="middle" fill="#EAE2D6" font-family="%s" font-size="16">%s</text>'
+            '<rect x="%d" y="510" width="%d" height="34" rx="10" fill="#F7F3EC" fill-opacity="0.12" stroke="#F7F3EC" stroke-opacity="0.26" stroke-width="1"/>'
+            '<text x="%d" y="533" text-anchor="middle" fill="#F2ECE1" font-family="%s" font-size="16" font-weight="bold">%s</text>'
             % (cur_x, tw, cur_x + tw // 2, font, html.escape(label))
         )
         cur_x += tw + 10
 
     return """<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
 {bg}
-<rect x="34" y="34" width="1132" height="562" rx="22" fill="{cf}" stroke="#D8B278" stroke-opacity="0.34" stroke-width="1.5"/>
+<rect x="34" y="34" width="1132" height="562" rx="22" fill="{cf}" stroke="#D8B278" stroke-opacity="0.42" stroke-width="1.5"/>
 {av_ring}
-<text x="{bx}" y="105" text-anchor="start" fill="#F2ECE1" font-family="{f}" font-size="22" font-weight="bold">pxecore.github.io</text>
-<text x="{nx}" y="105" text-anchor="start" fill="#D8B278" font-family="{f}" font-size="22">· notes</text>
+<text x="{bx}" y="105" text-anchor="start" fill="#F7F3EC" font-family="{f}" font-size="22" font-weight="bold">pxecore.github.io</text>
+<text x="{nx}" y="105" text-anchor="start" fill="#E5BF85" font-family="{f}" font-size="22" font-weight="bold">· notes</text>
 {cat}
-<text x="90" y="207" text-anchor="start" fill="#000000" fill-opacity="0.52" font-family="{f}" font-size="{s}" font-weight="bold">{t}</text>
+<text x="90" y="207" text-anchor="start" fill="#000000" fill-opacity="0.58" font-family="{f}" font-size="{s}" font-weight="bold">{t}</text>
 <text x="90" y="204" text-anchor="start" fill="#F7F3EC" font-family="{f}" font-size="{s}" font-weight="bold">{t}</text>
-<text x="90" y="{dy}" text-anchor="start" fill="#CFC7BA" font-family="{f}" font-size="28">{d}</text>
-<line x1="90" y1="482" x2="1110" y2="482" stroke="#D8B278" stroke-opacity="0.28" stroke-width="1"/>
+<text x="90" y="{dy}" text-anchor="start" fill="#DDD5C8" font-family="{f}" font-size="28">{d}</text>
+<line x1="90" y1="482" x2="1110" y2="482" stroke="#D8B278" stroke-opacity="0.34" stroke-width="1"/>
 {cal}{dt}{clk}{rd}{tags}
 </svg>""".format(bg=bg_rect, cf=card_fill, av_ring=avatar_ring, bx=brand_x, nx=brand_x + 206, f=font,
                  cat=cat_pill, s=size, t=title_spans, d=tspans(d_lines, "1.38em"), dy=d_y,
@@ -648,10 +649,10 @@ def make_og(n, path, state):
     has_bg = os.path.exists(bg_path)
     has_av = os.path.exists(av_path)
     luma = measure_bg_luminance(bg_path) if has_bg else 0.25
-    colorize_pct = int(round(48 + luma * 34))
-    card_alpha = round(0.38 + luma * 0.24, 2)
+    colorize_pct = int(round(52 + luma * 32))
+    card_alpha = round(0.46 + luma * 0.24, 2)
     svg = og_svg(n, has_bg=has_bg, has_avatar=has_av, card_alpha=card_alpha)
-    digest = hashlib.sha256((bg_og_digest(bg_path) + bg_og_digest(av_path) + ":v4:" + svg).encode()).hexdigest()[:16]
+    digest = hashlib.sha256((bg_og_digest(bg_path) + bg_og_digest(av_path) + ":v5:" + svg).encode()).hexdigest()[:16]
     if os.path.exists(path) and state["og"].get(n["slug"]) == digest:
         return True
     tmp = path + ".svg"
