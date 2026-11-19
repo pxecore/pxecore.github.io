@@ -468,8 +468,8 @@ body.light-theme .profile-img {
 
 @keyframes terminalEnter {
     0% {
-        opacity: 0;
-        transform: translate3d(0, -28px, 0);
+        opacity: 0.96;
+        transform: translate3d(0, -16px, 0);
     }
     100% {
         opacity: 1;
@@ -498,7 +498,7 @@ body.light-theme .profile-img {
 .terminal-controls {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 14px;
 }
 
 /* window controls */
@@ -774,9 +774,7 @@ body.light-theme .profile-img {
     display: inline-block;
     position: relative;
     color: var(--text-primary);
-    animation:
-        letterDrop 0.68s var(--ease-velvet) backwards,
-        letterHop 8s ease-in-out infinite;
+    animation: letterHop 8s ease-in-out infinite;
 }
 
 /* Accent shimmer overlay */
@@ -792,15 +790,10 @@ body.light-theme .profile-img {
     animation: letterColorWave 8s ease-in-out infinite;
 }
 
-@keyframes letterDrop {
-    0%   { opacity: 0; transform: translateY(-24px); }
-    100% { opacity: 1; transform: translateY(0); }
-}
-
 @keyframes letterHop {
-    0%, 14%   { transform: translateY(0); }
-    20%, 26%  { transform: translateY(-5.5px); }
-    32%, 100% { transform: translateY(0); }
+    0%, 14%   { transform: translate3d(0, 0, 0); }
+    20%, 26%  { transform: translate3d(0, -5.5px, 0); }
+    32%, 100% { transform: translate3d(0, 0, 0); }
 }
 
 @keyframes letterColorWave {
@@ -809,13 +802,13 @@ body.light-theme .profile-img {
     32%, 100% { opacity: 0; }
 }
 
-.pixel-char:nth-child(1) { animation-delay: 0.05s, 1.40s; }
-.pixel-char:nth-child(2) { animation-delay: 0.10s, 1.48s; }
-.pixel-char:nth-child(3) { animation-delay: 0.15s, 1.56s; }
-.pixel-char:nth-child(4) { animation-delay: 0.20s, 1.64s; }
-.pixel-char:nth-child(5) { animation-delay: 0.25s, 1.72s; }
-.pixel-char:nth-child(6) { animation-delay: 0.30s, 1.80s; }
-.pixel-char:nth-child(7) { animation-delay: 0.35s, 1.88s; }
+.pixel-char:nth-child(1) { animation-delay: 1.40s; }
+.pixel-char:nth-child(2) { animation-delay: 1.48s; }
+.pixel-char:nth-child(3) { animation-delay: 1.56s; }
+.pixel-char:nth-child(4) { animation-delay: 1.64s; }
+.pixel-char:nth-child(5) { animation-delay: 1.72s; }
+.pixel-char:nth-child(6) { animation-delay: 1.80s; }
+.pixel-char:nth-child(7) { animation-delay: 1.88s; }
 
 .pixel-char:nth-child(1)::after { animation-delay: 1.40s; }
 .pixel-char:nth-child(2)::after { animation-delay: 1.48s; }
