@@ -361,27 +361,19 @@ function initAudioPlayer() {
     audioElement = audio;
     audio.volume = 0.3;
 
-    // Warm up audio metadata/buffer on hover/focus or idle (skipped on Save-Data)
+    // Warm up audio buffer on explicit user intent (hover/touch/focus), never on idle page load
     let audioWarmed = false;
     const warmAudioBuffer = () => {
         if (audioWarmed || navigator.connection?.saveData) return;
         audioWarmed = true;
-        if (audio.preload === 'none') {
-            audio.preload = 'metadata';
+        if (audio.preload !== 'auto') {
+            audio.preload = 'auto';
         }
     };
     if (vocalizer) {
-        vocalizer.addEventListener('pointerenter', () => {
-            if (!navigator.connection?.saveData && audio.preload !== 'auto') {
-                audio.preload = 'auto';
-            }
-        }, { once: true, passive: true });
+        vocalizer.addEventListener('pointerenter', warmAudioBuffer, { once: true, passive: true });
+        vocalizer.addEventListener('touchstart', warmAudioBuffer, { once: true, passive: true });
         vocalizer.addEventListener('focus', warmAudioBuffer, { once: true, passive: true });
-    }
-    if ('requestIdleCallback' in window) {
-        requestIdleCallback(warmAudioBuffer, { timeout: 2500 });
-    } else {
-        setTimeout(warmAudioBuffer, 1500);
     }
 
     let lastSaveTime = 0;
