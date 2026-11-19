@@ -84,13 +84,32 @@
         var rawHash = (window.location.hash || '').replace('#', '');
         var hash = rawHash.split('?')[0].split('/')[0];
         var params = new URLSearchParams(window.location.search);
+        var initialView = 'home';
         if (hash === 'notes' || rawHash.indexOf('?p=') !== -1 || params.has('p')) {
-            root.setAttribute('data-initial-view', 'notes');
+            initialView = 'notes';
         } else if (hash === 'resume') {
-            root.setAttribute('data-initial-view', 'resume');
-        } else {
-            root.setAttribute('data-initial-view', 'home');
+            initialView = 'resume';
         }
+        root.setAttribute('data-initial-view', initialView);
+
+        var activateDeferredCss = function (onlyView) {
+            var links = document.querySelectorAll('link[data-defer-view]');
+            for (var i = 0; i < links.length; i++) {
+                var target = links[i].getAttribute('data-defer-view');
+                if (!onlyView || target === onlyView) {
+                    links[i].media = 'all';
+                    links[i].removeAttribute('data-defer-view');
+                }
+            }
+        };
+        if (initialView !== 'home') {
+            document.addEventListener('readystatechange', function () {
+                activateDeferredCss(initialView);
+            });
+        }
+        window.addEventListener('DOMContentLoaded', function () {
+            activateDeferredCss(null);
+        }, { once: true });
     } catch (_) {}
 })();
 
