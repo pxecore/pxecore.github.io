@@ -7,7 +7,7 @@
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
   <meta name="referrer" content="no-referrer" />
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-yiT1zKLBfMs+1vxpH94+YUEnMHLQMwnOhHgqlanoqVA='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self';" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-WBXuLXYIT1EhtIcVOBqaVAL4FVk0CIBBupzOCmCSfUE='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self';" />
 
 
   <style>
@@ -230,9 +230,15 @@
           </div>
         </div>
         
-        <div class="panel">
-          <h4>NEXT BLOCK</h4>
-          <div class="next-piece-container"><canvas id="next-canvas" width="80" height="80"></canvas></div>
+        <div class="panel" style="display:flex; gap:8px;">
+          <div style="flex:1; min-width:0;">
+            <h4>HOLD</h4>
+            <div class="next-piece-container" style="height:68px;"><canvas id="hold-canvas" width="72" height="68" style="background:transparent;border:none;box-shadow:none;width:72px;height:68px;"></canvas></div>
+          </div>
+          <div style="flex:1; min-width:0; border-left:1px solid rgba(255,255,255,0.08); padding-left:8px;">
+            <h4>NEXT</h4>
+            <div class="next-piece-container" style="height:68px;"><canvas id="next-canvas" width="72" height="68" style="background:transparent;border:none;box-shadow:none;width:72px;height:68px;"></canvas></div>
+          </div>
         </div>
 
         <div class="panel">
@@ -247,10 +253,10 @@
         <div class="panel controls-info">
           <h4>CONTROLS</h4>
           <div><span>W / ↑</span> Rotate</div>
-          <div><span>A / ←</span> Move Left</div>
-          <div><span>D / →</span> Move Right</div>
+          <div><span>A / D</span> Move</div>
           <div><span>S / ↓</span> Soft Drop</div>
           <div><span>SPACE</span> Hard Drop</div>
+          <div><span>C / ⇧</span> Hold Piece</div>
         </div>
 
         <a href="/" data-home-link="true" class="btn" style="width: 100%; padding: 8px; text-align: center;">Exit Game</a>
@@ -292,9 +298,15 @@
 
     const nextCanvas = document.getElementById('next-canvas');
     const nextContext = nextCanvas.getContext('2d');
-    nextCanvas.width = Math.round(80 * canvasDpr);
-    nextCanvas.height = Math.round(80 * canvasDpr);
-    nextContext.scale(20 * canvasDpr, 20 * canvasDpr); // 4 * 20 = 80px
+    nextCanvas.width = Math.round(72 * canvasDpr);
+    nextCanvas.height = Math.round(68 * canvasDpr);
+    nextContext.scale(17 * canvasDpr, 17 * canvasDpr);
+
+    const holdCanvas = document.getElementById('hold-canvas');
+    const holdContext = holdCanvas.getContext('2d');
+    holdCanvas.width = Math.round(72 * canvasDpr);
+    holdCanvas.height = Math.round(68 * canvasDpr);
+    holdContext.scale(17 * canvasDpr, 17 * canvasDpr);
 
     const StorageManager = {
       _cache: {},
@@ -404,6 +416,7 @@
         } catch (e) {}
       },
       lock: () => playTone(240, 'triangle', 0.04, 0.08, -60),
+      hold: () => playTone(460, 'triangle', 0.05, 0.07, 110),
       tSpin: () => {
         [587.33, 739.99, 880, 1174.66].forEach((f, i) => {
           setTimeout(() => playTone(f, 'sine', 0.12, 0.1), i * 38);
@@ -507,6 +520,8 @@
       rotState: 0,
       nextType: '',
       nextMatrix: null,
+      holdType: '',
+      canHold: true,
       score: 0,
       lines: 0,
       level: 1,
@@ -532,6 +547,7 @@
     let particles = [];
     let floatingTexts = [];
     let lineClearFlash = [];
+    let hardDropTrails = [];
 
     // 7-Bag Randomizer
     let pieceBag = [];
@@ -629,9 +645,15 @@
     }
 
     function addFloatingText(x, y, text, color, isBig = false) {
+      let targetY = Math.max(2, y);
+      for (let i = 0; i < floatingTexts.length; i++) {
+        if (Math.abs(floatingTexts[i].y - targetY) < 1.35) {
+          targetY += 1.45;
+        }
+      }
       floatingTexts.push({
         x: Math.max(0.5, Math.min(6.5, x)),
-        y: Math.max(2, y),
+        y: Math.min(18.5, targetY),
         text: text,
         life: 1.0,
         decay: isBig ? 0.014 : 0.02,
@@ -753,6 +775,7 @@
       if (!gameActive || isPaused) return;
       initAudio();
 
+      const startY = player.pos.y;
       let droppedCells = 0;
       while (!collide(arena, player)) {
         player.pos.y++;
@@ -760,6 +783,23 @@
       }
       player.pos.y--;
       droppedCells = Math.max(0, droppedCells - 1);
+
+      if (droppedCells > 1 && player.matrix) {
+        const pieceColor = colors[PIECE_DEFS[player.type]?.colorId || 2] || '#00e5ff';
+        for (let py = 0; py < player.matrix.length; py++) {
+          for (let px = 0; px < player.matrix[py].length; px++) {
+            if (player.matrix[py][px] !== 0) {
+              hardDropTrails.push({
+                x: player.pos.x + px,
+                y1: Math.max(0, startY + py),
+                y2: player.pos.y + py,
+                color: pieceColor,
+                life: 1.0
+              });
+            }
+          }
+        }
+      }
 
       player.score += droppedCells * 2;
       dropCounter = 0;
@@ -772,10 +812,46 @@
     function lockPiece() {
       merge(arena, player);
       sfx.lock();
+      player.canHold = true;
+      drawHoldPiece();
 
       const tspin = checkTSpin();
       arenaSweep(tspin);
       playerReset();
+    }
+
+    function holdPiece() {
+      if (!gameActive || isPaused || !player.canHold) return;
+      initAudio();
+
+      const currentType = player.type;
+      if (!player.holdType) {
+        player.holdType = currentType;
+        player.canHold = false;
+        sfx.hold();
+        drawHoldPiece();
+        playerReset();
+      } else {
+        const swappedType = player.holdType;
+        player.holdType = currentType;
+        player.type = swappedType;
+        player.matrix = cloneMatrix(PIECE_DEFS[swappedType].shape);
+        player.rotState = 0;
+        player.lastActionWasRotate = false;
+        player.lastKickIndex = 0;
+        player.pos.y = 0;
+        player.pos.x = Math.floor((10 - player.matrix[0].length) / 2);
+        player.lowestY = player.pos.y;
+        lockResets = 0;
+        isTouchingFloor = false;
+        lockDelayTimer = 0;
+        player.canHold = false;
+        sfx.hold();
+        drawHoldPiece();
+        if (collide(arena, player)) {
+          triggerGameOver();
+        }
+      }
     }
 
     // Scoring & Level Progression
@@ -1005,12 +1081,24 @@
     }
 
     function drawNextPiece() {
-      nextContext.clearRect(0, 0, 4, 4);
+      nextContext.clearRect(0, 0, 5, 5);
       if (!player.nextMatrix) return;
       const m = player.nextMatrix;
-      const ox = (4 - m[0].length) / 2;
-      const oy = (4 - m.length) / 2;
+      const ox = (4.24 - m[0].length) / 2;
+      const oy = (4.0 - m.length) / 2;
       drawMatrix(m, { x: ox, y: oy }, nextContext);
+    }
+
+    function drawHoldPiece() {
+      holdContext.clearRect(0, 0, 5, 5);
+      if (!player.holdType || !PIECE_DEFS[player.holdType]) return;
+      const m = PIECE_DEFS[player.holdType].shape;
+      const ox = (4.24 - m[0].length) / 2;
+      const oy = (4.0 - m.length) / 2;
+      holdContext.save();
+      if (!player.canHold) holdContext.globalAlpha = 0.42;
+      drawMatrix(m, { x: ox, y: oy }, holdContext);
+      holdContext.restore();
     }
 
     function draw() {
@@ -1040,6 +1128,20 @@
         context.translate(dx, dy);
         screenShake *= 0.82;
         if (screenShake < 0.15) screenShake = 0;
+      }
+
+      for (let i = hardDropTrails.length - 1; i >= 0; i--) {
+        const tr = hardDropTrails[i];
+        const grad = context.createLinearGradient(0, tr.y1, 0, tr.y2);
+        grad.addColorStop(0, 'rgba(0,0,0,0)');
+        grad.addColorStop(1, tr.color);
+        context.save();
+        context.globalAlpha = tr.life * 0.12;
+        context.fillStyle = grad;
+        context.fillRect(tr.x + 0.08, tr.y1, 0.84, Math.max(0, tr.y2 - tr.y1));
+        context.restore();
+        tr.life -= 0.18;
+        if (tr.life <= 0) hardDropTrails.splice(i, 1);
       }
 
       drawMatrix(arena, { x: 0, y: 0 }, context);
@@ -1131,6 +1233,8 @@
         }
       }
 
+      processFrameInput(deltaTime);
+
       draw();
       requestAnimationFrame(update);
     }
@@ -1181,11 +1285,17 @@
       player.level = 1;
       player.combo = 0;
       player.b2b = 0;
+      player.holdType = '';
+      player.canHold = true;
+      player.nextType = '';
+      player.nextMatrix = null;
       particles = [];
       floatingTexts = [];
       lineClearFlash = [];
+      hardDropTrails = [];
       screenShake = 0;
       pieceBag = [];
+      drawHoldPiece();
 
       gameActive = true;
       isPaused = false;
@@ -1199,39 +1309,42 @@
       requestAnimationFrame(update);
     }
 
-    // Keyboard input handling (DAS / ARR)
+    // Keyboard input handling (Frame-locked DAS / ARR)
     const keyState = {};
-    const dasTimers = {};
-    const dasIntervals = {};
-
-    function stopDAS(key) {
-      keyState[key] = false;
-      clearTimeout(dasTimers[key]);
-      clearInterval(dasIntervals[key]);
-      delete dasTimers[key];
-      delete dasIntervals[key];
-    }
+    const DAS_DELAY = 125;
+    const ARR_INTERVAL = 22;
+    const SOFT_DROP_INTERVAL = 24;
+    let activeHorizDir = 0;
+    let horizDasTimer = 0;
+    let horizArrTimer = 0;
+    let softDropTimer = 0;
 
     function clearAllInput() {
-      Object.keys(keyState).forEach(stopDAS);
+      Object.keys(keyState).forEach((k) => { keyState[k] = false; });
+      activeHorizDir = 0;
+      horizDasTimer = 0;
+      horizArrTimer = 0;
+      softDropTimer = 0;
     }
 
-    function startDAS(key, action, arrRate = 28) {
-      stopDAS(key);
-      keyState[key] = true;
-      action();
-      draw();
-      dasTimers[key] = setTimeout(() => {
-        if (!keyState[key]) return;
-        dasIntervals[key] = setInterval(() => {
-          if (keyState[key]) {
-            action();
-            draw();
-          } else {
-            stopDAS(key);
+    function processFrameInput(deltaTime) {
+      if (activeHorizDir !== 0) {
+        horizDasTimer += deltaTime;
+        if (horizDasTimer >= DAS_DELAY) {
+          horizArrTimer += deltaTime;
+          while (horizArrTimer >= ARR_INTERVAL) {
+            horizArrTimer -= ARR_INTERVAL;
+            playerMove(activeHorizDir);
           }
-        }, arrRate);
-      }, 130);
+        }
+      }
+      if (keyState['s'] || keyState['arrowdown']) {
+        softDropTimer += deltaTime;
+        while (softDropTimer >= SOFT_DROP_INTERVAL) {
+          softDropTimer -= SOFT_DROP_INTERVAL;
+          playerDrop();
+        }
+      }
     }
 
     document.addEventListener('keydown', event => {
@@ -1250,7 +1363,7 @@
       initAudio();
 
       const key = event.key.toLowerCase();
-      if (['w', 'a', 's', 'd', 'q', 'z', 'x', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright', ' ', 'p'].includes(key)) {
+      if (['w', 'a', 's', 'd', 'q', 'z', 'x', 'c', 'shift', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright', ' ', 'p'].includes(key)) {
         event.preventDefault();
       }
 
@@ -1261,34 +1374,52 @@
       if (isPaused) return;
 
       if (!keyState[key]) {
+        keyState[key] = true;
         if (key === 'a' || key === 'arrowleft') {
-          stopDAS('d');
-          stopDAS('arrowright');
-          startDAS(key, () => playerMove(-1));
+          activeHorizDir = -1;
+          horizDasTimer = 0;
+          horizArrTimer = 0;
+          playerMove(-1);
         } else if (key === 'd' || key === 'arrowright') {
-          stopDAS('a');
-          stopDAS('arrowleft');
-          startDAS(key, () => playerMove(1));
+          activeHorizDir = 1;
+          horizDasTimer = 0;
+          horizArrTimer = 0;
+          playerMove(1);
         } else if (key === 's' || key === 'arrowdown') {
-          startDAS(key, () => playerDrop(), 24);
+          softDropTimer = 0;
+          playerDrop();
         } else if (key === 'w' || key === 'arrowup' || key === 'x') {
-          keyState[key] = true;
           playerRotate(1);
-          draw();
         } else if (key === 'q' || key === 'z') {
-          keyState[key] = true;
           playerRotate(-1);
-          draw();
+        } else if (key === 'c' || key === 'shift') {
+          holdPiece();
         } else if (key === ' ') {
-          keyState[key] = true;
           hardDrop();
-          draw();
         }
       }
     });
 
     document.addEventListener('keyup', event => {
-      stopDAS(event.key.toLowerCase());
+      const key = event.key.toLowerCase();
+      keyState[key] = false;
+      if (key === 'a' || key === 'arrowleft') {
+        if (keyState['d'] || keyState['arrowright']) {
+          activeHorizDir = 1;
+          horizDasTimer = 0;
+          horizArrTimer = 0;
+        } else if (activeHorizDir === -1) {
+          activeHorizDir = 0;
+        }
+      } else if (key === 'd' || key === 'arrowright') {
+        if (keyState['a'] || keyState['arrowleft']) {
+          activeHorizDir = -1;
+          horizDasTimer = 0;
+          horizArrTimer = 0;
+        } else if (activeHorizDir === 1) {
+          activeHorizDir = 0;
+        }
+      }
     });
 
     window.addEventListener('blur', clearAllInput);
