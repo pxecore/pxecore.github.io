@@ -129,7 +129,7 @@ function startAudioVisualizer() {
     lastVisualizerUpdateTime = 0;
 
     function renderAudioFrame(now) {
-        if (!audioPlaying || !audioElement || audioElement.paused) {
+        if (!audioPlaying || !audioElement) {
             stopAudioVisualizer();
             return;
         }
@@ -174,34 +174,42 @@ function startAudioVisualizer() {
         const snare = Math.pow(Math.max(0, Math.sin((beat + 1.0) * Math.PI * 0.5)), 3);
 
         if (hasLiveFft) {
-            // Map 64 FFT bins across 10 bars using logarithmic-like bands (bass -> mid -> high)
-            const bands = [
-                [0, 2], [2, 4], [4, 6],
-                [6, 9], [9, 13], [13, 18], [18, 24],
-                [24, 32], [32, 44], [44, 60]
+            // Symmetric center-weighted band mapping (prevents left-to-right staircase drop-off)
+            // Outer bars = highs/presence, mid bars = mids, center bars = bass/punch
+            const barProfile = [
+                { lo: 22, hi: 34, gain: 1.45, group: 'high' },
+                { lo: 12, hi: 20, gain: 1.25, group: 'mid'  },
+                { lo: 6,  hi: 11, gain: 1.12, group: 'mid'  },
+                { lo: 2,  hi: 5,  gain: 1.00, group: 'bass' },
+                { lo: 0,  hi: 2,  gain: 0.96, group: 'bass' },
+                { lo: 1,  hi: 4,  gain: 0.98, group: 'bass' },
+                { lo: 4,  hi: 8,  gain: 1.06, group: 'bass' },
+                { lo: 8,  hi: 15, gain: 1.16, group: 'mid'  },
+                { lo: 15, hi: 24, gain: 1.32, group: 'mid'  },
+                { lo: 26, hi: 42, gain: 1.55, group: 'high' }
             ];
-            const refPeak = Math.max(110, maxFftBin);
+            const refPeak = Math.max(96, maxFftBin);
             let bassAcc = 0, midAcc = 0, highAcc = 0;
             for (let i = 0; i < count; i++) {
-                const [lo, hi] = bands[i];
+                const prof = barProfile[i];
                 let peak = 0;
-                for (let b = lo; b < hi && b < analyserData.length; b++) {
+                for (let b = prof.lo; b < prof.hi && b < analyserData.length; b++) {
                     if (analyserData[b] > peak) peak = analyserData[b];
                 }
-                const norm = Math.min(1, peak / refPeak);
-                if (i < 3) bassAcc += norm;
-                else if (i < 7) midAcc += norm;
+                const norm = Math.min(1, (peak / refPeak) * prof.gain);
+                if (prof.group === 'bass') bassAcc += norm;
+                else if (prof.group === 'mid') midAcc += norm;
                 else highAcc += norm;
 
-                const targetScale = 0.35 + norm * 1.50;
+                const targetScale = 0.35 + norm * 1.45;
                 const speed = targetScale > currentScales[i] ? 0.45 : 0.24;
                 currentScales[i] += (targetScale - currentScales[i]) * speed;
                 visualizerBars[i].style.transform = `scaleY(${currentScales[i].toFixed(2)})`;
             }
             audioEnvelope.active = true;
-            audioEnvelope.bass = bassAcc / 3;
+            audioEnvelope.bass = bassAcc / 4;
             audioEnvelope.mid = midAcc / 4;
-            audioEnvelope.high = highAcc / 3;
+            audioEnvelope.high = highAcc / 2;
             audioEnvelope.energy = audioEnvelope.bass * 0.50 + audioEnvelope.mid * 0.35 + audioEnvelope.high * 0.15;
             audioEnvelope.bpm = Math.round(118 + audioEnvelope.bass * 18);
         } else {
@@ -318,25 +326,22 @@ function toggleAudio() {
                 analyserCtx.resume().catch(() => {});
             }
 
+            // Optimistic UI: open bars immediately without waiting for network/decode latency
+            audioPlaying = true;
+            if (vocalizer) vocalizer.classList.add('playing');
+            if (playBtn) playBtn.innerHTML = pauseSVG;
+            startAudioVisualizer();
+
             const playPromise = audioElement.play();
             if (playPromise !== undefined && typeof playPromise.then === 'function') {
-                playPromise.then(function () {
-                    audioPlaying = true;
-                    if (vocalizer) vocalizer.classList.add('playing');
-                    if (playBtn) playBtn.innerHTML = pauseSVG;
-                    startAudioVisualizer();
-                }).catch(function (err) {
+                playPromise.catch(function (err) {
+                    if (err && err.name === 'AbortError') return;
                     console.warn('[Audio] Playback prevented:', err);
                     audioPlaying = false;
                     if (vocalizer) vocalizer.classList.remove('playing');
                     if (playBtn) playBtn.innerHTML = playSVG;
                     stopAudioVisualizer();
                 });
-            } else {
-                audioPlaying = true;
-                if (vocalizer) vocalizer.classList.add('playing');
-                if (playBtn) playBtn.innerHTML = pauseSVG;
-                startAudioVisualizer();
             }
         }
     } catch (error) {
@@ -355,6 +360,29 @@ function initAudioPlayer() {
 
     audioElement = audio;
     audio.volume = 0.3;
+
+    // Warm up audio metadata/buffer on hover/focus or idle (skipped on Save-Data)
+    let audioWarmed = false;
+    const warmAudioBuffer = () => {
+        if (audioWarmed || navigator.connection?.saveData) return;
+        audioWarmed = true;
+        if (audio.preload === 'none') {
+            audio.preload = 'metadata';
+        }
+    };
+    if (vocalizer) {
+        vocalizer.addEventListener('pointerenter', () => {
+            if (!navigator.connection?.saveData && audio.preload !== 'auto') {
+                audio.preload = 'auto';
+            }
+        }, { once: true, passive: true });
+        vocalizer.addEventListener('focus', warmAudioBuffer, { once: true, passive: true });
+    }
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(warmAudioBuffer, { timeout: 2500 });
+    } else {
+        setTimeout(warmAudioBuffer, 1500);
+    }
 
     let lastSaveTime = 0;
     audio.addEventListener('timeupdate', function () {
