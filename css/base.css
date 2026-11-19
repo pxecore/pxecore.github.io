@@ -1193,8 +1193,8 @@ img, picture, svg, canvas {
 
 @keyframes headerCascadeDown {
     0% {
-        opacity: 0;
-        transform: translate3d(0, -24px, 0);
+        opacity: 1;
+        transform: translate3d(0, -14px, 0);
     }
     100% {
         opacity: 1;
@@ -1477,8 +1477,8 @@ html:not(.light) .theme-btn .theme-icon-light {
  */
 @keyframes contentEnter {
     0% {
-        opacity: 0;
-        transform: translate3d(0, -14px, 0);
+        opacity: 1;
+        transform: translate3d(0, -12px, 0);
     }
     100% {
         opacity: 1;
