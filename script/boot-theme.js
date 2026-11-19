@@ -96,7 +96,7 @@
             var links = document.querySelectorAll('link[data-defer-view]');
             for (var i = 0; i < links.length; i++) {
                 var target = links[i].getAttribute('data-defer-view');
-                if (!onlyView || target === onlyView) {
+                if (!onlyView || target === onlyView || target === 'always') {
                     links[i].media = 'all';
                     links[i].removeAttribute('data-defer-view');
                 }
