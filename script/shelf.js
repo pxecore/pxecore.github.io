@@ -216,9 +216,10 @@
             });
         }
 
-        function ensureCoverLoaded(btn) {
+        function ensureCoverLoaded(btn, highPriority = false) {
             const img = btn && btn.querySelector('img[data-src]');
             if (!img) return;
+            if (highPriority) img.fetchPriority = 'high';
             img.src = img.dataset.src;
             img.removeAttribute('data-src');
         }
@@ -230,7 +231,7 @@
                 b.classList.toggle('is-active', active);
                 b.setAttribute('aria-selected', active ? 'true' : 'false');
                 if (active) {
-                    ensureCoverLoaded(b);
+                    ensureCoverLoaded(b, true);
                     if (scrollIntoView) {
                         b.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
                     }
@@ -328,6 +329,8 @@
                     const img = document.createElement('img');
                     img.dataset.src = coverUrl;
                     img.alt = item.title;
+                    img.width = 170;
+                    img.height = 260;
                     img.decoding = 'async';
                     img.referrerPolicy = 'no-referrer';
                     img.addEventListener('load', () => {
