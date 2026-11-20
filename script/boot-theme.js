@@ -63,13 +63,15 @@
         applyCriticalThemeVars(isLight ? 'light' : 'dark');
 
         var bgHref = isLight ? 'media/bg_light.webp' : 'media/bg_dark.webp';
-        var link = document.createElement('link');
-        link.rel = 'preload';
-        link.as = 'image';
-        link.href = bgHref;
-        link.type = 'image/webp';
-        link.fetchPriority = 'high';
-        document.head.appendChild(link);
+        if (window.innerWidth > 768) {
+            var link = document.createElement('link');
+            link.rel = 'preload';
+            link.as = 'image';
+            link.href = bgHref;
+            link.type = 'image/webp';
+            link.fetchPriority = 'high';
+            document.head.appendChild(link);
+        }
 
         if (window.location.protocol !== 'file:') {
             var fontLink = document.createElement('link');
