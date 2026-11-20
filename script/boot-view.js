@@ -23,6 +23,13 @@
 
         if (initV && initV !== 'home') {
             activateCss(initV);
+            if (initV === 'resume') {
+                var resumeBanner = document.querySelector('#view-resume .essay-banner-img');
+                if (resumeBanner) {
+                    resumeBanner.loading = 'eager';
+                    resumeBanner.fetchPriority = 'high';
+                }
+            }
         }
 
         var activateRemaining = function () {
