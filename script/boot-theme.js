@@ -96,15 +96,6 @@
             initialView = 'shelf';
         }
         root.setAttribute('data-initial-view', initialView);
-        if (initialView === 'home') {
-            var bannerLink = document.createElement('link');
-            bannerLink.rel = 'preload';
-            bannerLink.as = 'image';
-            bannerLink.href = 'media/banner.webp';
-            bannerLink.type = 'image/webp';
-            bannerLink.fetchPriority = 'high';
-            document.head.appendChild(bannerLink);
-        }
     } catch (_) { }
 })();
 
