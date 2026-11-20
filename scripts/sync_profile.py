@@ -95,18 +95,21 @@ def download_file(url, target_path):
         print(f"[-] Failed to download {url}: {e}")
     return False
 
-def convert_to_webp(src_path, dest_path, quality=82):
+def convert_to_webp(src_path, dest_path, quality=82, max_width=None):
     """
     Converts image to WebP with fine-tuned visual fidelity and low byte size:
-    - -quality 80-82: Visually identical to high-res source, eliminates macroblocking
+    - -quality 78-82: Visually identical to high-res source, eliminates macroblocking
     - -compression_level 6: Max search depth for smallest payload
     - -preset photo: Optimized frequency filter matrices for human eyes
     """
+    vf_args = ["-vf", f"scale='min({int(max_width)},iw)':-2:flags=lanczos"] if max_width else []
+
     # 1. Primary: Optimized libwebp
     try:
         cmd = [
             "ffmpeg", "-y", "-i", src_path,
             "-map_metadata", "-1",
+            *vf_args,
             "-c:v", "libwebp",
             "-quality", str(quality),
             "-compression_level", "6",
@@ -124,6 +127,7 @@ def convert_to_webp(src_path, dest_path, quality=82):
         cmd = [
             "ffmpeg", "-y", "-i", src_path,
             "-map_metadata", "-1",
+            *vf_args,
             "-c:v", "libwebp",
             "-quality", str(quality),
             dest_path
@@ -212,7 +216,7 @@ def main():
         tmp_avatar = os.path.join(MEDIA_DIR, "avatar_tmp.jpg")
         try:
             if download_file(avatar_url, tmp_avatar) and os.path.getsize(tmp_avatar) > 1000:
-                if convert_to_webp(tmp_avatar, AVATAR_WEBP_PATH, quality=82):
+                if convert_to_webp(tmp_avatar, AVATAR_WEBP_PATH, quality=82, max_width=160):
                     print(f"[✓] Avatar converted to WebP: {AVATAR_WEBP_PATH} ({os.path.getsize(AVATAR_WEBP_PATH)} bytes)")
                     saved_state["avatar_url"] = avatar_url
                     success_count += 1
@@ -228,7 +232,7 @@ def main():
         tmp_banner = os.path.join(MEDIA_DIR, "banner_tmp.jpg")
         try:
             if download_file(banner_url, tmp_banner) and os.path.getsize(tmp_banner) > 5000:
-                if convert_to_webp(tmp_banner, BANNER_WEBP_PATH, quality=80):
+                if convert_to_webp(tmp_banner, BANNER_WEBP_PATH, quality=78, max_width=720):
                     print(f"[✓] Banner converted to WebP: {BANNER_WEBP_PATH} ({os.path.getsize(BANNER_WEBP_PATH)} bytes)")
                     saved_state["banner_url"] = banner_url
                     success_count += 1
