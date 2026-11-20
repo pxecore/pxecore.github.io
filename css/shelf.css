@@ -372,28 +372,31 @@ body.light-theme .shelf-ledge {
         inset -2px 0 5px rgba(0, 0, 0, 0.35),
         2px 0 8px rgba(0, 0, 0, 0.28);
     transition:
-        width 320ms var(--ease-velvet),
-        transform 220ms var(--ease-velvet),
-        box-shadow 220ms var(--ease-velvet);
+        width 380ms cubic-bezier(0.22, 1, 0.36, 1),
+        height 380ms cubic-bezier(0.22, 1, 0.36, 1),
+        transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 300ms ease,
+        border-radius 300ms ease;
+    will-change: width, height, transform;
 }
 
 .shelf-item:hover:not(.is-active) {
-    transform: translateY(-6px);
+    transform: translateY(-7px);
     box-shadow:
         inset 2px 0 4px rgba(255, 255, 255, 0.16),
         inset -2px 0 5px rgba(0, 0, 0, 0.35),
-        4px 6px 14px rgba(0, 0, 0, 0.36);
+        4px 8px 16px rgba(0, 0, 0, 0.38);
 }
 
 .shelf-item.is-active {
     width: 170px;
     height: 260px;
-    transform: translateY(-3px);
+    transform: translateY(-4px);
     z-index: 4;
     border-radius: 4px 4px 0 0;
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.22),
-        0 14px 32px rgba(0, 0, 0, 0.45);
+        0 16px 34px rgba(0, 0, 0, 0.46);
 }
 
 /* Spine View (Collapsed) */
@@ -406,11 +409,15 @@ body.light-theme .shelf-ledge {
     justify-content: space-between;
     padding: 14px 4px 10px;
     opacity: 1;
-    transition: opacity 150ms ease;
+    transform: translateX(0);
+    transition:
+        opacity 180ms ease,
+        transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .shelf-item.is-active .shelf-spine {
     opacity: 0;
+    transform: translateX(-6px);
     pointer-events: none;
 }
 
@@ -520,9 +527,12 @@ body.light-theme .shelf-ledge {
     justify-content: space-between;
     padding: 12px 12px 10px 16px;
     opacity: 0;
+    transform: scale(0.97);
     pointer-events: none;
     background: var(--item-bg, #2B241E);
-    transition: opacity 220ms var(--ease-velvet) 60ms;
+    transition:
+        opacity 280ms cubic-bezier(0.22, 1, 0.36, 1) 70ms,
+        transform 340ms cubic-bezier(0.22, 1, 0.36, 1) 50ms;
 }
 
 /* Book spine hinge crease + subtle edge vignette */
@@ -550,6 +560,7 @@ body.light-theme .shelf-ledge {
 
 .shelf-item.is-active .shelf-cover {
     opacity: 1;
+    transform: scale(1);
     pointer-events: auto;
 }
 
@@ -836,16 +847,83 @@ body.light-theme .shelf-ledge {
 }
 
 @media (max-width: 640px) {
-    .shelf-item {
+    .shelf-container {
+        gap: var(--space-5);
+        padding-top: var(--space-2);
+    }
+
+    .shelf-section {
+        padding: var(--space-4);
+        gap: var(--space-3);
+        border-radius: var(--radius-lg);
+    }
+
+    .shelf-heading {
+        font-size: 2.05rem;
+    }
+
+    .shelf-controls {
+        gap: var(--space-2);
+    }
+
+    .shelf-filter-btn {
+        min-height: 32px;
+        padding: 5px 10px;
+        font-size: 0.72rem;
+    }
+
+    .shelf-arrow-btn {
         width: 34px;
+        height: 34px;
     }
 
-    .shelf-item.is-active {
-        width: 164px;
+    .shelf-track,
+    .shelf-section[data-mode="cinema"] .shelf-track {
+        min-height: 244px;
+        padding: 10px 12px 0;
+        gap: 5px;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-x;
+        scroll-padding-inline: 24px;
     }
 
-    .shelf-track {
-        min-height: 266px;
+    .shelf-item,
+    .shelf-section[data-mode="books"] .shelf-item {
+        width: 36px;
+        height: calc(var(--item-h, 244px) - 24px);
+    }
+
+    .shelf-section[data-mode="cinema"] .shelf-item {
+        width: 34px;
+        height: 218px;
+    }
+
+    .shelf-item.is-active,
+    .shelf-section[data-mode="books"] .shelf-item.is-active,
+    .shelf-section[data-mode="cinema"] .shelf-item.is-active {
+        width: 152px;
+        height: 232px;
+    }
+
+    .shelf-spine-title {
+        font-size: 0.76rem;
+        max-height: 142px;
+    }
+
+    .shelf-spine-author {
+        font-size: 0.46rem;
+        max-width: 28px;
+    }
+
+    .shelf-detail-bar {
+        padding: 10px 12px;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .shelf-detail-title {
+        font-size: 1.12rem;
     }
 }
 
