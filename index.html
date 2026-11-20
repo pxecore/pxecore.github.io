@@ -351,7 +351,10 @@
                     <div class="right-section">
                         <div class="profile-card">
                             <div class="card-header" aria-label="Profile banner">
-                                <div class="site-harmony-banner" aria-hidden="true"></div>
+                                <div class="site-harmony-banner" aria-hidden="true">
+                                    <img src="media/banner.webp" alt="" class="site-harmony-banner-img"
+                                        fetchpriority="high" decoding="async" width="400" height="88">
+                                </div>
                                 <img src="media/avatar.webp" alt="Pxecore"
                                     class="profile-img" loading="eager" decoding="async" width="76" height="76">
                             </div>
@@ -1067,7 +1070,7 @@
             </div>
         </section>
     </main>
-    <script src="script/boot-view.js"></script>
+    <script src="script/boot-view.js" defer></script>
 
     <div class="notes-mindmap-modal" id="notes-mindmap-modal" style="display: none;" role="dialog"
         aria-label="Graph View Explorer" aria-modal="true">
