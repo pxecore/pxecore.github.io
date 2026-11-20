@@ -22,6 +22,17 @@ jobs:
       - name: Install ImageMagick if missing
         run: command -v convert >/dev/null || (sudo apt-get update && sudo apt-get install -y imagemagick)
 
+      - name: Cache shelf covers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pxecore-shelf
+          key: pxecore-shelf-${{ hashFiles('data/shelf.json') }}
+          restore-keys: |
+            pxecore-shelf-
+
+      - name: Build shelf covers and data
+        run: python3 scripts/build_shelf.py --cache-dir ~/.cache/pxecore-shelf
+
       - name: Build notes pages, OG cards, sitemap, and feeds
         env:
           GITHUB_TOKEN: ${{ github.token }}

@@ -1,0 +1,337 @@
+{
+  "books": [
+    {
+      "title": "The Metamorphosis",
+      "creator": "Franz Kafka",
+      "year": "1915",
+      "status": "read",
+      "color": "#4B3A2C",
+      "note": ""
+    },
+    {
+      "title": "Crime and Punishment",
+      "creator": "Fyodor Dostoevsky",
+      "year": "1866",
+      "status": "next",
+      "color": "#4A2322",
+      "source": "https://covers.openlibrary.org/b/id/13116014-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Animal Farm",
+      "creator": "George Orwell",
+      "year": "1945",
+      "status": "next",
+      "color": "#5A3A28",
+      "note": ""
+    },
+    {
+      "title": "1984",
+      "creator": "George Orwell",
+      "year": "1949",
+      "status": "next",
+      "color": "#7A231D",
+      "source": "https://covers.openlibrary.org/b/isbn/9780141036144-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Emotions Revealed",
+      "creator": "Paul Ekman",
+      "year": "2003",
+      "status": "next",
+      "color": "#243447",
+      "note": ""
+    },
+    {
+      "title": "Deep Work",
+      "creator": "Cal Newport",
+      "year": "2016",
+      "status": "next",
+      "color": "#1D3557",
+      "source": "https://covers.openlibrary.org/b/isbn/9780349411903-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Source Code",
+      "creator": "Bill Gates",
+      "year": "2025",
+      "status": "reading",
+      "color": "#1E3A5F",
+      "source": "https://covers.openlibrary.org/b/id/14851913-L.jpg",
+      "note": ""
+    }
+  ],
+  "watchlist": [
+    {
+      "title": "Neon Genesis Evangelion",
+      "creator": "Hideaki Anno",
+      "year": "1995",
+      "kind": "series",
+      "status": "watched",
+      "color": "#2E1E3E",
+      "note": ""
+    },
+    {
+      "title": "Serial Experiments Lain",
+      "creator": "Ryutaro Nakamura",
+      "year": "1998",
+      "kind": "series",
+      "status": "watched",
+      "color": "#26233A",
+      "note": ""
+    },
+    {
+      "title": "The Mentalist",
+      "creator": "Bruno Heller",
+      "year": "2008",
+      "kind": "series",
+      "status": "watched",
+      "color": "#5C2422",
+      "note": ""
+    },
+    {
+      "title": "Sherlock",
+      "creator": "Gatiss & Moffat",
+      "year": "2010",
+      "kind": "series",
+      "status": "watched",
+      "color": "#1C2A36",
+      "note": ""
+    },
+    {
+      "title": "Rick and Morty",
+      "creator": "Justin Roiland & Dan Harmon",
+      "year": "2013",
+      "kind": "series",
+      "status": "watched",
+      "color": "#1F3B2C",
+      "source": "https://static.tvmaze.com/uploads/images/original_untouched/568/1420186.jpg",
+      "note": ""
+    },
+    {
+      "title": "Bungo Stray Dogs",
+      "creator": "Bones",
+      "year": "2016",
+      "kind": "series",
+      "status": "watched",
+      "color": "#5C1E22",
+      "source": "https://static.tvmaze.com/uploads/images/original_untouched/47/118122.jpg",
+      "note": ""
+    },
+    {
+      "title": "The Godfather",
+      "creator": "Francis Ford Coppola",
+      "year": "1972",
+      "kind": "film",
+      "status": "watched",
+      "color": "#1E1D1B",
+      "wiki": "The_Godfather",
+      "trim": true,
+      "note": ""
+    },
+    {
+      "title": "The Devil's Advocate",
+      "creator": "Taylor Hackford",
+      "year": "1997",
+      "kind": "film",
+      "status": "watched",
+      "color": "#4A1C1A",
+      "wiki": "The_Devil's_Advocate_(1997_film)",
+      "note": ""
+    },
+    {
+      "title": "Fight Club",
+      "creator": "David Fincher",
+      "year": "1999",
+      "kind": "film",
+      "status": "watched",
+      "color": "#5E2328",
+      "wiki": "Fight_Club",
+      "note": ""
+    },
+    {
+      "title": "The Matrix",
+      "creator": "The Wachowskis",
+      "year": "1999",
+      "kind": "film",
+      "status": "watched",
+      "color": "#162A1E",
+      "wiki": "The_Matrix",
+      "note": ""
+    },
+    {
+      "title": "V for Vendetta",
+      "creator": "James McTeigue",
+      "year": "2005",
+      "kind": "film",
+      "status": "watched",
+      "color": "#5E191B",
+      "wiki": "V_for_Vendetta_(film)",
+      "note": ""
+    },
+    {
+      "title": "The Social Network",
+      "creator": "David Fincher",
+      "year": "2010",
+      "kind": "film",
+      "status": "watched",
+      "color": "#1A2530",
+      "wiki": "The_Social_Network",
+      "note": ""
+    },
+    {
+      "title": "Who Am I",
+      "creator": "Baran bo Odar",
+      "year": "2014",
+      "kind": "film",
+      "status": "watched",
+      "color": "#1E242B",
+      "wiki": "Who_Am_I_(2014_film)",
+      "note": ""
+    },
+    {
+      "title": "Snowden",
+      "creator": "Oliver Stone",
+      "year": "2016",
+      "kind": "film",
+      "status": "watched",
+      "color": "#1D2A38",
+      "wiki": "Snowden_(film)",
+      "note": ""
+    },
+    {
+      "title": "Prison Break",
+      "creator": "Paul Scheuring",
+      "year": "2005",
+      "kind": "series",
+      "status": "queued",
+      "color": "#27313B",
+      "source": "https://static.tvmaze.com/uploads/images/original_untouched/4/11418.jpg",
+      "note": ""
+    },
+    {
+      "title": "Dexter",
+      "creator": "James Manos Jr.",
+      "year": "2006",
+      "kind": "series",
+      "status": "queued",
+      "color": "#5C1B1B",
+      "note": ""
+    },
+    {
+      "title": "Breaking Bad",
+      "creator": "Vince Gilligan",
+      "year": "2008",
+      "kind": "series",
+      "status": "queued",
+      "color": "#263B29",
+      "note": ""
+    },
+    {
+      "title": "Steins;Gate",
+      "creator": "White Fox",
+      "year": "2011",
+      "kind": "series",
+      "status": "queued",
+      "color": "#2A2438",
+      "note": ""
+    },
+    {
+      "title": "Hannibal",
+      "creator": "Bryan Fuller",
+      "year": "2013",
+      "kind": "series",
+      "status": "queued",
+      "color": "#3B181A",
+      "note": ""
+    },
+    {
+      "title": "Mr. Robot",
+      "creator": "Sam Esmail",
+      "year": "2015",
+      "kind": "series",
+      "status": "queued",
+      "color": "#1C1B1E",
+      "note": ""
+    },
+    {
+      "title": "La Casa de Papel",
+      "creator": "Álex Pina",
+      "year": "2017",
+      "kind": "series",
+      "status": "queued",
+      "color": "#6B181C",
+      "source": "https://static.tvmaze.com/uploads/images/original_untouched/202/506784.jpg",
+      "note": ""
+    },
+    {
+      "title": "The Boys",
+      "creator": "Eric Kripke",
+      "year": "2019",
+      "kind": "series",
+      "status": "queued",
+      "color": "#21252B",
+      "note": ""
+    },
+    {
+      "title": "CIA",
+      "creator": "CBS",
+      "year": "2026",
+      "kind": "series",
+      "status": "queued",
+      "color": "#6E1E22",
+      "source": "https://static.tvmaze.com/uploads/images/original_untouched/642/1606527.jpg",
+      "note": ""
+    },
+    {
+      "title": "American Psycho",
+      "creator": "Mary Harron",
+      "year": "2000",
+      "kind": "film",
+      "status": "queued",
+      "color": "#4A1C22",
+      "wiki": "American_Psycho_(film)",
+      "note": ""
+    },
+    {
+      "title": "The Prestige",
+      "creator": "Christopher Nolan",
+      "year": "2006",
+      "kind": "film",
+      "status": "queued",
+      "color": "#1F262E",
+      "wiki": "The_Prestige_(film)",
+      "note": ""
+    },
+    {
+      "title": "Interstellar",
+      "creator": "Christopher Nolan",
+      "year": "2014",
+      "kind": "film",
+      "status": "queued",
+      "color": "#1B2632",
+      "wiki": "Interstellar_(film)",
+      "note": ""
+    },
+    {
+      "title": "Joker",
+      "creator": "Todd Phillips",
+      "year": "2019",
+      "kind": "film",
+      "status": "queued",
+      "color": "#5E241E",
+      "wiki": "Joker_(2019_film)",
+      "note": ""
+    },
+    {
+      "title": "Oppenheimer",
+      "creator": "Christopher Nolan",
+      "year": "2023",
+      "kind": "film",
+      "status": "queued",
+      "color": "#5E2B18",
+      "wiki": "Oppenheimer_(film)",
+      "note": ""
+    }
+  ]
+}

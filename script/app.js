@@ -15,6 +15,8 @@
         'script/notes-graph.js',
         'script/notes-sync.js',
         'script/notes.js',
+        'script/shelf-data.js',
+        'script/shelf.js',
         'script/terminal.js',
         'script/main.js'
     ];

@@ -84,11 +84,12 @@
 
     <link rel="preload" as="image" href="media/banner.webp" type="image/webp" fetchpriority="high">
     <link rel="stylesheet" href="fonts/outfit.css">
-    <link rel="stylesheet" href="fonts/fontawesome.css" media="print" data-defer-view="always">
+    <link rel="stylesheet" href="fonts/fontawesome.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/home.css">
-    <link rel="stylesheet" href="css/resume.css" media="print" data-defer-view="resume">
-    <link rel="stylesheet" href="css/notes.css" media="print" data-defer-view="notes">
+    <link rel="stylesheet" href="css/resume.css">
+    <link rel="stylesheet" href="css/notes.css">
+    <link rel="stylesheet" href="css/shelf.css">
 
     <meta property="og:site_name" content="pxecore">
     <meta property="og:type" content="website">
@@ -125,7 +126,23 @@
 
 
 
-    <script src="script/app.js?v=2" defer></script>
+    <script src="script/hardware-profiler.js" defer></script>
+    <script src="script/theme-palettes.js" defer></script>
+    <script src="script/particles.min.js" defer></script>
+    <script src="script/particles-bridge.js" defer></script>
+    <script src="script/audio-player.js" defer></script>
+    <script src="script/effects-cosmos.js" defer></script>
+    <script src="script/effects-foliage.js" defer></script>
+    <script src="script/effects.js" defer></script>
+    <script src="script/chroma-engine.js" defer></script>
+    <script src="script/notes-markdown.js" defer></script>
+    <script src="script/notes-graph.js" defer></script>
+    <script src="script/notes-sync.js" defer></script>
+    <script src="script/notes.js" defer></script>
+    <script src="script/shelf-data.js" defer></script>
+    <script src="script/shelf.js" defer></script>
+    <script src="script/terminal.js" defer></script>
+    <script src="script/main.js" defer></script>
 
     <script type="application/ld+json">
     {
@@ -602,6 +619,10 @@
                             </div>
                         </section>
 
+                        <nav class="resume-index-bar" aria-label="Personal Collections">
+                            <a href="#library" class="resume-index-link" data-shelf-target="library">/ library</a>
+                            <span class="resume-index-credit">credits : <a href="https://x.com/melqtx" target="_blank" rel="noopener noreferrer">melqtx</a></span>
+                        </nav>
 
                         <section class="resume-block homestead-section">
                             <div class="section-badge-row font-mono">
@@ -704,6 +725,12 @@
                     </div>
                 </article>
 
+            </div>
+        </section>
+
+        <section class="site-view" id="view-shelf" aria-label="Shelf" hidden>
+            <div class="container">
+                <div class="shelf-container" id="shelf-root"></div>
             </div>
         </section>
 
@@ -875,25 +902,25 @@
                             <div class="notes-telemetry-header">
                                 <div class="notes-telemetry-title">
                                     <span class="notes-telemetry-dot"></span>
-                                    <span>Session Telemetry</span>
+                                    <span>Reading Stats</span>
                                 </div>
                             </div>
                             <div class="notes-viewers-grid">
                                 <div class="notes-viewer-box">
                                     <div class="notes-viewer-num green notranslate" translate="no">1</div>
-                                    <div class="notes-viewer-label notranslate" translate="no">SESSION</div>
+                                    <div class="notes-viewer-label notranslate" translate="no">ACTIVE</div>
                                 </div>
                                 <div class="notes-viewer-box">
                                     <div class="notes-viewer-num blue notranslate" id="notes-reading-count"
                                         translate="no">0</div>
-                                    <div class="notes-viewer-label notranslate" translate="no">READER</div>
+                                    <div class="notes-viewer-label notranslate" translate="no">READING</div>
                                 </div>
                             </div>
                             <div class="notes-telemetry-row">
                                 <div>
-                                    <div class="notes-row-label">Local Views</div>
+                                    <div class="notes-row-label">Total Views</div>
                                     <div class="notes-row-value notranslate" translate="no" id="notes-cumulative-views">
-                                        23 <span class="dim">total</span></div>
+                                        23 <span class="dim">reads</span></div>
                                 </div>
                                 <svg class="notes-sparkline-svg" viewBox="0 0 100 30" width="80" height="24">
                                     <path d="M 0 15 L 20 18 L 40 12 L 60 22 L 80 20 L 100 20" fill="none"
@@ -903,9 +930,9 @@
                             </div>
                             <div class="notes-telemetry-row">
                                 <div>
-                                    <div class="notes-row-label">Matches Count</div>
+                                    <div class="notes-row-label">Notes</div>
                                     <div class="notes-row-value notranslate" translate="no" id="notes-matches-count">5
-                                        <span class="dim">loaded</span>
+                                        <span class="dim">posts</span>
                                     </div>
                                 </div>
                                 <svg class="notes-sparkline-svg" viewBox="0 0 100 30" width="80" height="24">
@@ -916,8 +943,7 @@
                             </div>
                             <div class="notes-traffic-section notranslate" translate="no">
                                 <div class="notes-traffic-header notranslate" translate="no">
-                                    <span class="notes-traffic-title notranslate" translate="no">TOP 3 READS
-                                        (LOCAL)</span>
+                                    <span class="notes-traffic-title notranslate" translate="no">MOST READ</span>
                                     <span class="notes-top3-badge notranslate" translate="no">TOP 3</span>
                                 </div>
                                 <div class="notes-traffic-list notranslate" translate="no" id="notes-traffic-list">

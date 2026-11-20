@@ -48,12 +48,26 @@
 }
 
 .notes-reader-card {
-    border-radius: var(--radius-xl);
     padding: clamp(1.75rem, 3.2vw, 2.75rem) clamp(1.75rem, 3.2vw, 2.75rem) clamp(3rem, 5vw, 4.25rem);
     position: relative;
     min-width: 0;
     max-width: 100%;
     overflow-x: hidden;
+}
+
+.notes-reader-toolbar,
+.notes-reader-card {
+    background-image: none;
+    background-color: var(--card-reader-bg);
+    backdrop-filter: var(--liquid-glass-blur);
+    -webkit-backdrop-filter: var(--liquid-glass-blur);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    box-shadow:
+        inset 0 1px 1px 0 var(--liquid-glass-specular),
+        inset 0 0 0 1px var(--liquid-glass-inner),
+        inset 0 -1px 1px 0 var(--liquid-glass-bottom-bevel),
+        var(--shadow-card);
 }
 
 .notes-reader-card h1,
@@ -1770,17 +1784,7 @@
     align-items: center;
     justify-content: space-between;
     gap: var(--space-3);
-    background-image: var(--liquid-glass-sheen);
-    background-color: var(--card-reader-bg);
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-xl);
     padding: var(--space-3) var(--space-4);
-    box-shadow:
-        inset 0 1.5px 1.5px 0 var(--liquid-glass-specular),
-        inset 0 0 0 1px var(--liquid-glass-inner),
-        var(--shadow-card);
 }
 
 .notes-reader-toolbar-left {

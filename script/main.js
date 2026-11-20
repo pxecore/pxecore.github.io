@@ -198,7 +198,7 @@ if (themeToggleButton) {
         lastThemeToggle = now;
 
         if (activeThemeTransition) {
-            try { activeThemeTransition.skipTransition(); } catch (_) {}
+            try { activeThemeTransition.skipTransition(); } catch (_) { }
             document.documentElement.classList.remove('theme-instant-sync');
             activeThemeTransition = null;
         }
@@ -245,7 +245,7 @@ if (themeToggleButton) {
                         pseudoElement: '::view-transition-new(root)'
                     }
                 );
-            }).catch(() => {});
+            }).catch(() => { });
             transition.finished.finally(() => {
                 if (activeThemeTransition === transition) {
                     activeThemeTransition = null;
@@ -302,7 +302,8 @@ document.addEventListener('visibilitychange', () => {
             const titleMap = {
                 home: 'pxecore',
                 notes: 'pxecore · notes',
-                resume: 'pxecore · resume'
+                resume: 'pxecore · resume',
+                shelf: window.location.hash === '#cinema' ? 'pxecore · cinema' : 'pxecore · books'
             };
             const notesReaderEl = document.getElementById('notes-reader-view');
             const isReaderActive = document.body.classList.contains('reader-focused') ||
@@ -314,7 +315,7 @@ document.addEventListener('visibilitychange', () => {
             } else {
                 document.title = titleMap[activeView] || 'pxecore';
             }
-        } catch (_) {}
+        } catch (_) { }
         window.pxecore?.audio?.resumeVisualizerIfPlaying?.();
         resumeAllVisualPipelines();
     }
@@ -444,7 +445,7 @@ function showFallbackCopy(text, cb) {
     document.body.appendChild(textArea);
     textArea.select();
     let copied = false;
-    try { copied = document.execCommand('copy'); } catch (_) {}
+    try { copied = document.execCommand('copy'); } catch (_) { }
     document.body.removeChild(textArea);
     if (copied && cb) cb();
 }
@@ -477,7 +478,7 @@ function copySessionHandle(el) {
 function copyMyButton(el) {
     if (!el || el.dataset.copying) return;
     const snippet = '<a href="https://pxecore.github.io" target="_blank" rel="noopener noreferrer"><img src="https://pxecore.github.io/media/badges/pxecore.webp" alt="pxecore" width="88" height="31" /></a>';
-    
+
     function onSuccess() {
         el.dataset.copying = 'true';
         const prevText = el.textContent;
@@ -550,11 +551,11 @@ function bootstrapSite() {
     const sessionBtn = document.querySelector('.session-btn');
     if (sessionBtn) sessionBtn.addEventListener('click', () => copySessionID());
     const discordBtn = document.getElementById('copy-discord-btn');
-    if (discordBtn) discordBtn.addEventListener('click', function() { copyDiscord(this); });
+    if (discordBtn) discordBtn.addEventListener('click', function () { copyDiscord(this); });
     const sessionHandleBtn = document.getElementById('copy-session-btn');
-    if (sessionHandleBtn) sessionHandleBtn.addEventListener('click', function() { copySessionHandle(this); });
+    if (sessionHandleBtn) sessionHandleBtn.addEventListener('click', function () { copySessionHandle(this); });
     const badgeBtn = document.getElementById('copy-my-badge-btn');
-    if (badgeBtn) badgeBtn.addEventListener('click', function() { copyMyButton(this); });
+    if (badgeBtn) badgeBtn.addEventListener('click', function () { copyMyButton(this); });
 
     window.pxecore?.audio?.init?.();
 
@@ -594,15 +595,19 @@ function bootstrapSite() {
     const views = {
         home: document.getElementById('view-home'),
         resume: document.getElementById('view-resume'),
-        notes: document.getElementById('view-notes')
+        notes: document.getElementById('view-notes'),
+        shelf: document.getElementById('view-shelf')
     };
     currentActiveView = currentActiveView || 'home';
 
     function switchView(tabName, updateHash = true, isInitial = false) {
-        const targetView = views[tabName] ? tabName : 'home';
+        const isShelfRoute = tabName === 'books' || tabName === 'cinema' || tabName === 'shelf' || tabName === 'library';
+        const shelfFocus = tabName === 'cinema' ? 'cinema' : 'books';
+        const shelfHash = (tabName === 'cinema' || tabName === 'books') ? tabName : 'library';
+        const targetView = isShelfRoute ? 'shelf' : (views[tabName] ? tabName : 'home');
 
         // Guard against redundant switch when already on active tab, but smooth scroll to top if scrolled down
-        if (!isInitial && targetView === currentActiveView) {
+        if (!isInitial && targetView === currentActiveView && !isShelfRoute) {
             if ((window.pageYOffset || document.documentElement.scrollTop || 0) > 20) {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
@@ -619,10 +624,14 @@ function bootstrapSite() {
         currentActiveView = targetView;
         window.currentActiveView = targetView;
         document.documentElement.removeAttribute('data-initial-view');
-        document.documentElement.classList.add('views-warmed', 'view-in-transition');
-        setTimeout(() => {
-            document.documentElement.classList.remove('view-in-transition');
-        }, 340);
+        if (!isInitial) {
+            document.documentElement.classList.add('views-warmed', 'view-in-transition');
+            setTimeout(() => {
+                document.documentElement.classList.remove('view-in-transition');
+            }, 340);
+        } else {
+            document.documentElement.classList.add('views-warmed');
+        }
 
         // Dynamically synchronize skip-to-content target
         const skipLink = document.getElementById('skip-to-content');
@@ -645,15 +654,16 @@ function bootstrapSite() {
         const titleMap = {
             home: 'pxecore',
             notes: 'pxecore · notes',
-            resume: 'pxecore · resume'
+            resume: 'pxecore · resume',
+            shelf: shelfFocus === 'cinema' ? 'pxecore · cinema' : 'pxecore · library'
         };
         if (targetView !== 'notes' || !document.body.classList.contains('reader-focused')) {
             document.title = titleMap[targetView] || 'pxecore';
         }
 
-        // Synchronize URL Hash (#notes, #resume, #home) in browser address bar
+        // Synchronize URL Hash (#notes, #resume, #home, #library, #books, #cinema) in browser address bar
         if (updateHash) {
-            const targetHash = `#${targetView}`;
+            const targetHash = isShelfRoute ? `#${shelfHash}` : `#${targetView}`;
             try {
                 if (window.location.protocol === 'file:') {
                     if (window.location.hash !== targetHash) {
@@ -667,7 +677,7 @@ function bootstrapSite() {
             } catch (_) {
                 try {
                     window.location.hash = targetHash;
-                } catch (_) {}
+                } catch (_) { }
             }
         }
 
@@ -676,7 +686,9 @@ function bootstrapSite() {
                 window.dispatchEvent(new CustomEvent('notes-view-activated'));
             });
         } else {
-            if (targetView === 'home') {
+            if (targetView === 'shelf') {
+                window.pxecore?.shelf?.mount?.(shelfFocus);
+            } else if (targetView === 'home') {
                 window.pxecore?.audio?.resumeVisualizerIfPlaying?.();
             }
             if (typeof window.__returnToNotesDeck === 'function') {
@@ -688,7 +700,7 @@ function bootstrapSite() {
             window.dispatchEvent(new CustomEvent('notes-view-deactivated'));
         }
 
-        if (!isInitial) {
+        if (!isInitial && !(targetView === 'shelf' && shelfFocus === 'cinema')) {
             window.scrollTo(0, 0);
         }
     }
@@ -730,6 +742,10 @@ function bootstrapSite() {
             }
             return;
         }
+        if (hash === 'books' || hash === 'cinema' || hash === 'shelf' || hash === 'library') {
+            switchView(hash, false);
+            return;
+        }
         if (views[hash]) {
             if (currentActiveView !== hash) {
                 switchView(hash, false);
@@ -743,13 +759,27 @@ function bootstrapSite() {
     window.addEventListener('hashchange', handleRouting);
     window.addEventListener('popstate', handleRouting);
 
-    // Initial routing on load: defaults to home view unless explicit hash #resume or #notes or ?p= is provided
+    // Bind Resume slash index & Shelf jump links
+    document.addEventListener('click', (e) => {
+        const shelfLink = e.target?.closest?.('.resume-index-link, .shelf-jump-link');
+        if (!shelfLink) return;
+        const href = shelfLink.getAttribute('href') || '';
+        const target = href.replace('#', '');
+        if (target === 'books' || target === 'cinema' || target === 'library') {
+            e.preventDefault();
+            switchView(target, true);
+        }
+    });
+
+    // Initial routing on load: defaults to home view unless explicit hash #resume, #notes, #library, #books, #cinema or ?p= is provided
     const initialHash = window.location.hash.replace('#', '').split('?')[0].split('/')[0];
     const urlParams = new URLSearchParams(window.location.search);
     if (initialHash === 'notes' || urlParams.has('p')) {
         switchView('notes', false, true);
     } else if (initialHash === 'resume') {
         switchView('resume', false, true);
+    } else if (initialHash === 'books' || initialHash === 'cinema' || initialHash === 'shelf' || initialHash === 'library') {
+        switchView(initialHash, false, true);
     } else {
         switchView('home', false, true);
     }
@@ -804,7 +834,7 @@ function bootstrapSite() {
     // Print DevTools console banner & helper API
     try {
         initDevToolsConsoleBanner();
-    } catch (_) {}
+    } catch (_) { }
 
     document.documentElement.classList.add('views-warmed');
     mainBootstrapTime = performance.now();
@@ -829,7 +859,7 @@ function bootstrapSite() {
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.getRegistrations().then(regs => {
             for (const reg of regs) reg.unregister();
-        }).catch(() => {});
+        }).catch(() => { });
     }
 }
 
@@ -898,7 +928,7 @@ function initDevToolsConsoleBanner() {
         window.pxecore = window.pxecore || {};
         window.pxecore.version = '2.5.1';
         window.pxecore.author = 'pxecore';
-        window.pxecore.status = function() {
+        window.pxecore.status = function () {
             console.table({
                 'Node': 'pxecore',
                 'Status': 'ONLINE',
@@ -908,7 +938,7 @@ function initDevToolsConsoleBanner() {
             });
             return 'status logged';
         };
-        window.pxecore.help = function() {
+        window.pxecore.help = function () {
             console.log(
                 '%c[pxecore terminal guide]\n' +
                 'commands : help, fastfetch, matrix, whoami, github, clear\n' +
@@ -917,7 +947,7 @@ function initDevToolsConsoleBanner() {
             );
             return 'help logged';
         };
-        window.pxecore.matrix = function() {
+        window.pxecore.matrix = function () {
             const inputEl = document.getElementById('terminal-hidden-input');
             if (inputEl) {
                 inputEl.value = 'matrix';
@@ -926,5 +956,5 @@ function initDevToolsConsoleBanner() {
             }
             return 'terminal input not found';
         };
-    } catch (_) {}
+    } catch (_) { }
 }

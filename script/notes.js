@@ -465,7 +465,7 @@ function initResearchNotes() {
         const totalViews = getTotalPostViews();
         const filtered = getFilteredPosts();
         if (cumulativeViewsEl) {
-            cumulativeViewsEl.innerHTML = `${totalViews} <span class="dim">total</span>`;
+            cumulativeViewsEl.innerHTML = `${totalViews} <span class="dim">reads</span>`;
             const cumSvg = cumulativeViewsEl.parentElement.parentElement.querySelector('.notes-sparkline-svg');
             if (cumSvg) {
                 const postViewValues = posts.map(p => getViewCount(p.slug));
@@ -484,7 +484,7 @@ function initResearchNotes() {
             }
         }
         if (matchesCountEl) {
-            matchesCountEl.innerHTML = `${filtered.length} <span class="dim">loaded</span>`;
+            matchesCountEl.innerHTML = `${filtered.length} <span class="dim">posts</span>`;
             const matchSvg = matchesCountEl.parentElement.parentElement.querySelector('.notes-sparkline-svg');
             if (matchSvg) {
                 const matchValues = filtered.map(p => getViewCount(p.slug));
@@ -979,6 +979,7 @@ function initResearchNotes() {
         }
 
         if (deckView) deckView.style.display = 'none';
+        document.documentElement.removeAttribute('data-initial-reader');
         if (readerView) {
             readerView.style.display = 'flex';
             readerView.classList.remove('is-entering');
@@ -1303,6 +1304,7 @@ function initResearchNotes() {
             sideToc.hidden = true;
             sideToc.classList.remove('is-open');
         }
+        document.documentElement.removeAttribute('data-initial-reader');
         if (deckView) {
             deckView.style.display = 'grid';
         }
@@ -1871,6 +1873,10 @@ function initResearchNotes() {
         checkUrlForPost();
         syncFromGitHub(shouldForceSync).catch(err => {
             console.warn('[Notes] Initial background sync handled:', err);
+        }).finally(() => {
+            if (!activePostSlug && (!readerView || readerView.style.display === 'none')) {
+                document.documentElement.removeAttribute('data-initial-reader');
+            }
         });
     } else {
         const runPrewarm = () => {

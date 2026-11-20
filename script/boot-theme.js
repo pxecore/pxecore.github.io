@@ -7,15 +7,15 @@
 
     function readSavedTheme() {
         var t = null;
-        try { t = localStorage.getItem('pxecore_theme') || localStorage.getItem('theme'); } catch (_) {}
+        try { t = localStorage.getItem('pxecore_theme') || localStorage.getItem('theme'); } catch (_) { }
         if (!t) {
-            try { t = sessionStorage.getItem('pxecore_theme') || sessionStorage.getItem('theme'); } catch (_) {}
+            try { t = sessionStorage.getItem('pxecore_theme') || sessionStorage.getItem('theme'); } catch (_) { }
         }
         if (!t && document.cookie) {
             try {
                 var m = document.cookie.match(/(?:^|;\s*)pxecore_theme=([^;]+)/);
                 if (m) t = decodeURIComponent(m[1]);
-            } catch (_) {}
+            } catch (_) { }
         }
         return (t === 'light' || t === 'dark') ? t : null;
     }
@@ -25,14 +25,14 @@
         try {
             localStorage.setItem('theme', normalized);
             localStorage.setItem('pxecore_theme', normalized);
-        } catch (_) {}
+        } catch (_) { }
         try {
             sessionStorage.setItem('theme', normalized);
             sessionStorage.setItem('pxecore_theme', normalized);
-        } catch (_) {}
+        } catch (_) { }
         try {
             document.cookie = 'pxecore_theme=' + encodeURIComponent(normalized) + '; path=/; max-age=31536000; SameSite=Lax';
-        } catch (_) {}
+        } catch (_) { }
     }
 
     function applyCriticalThemeVars(theme) {
@@ -87,29 +87,15 @@
         var initialView = 'home';
         if (hash === 'notes' || rawHash.indexOf('?p=') !== -1 || params.has('p')) {
             initialView = 'notes';
+            if (rawHash.indexOf('?p=') !== -1 || rawHash.indexOf('notes/') === 0 || params.has('p')) {
+                root.setAttribute('data-initial-reader', '1');
+            }
         } else if (hash === 'resume') {
             initialView = 'resume';
+        } else if (hash === 'books' || hash === 'cinema' || hash === 'shelf' || hash === 'library') {
+            initialView = 'shelf';
         }
         root.setAttribute('data-initial-view', initialView);
-
-        var activateDeferredCss = function (onlyView) {
-            var links = document.querySelectorAll('link[data-defer-view]');
-            for (var i = 0; i < links.length; i++) {
-                var target = links[i].getAttribute('data-defer-view');
-                if (!onlyView || target === onlyView || target === 'always') {
-                    links[i].media = 'all';
-                    links[i].removeAttribute('data-defer-view');
-                }
-            }
-        };
-        if (initialView !== 'home') {
-            document.addEventListener('readystatechange', function () {
-                activateDeferredCss(initialView);
-            });
-        }
-        window.addEventListener('DOMContentLoaded', function () {
-            activateDeferredCss(null);
-        }, { once: true });
-    } catch (_) {}
+    } catch (_) { }
 })();
 

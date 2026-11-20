@@ -19,4 +19,6 @@ feed.xml
 llms.txt
 llms-full.txt
 scripts/notes_state.json
+media/shelf/
+script/shelf-data.js
 
