@@ -623,9 +623,6 @@ function bootstrapSite() {
 
         currentActiveView = targetView;
         window.currentActiveView = targetView;
-        if (typeof window.__activateDeferredCss === 'function' && targetView !== 'home') {
-            window.__activateDeferredCss(targetView);
-        }
         document.documentElement.removeAttribute('data-initial-view');
         if (!isInitial) {
             document.documentElement.classList.add('views-warmed', 'view-in-transition');
