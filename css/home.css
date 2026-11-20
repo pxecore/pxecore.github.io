@@ -206,15 +206,28 @@
     bottom: 0;
     overflow: hidden;
     border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-    background-size: cover;
-    background-position: center center;
-    background-image: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(18,18,20,0.50) 100%), url('../media/banner.webp');
     transition: opacity var(--duration-fast) var(--ease-velvet);
 }
 
-html.light .site-harmony-banner,
-body.light-theme .site-harmony-banner {
-    background-image: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(240,240,242,0.35) 100%), url('../media/banner.webp');
+.site-harmony-banner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+}
+
+.site-harmony-banner::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 0%, rgba(18, 18, 20, 0.50) 100%);
+}
+
+html.light .site-harmony-banner::after,
+body.light-theme .site-harmony-banner::after {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(240, 240, 242, 0.35) 100%);
 }
 
 
