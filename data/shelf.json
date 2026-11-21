@@ -35,6 +35,15 @@
       "note": ""
     },
     {
+      "title": "The Art of Doing Science and Engineering",
+      "creator": "Richard W. Hamming",
+      "year": "1997",
+      "status": "next",
+      "color": "#3B4232",
+      "source": "https://covers.openlibrary.org/b/isbn/9781732265172-L.jpg",
+      "note": ""
+    },
+    {
       "title": "Emotions Revealed",
       "creator": "Paul Ekman",
       "year": "2003",
@@ -281,6 +290,16 @@
       "status": "queued",
       "color": "#6E1E22",
       "source": "https://static.tvmaze.com/uploads/images/original_untouched/642/1606527.jpg",
+      "note": ""
+    },
+    {
+      "title": "A Clockwork Orange",
+      "creator": "Stanley Kubrick",
+      "year": "1971",
+      "kind": "film",
+      "status": "queued",
+      "color": "#6E351A",
+      "wiki": "A_Clockwork_Orange_(film)",
       "note": ""
     },
     {
