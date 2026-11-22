@@ -265,8 +265,8 @@
         function getPerShelf() {
             const w = window.innerWidth;
             if (w <= 640) return Math.max(1, filtered.length);
-            if (w <= 860) return 10;
-            return 14;
+            if (w <= 860) return cfg.mode === 'cinema' ? 12 : 10;
+            return cfg.mode === 'cinema' ? 16 : 14;
         }
 
         function renderItems() {
