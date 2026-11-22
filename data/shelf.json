@@ -18,6 +18,15 @@
       "note": ""
     },
     {
+      "title": "The Trial",
+      "creator": "Franz Kafka",
+      "year": "1925",
+      "status": "next",
+      "color": "#2C2C2E",
+      "source": "https://covers.openlibrary.org/b/isbn/9780141182902-L.jpg",
+      "note": ""
+    },
+    {
       "title": "Animal Farm",
       "creator": "George Orwell",
       "year": "1945",
@@ -32,6 +41,15 @@
       "status": "next",
       "color": "#7A231D",
       "source": "https://covers.openlibrary.org/b/isbn/9780141036144-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "The Ego and Its Own",
+      "creator": "Max Stirner",
+      "year": "1844",
+      "status": "next",
+      "color": "#26282E",
+      "source": "https://covers.openlibrary.org/b/isbn/9780486445816-L.jpg",
       "note": ""
     },
     {
