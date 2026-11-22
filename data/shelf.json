@@ -128,6 +128,16 @@
       "note": ""
     },
     {
+      "title": "Lucifer",
+      "creator": "Tom Kapinos",
+      "year": "2016",
+      "kind": "series",
+      "status": "watched",
+      "color": "#5A181B",
+      "source": "https://static.tvmaze.com/uploads/images/original_untouched/46/115965.jpg",
+      "note": ""
+    },
+    {
       "title": "The Godfather",
       "creator": "Francis Ford Coppola",
       "year": "1972",
@@ -179,6 +189,16 @@
       "note": ""
     },
     {
+      "title": "Iron Man",
+      "creator": "Jon Favreau",
+      "year": "2008",
+      "kind": "film",
+      "status": "watched",
+      "color": "#6B1D1D",
+      "wiki": "Iron_Man_(2008_film)",
+      "note": ""
+    },
+    {
       "title": "The Social Network",
       "creator": "David Fincher",
       "year": "2010",
@@ -206,6 +226,26 @@
       "status": "watched",
       "color": "#1D2A38",
       "wiki": "Snowden_(film)",
+      "note": ""
+    },
+    {
+      "title": "Deadpool",
+      "creator": "Tim Miller",
+      "year": "2016",
+      "kind": "film",
+      "status": "watched",
+      "color": "#73181C",
+      "wiki": "Deadpool_(film)",
+      "note": ""
+    },
+    {
+      "title": "Venom",
+      "creator": "Ruben Fleischer",
+      "year": "2018",
+      "kind": "film",
+      "status": "watched",
+      "color": "#1E2026",
+      "wiki": "Venom_(2018_film)",
       "note": ""
     },
     {
@@ -303,6 +343,16 @@
       "note": ""
     },
     {
+      "title": "Taxi Driver",
+      "creator": "Martin Scorsese",
+      "year": "1976",
+      "kind": "film",
+      "status": "queued",
+      "color": "#4E3A1E",
+      "wiki": "Taxi_Driver",
+      "note": ""
+    },
+    {
       "title": "American Psycho",
       "creator": "Mary Harron",
       "year": "2000",
@@ -333,6 +383,16 @@
       "note": ""
     },
     {
+      "title": "John Wick",
+      "creator": "Chad Stahelski",
+      "year": "2014",
+      "kind": "film",
+      "status": "queued",
+      "color": "#1C2536",
+      "wiki": "John_Wick_(film)",
+      "note": ""
+    },
+    {
       "title": "Joker",
       "creator": "Todd Phillips",
       "year": "2019",
@@ -340,6 +400,16 @@
       "status": "queued",
       "color": "#5E241E",
       "wiki": "Joker_(2019_film)",
+      "note": ""
+    },
+    {
+      "title": "The Batman",
+      "creator": "Matt Reeves",
+      "year": "2022",
+      "kind": "film",
+      "status": "queued",
+      "color": "#4A1416",
+      "wiki": "The_Batman_(film)",
       "note": ""
     },
     {
