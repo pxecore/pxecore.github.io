@@ -44,12 +44,30 @@
       "note": ""
     },
     {
+      "title": "Meditations",
+      "creator": "Marcus Aurelius",
+      "year": "180",
+      "status": "next",
+      "color": "#3D1C1E",
+      "source": "https://covers.openlibrary.org/b/isbn/9780812968255-L.jpg",
+      "note": ""
+    },
+    {
       "title": "The Ego and Its Own",
       "creator": "Max Stirner",
       "year": "1844",
       "status": "next",
       "color": "#26282E",
       "source": "https://covers.openlibrary.org/b/isbn/9780486445816-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Daybreak",
+      "creator": "Friedrich Nietzsche",
+      "year": "1881",
+      "status": "next",
+      "color": "#1C4B27",
+      "source": "https://covers.openlibrary.org/b/isbn/9780521599634-L.jpg",
       "note": ""
     },
     {
@@ -70,12 +88,30 @@
       "note": ""
     },
     {
+      "title": "Essentialism",
+      "creator": "Greg McKeown",
+      "year": "2014",
+      "status": "next",
+      "color": "#6E1F24",
+      "source": "https://covers.openlibrary.org/b/isbn/9780753555163-L.jpg",
+      "note": ""
+    },
+    {
       "title": "Deep Work",
       "creator": "Cal Newport",
       "year": "2016",
       "status": "next",
       "color": "#1D3557",
       "source": "https://covers.openlibrary.org/b/isbn/9780349411903-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Atomic Habits",
+      "creator": "James Clear",
+      "year": "2018",
+      "status": "next",
+      "color": "#4A3F2B",
+      "source": "https://covers.openlibrary.org/b/isbn/9780735211292-L.jpg",
       "note": ""
     },
     {
