@@ -9,6 +9,15 @@
       "note": ""
     },
     {
+      "title": "Notes from Underground",
+      "creator": "Fyodor Dostoevsky",
+      "year": "1864",
+      "status": "next",
+      "color": "#3A2B26",
+      "source": "https://covers.openlibrary.org/b/isbn/9780679734529-L.jpg",
+      "note": ""
+    },
+    {
       "title": "Crime and Punishment",
       "creator": "Fyodor Dostoevsky",
       "year": "1866",
@@ -24,6 +33,24 @@
       "status": "next",
       "color": "#2C2C2E",
       "source": "https://covers.openlibrary.org/b/isbn/9780141182902-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Brave New World",
+      "creator": "Aldous Huxley",
+      "year": "1932",
+      "status": "next",
+      "color": "#423E3B",
+      "source": "https://covers.openlibrary.org/b/isbn/9780060850524-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "The Stranger",
+      "creator": "Albert Camus",
+      "year": "1942",
+      "status": "next",
+      "color": "#1F2D42",
+      "source": "https://covers.openlibrary.org/b/isbn/9780679720201-L.jpg",
       "note": ""
     },
     {
@@ -85,6 +112,15 @@
       "year": "2003",
       "status": "next",
       "color": "#243447",
+      "note": ""
+    },
+    {
+      "title": "Thinking, Fast and Slow",
+      "creator": "Daniel Kahneman",
+      "year": "2011",
+      "status": "next",
+      "color": "#3B3A36",
+      "source": "https://covers.openlibrary.org/b/isbn/9780374533557-L.jpg",
       "note": ""
     },
     {
@@ -303,6 +339,16 @@
       "note": ""
     },
     {
+      "title": "Monster",
+      "creator": "Madhouse",
+      "year": "2004",
+      "kind": "series",
+      "status": "queued",
+      "color": "#24292E",
+      "source": "https://static.tvmaze.com/uploads/images/original_untouched/29/74582.jpg",
+      "note": ""
+    },
+    {
       "title": "Prison Break",
       "creator": "Paul Scheuring",
       "year": "2005",
@@ -319,6 +365,16 @@
       "kind": "series",
       "status": "queued",
       "color": "#5C1B1B",
+      "note": ""
+    },
+    {
+      "title": "Death Note",
+      "creator": "Madhouse",
+      "year": "2006",
+      "kind": "series",
+      "status": "queued",
+      "color": "#1B1C22",
+      "source": "https://static.tvmaze.com/uploads/images/original_untouched/499/1249019.jpg",
       "note": ""
     },
     {
@@ -407,6 +463,16 @@
       "note": ""
     },
     {
+      "title": "Se7en",
+      "creator": "David Fincher",
+      "year": "1995",
+      "kind": "film",
+      "status": "queued",
+      "color": "#3E2B1E",
+      "wiki": "Seven_(1995_film)",
+      "note": ""
+    },
+    {
       "title": "American Psycho",
       "creator": "Mary Harron",
       "year": "2000",
@@ -414,6 +480,26 @@
       "status": "queued",
       "color": "#4A1C22",
       "wiki": "American_Psycho_(film)",
+      "note": ""
+    },
+    {
+      "title": "Memento",
+      "creator": "Christopher Nolan",
+      "year": "2000",
+      "kind": "film",
+      "status": "queued",
+      "color": "#2C2F36",
+      "wiki": "Memento_(film)",
+      "note": ""
+    },
+    {
+      "title": "I, Robot",
+      "creator": "Alex Proyas",
+      "year": "2004",
+      "kind": "film",
+      "status": "queued",
+      "color": "#25313E",
+      "wiki": "I,_Robot_(film)",
       "note": ""
     },
     {
@@ -434,6 +520,16 @@
       "status": "queued",
       "color": "#1B2632",
       "wiki": "Interstellar_(film)",
+      "note": ""
+    },
+    {
+      "title": "Ex Machina",
+      "creator": "Alex Garland",
+      "year": "2014",
+      "kind": "film",
+      "status": "queued",
+      "color": "#222A30",
+      "wiki": "Ex_Machina_(film)",
       "note": ""
     },
     {
