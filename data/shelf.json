@@ -9,200 +9,39 @@
       "note": ""
     },
     {
-      "title": "Frankenstein",
-      "creator": "Mary Shelley",
-      "year": "1818",
-      "status": "next",
-      "color": "#2B3438",
-      "source": "https://covers.openlibrary.org/b/isbn/9780141439471-L.jpg",
+      "title": "Source Code",
+      "creator": "Bill Gates",
+      "year": "2025",
+      "status": "reading",
+      "color": "#1E3A5F",
+      "source": "https://covers.openlibrary.org/b/id/14851913-L.jpg",
       "note": ""
     },
     {
-      "title": "Moby-Dick",
-      "creator": "Herman Melville",
-      "year": "1851",
+      "title": "Atomic Habits",
+      "creator": "James Clear",
+      "year": "2018",
       "status": "next",
-      "color": "#22323A",
-      "source": "https://covers.openlibrary.org/b/isbn/9780142437247-L.jpg",
+      "color": "#4A3F2B",
+      "source": "https://covers.openlibrary.org/b/isbn/9780735211292-L.jpg",
       "note": ""
     },
     {
-      "title": "Les Misérables",
-      "creator": "Victor Hugo",
-      "year": "1862",
+      "title": "Essentialism",
+      "creator": "Greg McKeown",
+      "year": "2014",
       "status": "next",
-      "color": "#262C38",
-      "source": "https://covers.openlibrary.org/b/isbn/9780140444308-L.jpg",
+      "color": "#6E1F24",
+      "source": "https://covers.openlibrary.org/b/isbn/9780753555163-L.jpg",
       "note": ""
     },
     {
-      "title": "Notes from Underground",
-      "creator": "Fyodor Dostoevsky",
-      "year": "1864",
+      "title": "Deep Work",
+      "creator": "Cal Newport",
+      "year": "2016",
       "status": "next",
-      "color": "#3A2B26",
-      "source": "https://covers.openlibrary.org/b/isbn/9780679734529-L.jpg",
-      "note": ""
-    },
-    {
-      "title": "Crime and Punishment",
-      "creator": "Fyodor Dostoevsky",
-      "year": "1866",
-      "status": "next",
-      "color": "#4A2322",
-      "source": "https://covers.openlibrary.org/b/id/13116014-L.jpg",
-      "note": ""
-    },
-    {
-      "title": "The Yellow Wallpaper",
-      "creator": "Charlotte Perkins Gilman",
-      "year": "1892",
-      "status": "next",
-      "color": "#5E4D24",
-      "source": "https://covers.openlibrary.org/b/isbn/9781558611580-L.jpg",
-      "note": ""
-    },
-    {
-      "title": "The King in Yellow",
-      "creator": "Robert W. Chambers",
-      "year": "1895",
-      "status": "next",
-      "color": "#4E3D1C",
-      "source": "https://covers.openlibrary.org/b/id/4245882-L.jpg",
-      "note": ""
-    },
-    {
-      "title": "The Invisible Man",
-      "creator": "H. G. Wells",
-      "year": "1897",
-      "status": "next",
-      "color": "#5E1D1E",
-      "source": "https://covers.openlibrary.org/b/isbn/9780141439983-L.jpg",
-      "note": ""
-    },
-    {
-      "title": "The Trial",
-      "creator": "Franz Kafka",
-      "year": "1925",
-      "status": "next",
-      "color": "#2C2C2E",
-      "source": "https://covers.openlibrary.org/b/isbn/9780141182902-L.jpg",
-      "note": ""
-    },
-    {
-      "title": "Brave New World",
-      "creator": "Aldous Huxley",
-      "year": "1932",
-      "status": "next",
-      "color": "#423E3B",
-      "source": "https://covers.openlibrary.org/b/isbn/9780060850524-L.jpg",
-      "note": ""
-    },
-    {
-      "title": "Of Mice and Men",
-      "creator": "John Steinbeck",
-      "year": "1937",
-      "status": "next",
-      "color": "#3E3730",
-      "source": "https://covers.openlibrary.org/b/isbn/9780141023571-L.jpg",
-      "note": ""
-    },
-    {
-      "title": "The Stranger",
-      "creator": "Albert Camus",
-      "year": "1942",
-      "status": "next",
-      "color": "#1F2D42",
-      "source": "https://covers.openlibrary.org/b/isbn/9780679720201-L.jpg",
-      "note": ""
-    },
-    {
-      "title": "Animal Farm",
-      "creator": "George Orwell",
-      "year": "1945",
-      "status": "next",
-      "color": "#5A3A28",
-      "note": ""
-    },
-    {
-      "title": "No Longer Human",
-      "creator": "Osamu Dazai",
-      "year": "1948",
-      "status": "next",
-      "color": "#3B1E2E",
-      "source": "https://covers.openlibrary.org/b/isbn/9780811204811-L.jpg",
-      "note": ""
-    },
-    {
-      "title": "1984",
-      "creator": "George Orwell",
-      "year": "1949",
-      "status": "next",
-      "color": "#7A231D",
-      "source": "https://covers.openlibrary.org/b/isbn/9780141036144-L.jpg",
-      "note": ""
-    },
-    {
-      "title": "Blindness",
-      "creator": "José Saramago",
-      "year": "1995",
-      "status": "next",
-      "color": "#383A3E",
-      "source": "https://covers.openlibrary.org/b/isbn/9780156007757-L.jpg",
-      "note": ""
-    },
-    {
-      "title": "The Republic",
-      "creator": "Plato",
-      "year": "375 BC",
-      "status": "next",
-      "color": "#4A3E2D",
-      "source": "https://covers.openlibrary.org/b/isbn/9780140455113-L.jpg",
-      "note": ""
-    },
-    {
-      "title": "Meditations",
-      "creator": "Marcus Aurelius",
-      "year": "180",
-      "status": "next",
-      "color": "#3D1C1E",
-      "source": "https://covers.openlibrary.org/b/isbn/9780812968255-L.jpg",
-      "note": ""
-    },
-    {
-      "title": "The Ego and Its Own",
-      "creator": "Max Stirner",
-      "year": "1844",
-      "status": "next",
-      "color": "#26282E",
-      "source": "https://covers.openlibrary.org/b/isbn/9780486445816-L.jpg",
-      "note": ""
-    },
-    {
-      "title": "The Communist Manifesto",
-      "creator": "Karl Marx & Friedrich Engels",
-      "year": "1848",
-      "status": "next",
-      "color": "#661A1A",
-      "source": "https://covers.openlibrary.org/b/isbn/9780140447576-L.jpg",
-      "note": ""
-    },
-    {
-      "title": "Das Kapital",
-      "creator": "Karl Marx",
-      "year": "1867",
-      "status": "next",
-      "color": "#521B1B",
-      "source": "https://covers.openlibrary.org/b/isbn/9780199535705-L.jpg",
-      "note": ""
-    },
-    {
-      "title": "Daybreak",
-      "creator": "Friedrich Nietzsche",
-      "year": "1881",
-      "status": "next",
-      "color": "#1C4B27",
-      "source": "https://covers.openlibrary.org/b/isbn/9780521599634-L.jpg",
+      "color": "#1D3557",
+      "source": "https://covers.openlibrary.org/b/isbn/9780349411903-L.jpg",
       "note": ""
     },
     {
@@ -232,43 +71,234 @@
       "note": ""
     },
     {
-      "title": "Essentialism",
-      "creator": "Greg McKeown",
-      "year": "2014",
+      "title": "Of Mice and Men",
+      "creator": "John Steinbeck",
+      "year": "1937",
       "status": "next",
-      "color": "#6E1F24",
-      "source": "https://covers.openlibrary.org/b/isbn/9780753555163-L.jpg",
+      "color": "#3E3730",
+      "source": "https://covers.openlibrary.org/b/isbn/9780141023571-L.jpg",
       "note": ""
     },
     {
-      "title": "Deep Work",
-      "creator": "Cal Newport",
-      "year": "2016",
+      "title": "The Yellow Wallpaper",
+      "creator": "Charlotte Perkins Gilman",
+      "year": "1892",
       "status": "next",
-      "color": "#1D3557",
-      "source": "https://covers.openlibrary.org/b/isbn/9780349411903-L.jpg",
+      "color": "#5E4D24",
+      "source": "https://covers.openlibrary.org/b/isbn/9781558611580-L.jpg",
       "note": ""
     },
     {
-      "title": "Atomic Habits",
-      "creator": "James Clear",
-      "year": "2018",
+      "title": "Animal Farm",
+      "creator": "George Orwell",
+      "year": "1945",
       "status": "next",
-      "color": "#4A3F2B",
-      "source": "https://covers.openlibrary.org/b/isbn/9780735211292-L.jpg",
+      "color": "#5A3A28",
       "note": ""
     },
     {
-      "title": "Source Code",
-      "creator": "Bill Gates",
-      "year": "2025",
-      "status": "reading",
-      "color": "#1E3A5F",
-      "source": "https://covers.openlibrary.org/b/id/14851913-L.jpg",
+      "title": "The Stranger",
+      "creator": "Albert Camus",
+      "year": "1942",
+      "status": "next",
+      "color": "#1F2D42",
+      "source": "https://covers.openlibrary.org/b/isbn/9780679720201-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "No Longer Human",
+      "creator": "Osamu Dazai",
+      "year": "1948",
+      "status": "next",
+      "color": "#3B1E2E",
+      "source": "https://covers.openlibrary.org/b/isbn/9780811204811-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "The Trial",
+      "creator": "Franz Kafka",
+      "year": "1925",
+      "status": "next",
+      "color": "#2C2C2E",
+      "source": "https://covers.openlibrary.org/b/isbn/9780141182902-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "1984",
+      "creator": "George Orwell",
+      "year": "1949",
+      "status": "next",
+      "color": "#7A231D",
+      "source": "https://covers.openlibrary.org/b/isbn/9780141036144-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Brave New World",
+      "creator": "Aldous Huxley",
+      "year": "1932",
+      "status": "next",
+      "color": "#423E3B",
+      "source": "https://covers.openlibrary.org/b/isbn/9780060850524-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Blindness",
+      "creator": "José Saramago",
+      "year": "1995",
+      "status": "next",
+      "color": "#383A3E",
+      "source": "https://covers.openlibrary.org/b/isbn/9780156007757-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "The Invisible Man",
+      "creator": "H. G. Wells",
+      "year": "1897",
+      "status": "next",
+      "color": "#5E1D1E",
+      "source": "https://covers.openlibrary.org/b/isbn/9780141439983-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Frankenstein",
+      "creator": "Mary Shelley",
+      "year": "1818",
+      "status": "next",
+      "color": "#2B3438",
+      "source": "https://covers.openlibrary.org/b/isbn/9780141439471-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "The King in Yellow",
+      "creator": "Robert W. Chambers",
+      "year": "1895",
+      "status": "next",
+      "color": "#4E3D1C",
+      "source": "https://covers.openlibrary.org/b/id/4245882-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Notes from Underground",
+      "creator": "Fyodor Dostoevsky",
+      "year": "1864",
+      "status": "next",
+      "color": "#3A2B26",
+      "source": "https://covers.openlibrary.org/b/isbn/9780679734529-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Crime and Punishment",
+      "creator": "Fyodor Dostoevsky",
+      "year": "1866",
+      "status": "next",
+      "color": "#4A2322",
+      "source": "https://covers.openlibrary.org/b/id/13116014-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Moby-Dick",
+      "creator": "Herman Melville",
+      "year": "1851",
+      "status": "next",
+      "color": "#22323A",
+      "source": "https://covers.openlibrary.org/b/isbn/9780142437247-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Les Misérables",
+      "creator": "Victor Hugo",
+      "year": "1862",
+      "status": "next",
+      "color": "#262C38",
+      "source": "https://covers.openlibrary.org/b/isbn/9780140444308-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Meditations",
+      "creator": "Marcus Aurelius",
+      "year": "180",
+      "status": "next",
+      "color": "#3D1C1E",
+      "source": "https://covers.openlibrary.org/b/isbn/9780812968255-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "The Republic",
+      "creator": "Plato",
+      "year": "375 BC",
+      "status": "next",
+      "color": "#4A3E2D",
+      "source": "https://covers.openlibrary.org/b/isbn/9780140455113-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "The Ego and Its Own",
+      "creator": "Max Stirner",
+      "year": "1844",
+      "status": "next",
+      "color": "#26282E",
+      "source": "https://covers.openlibrary.org/b/isbn/9780486445816-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Daybreak",
+      "creator": "Friedrich Nietzsche",
+      "year": "1881",
+      "status": "next",
+      "color": "#1C4B27",
+      "source": "https://covers.openlibrary.org/b/isbn/9780521599634-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "The Communist Manifesto",
+      "creator": "Karl Marx & Friedrich Engels",
+      "year": "1848",
+      "status": "next",
+      "color": "#661A1A",
+      "source": "https://covers.openlibrary.org/b/isbn/9780140447576-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Das Kapital",
+      "creator": "Karl Marx",
+      "year": "1867",
+      "status": "next",
+      "color": "#521B1B",
+      "source": "https://covers.openlibrary.org/b/isbn/9780199535705-L.jpg",
       "note": ""
     }
   ],
   "watchlist": [
+    {
+      "title": "The Matrix",
+      "creator": "The Wachowskis",
+      "year": "1999",
+      "kind": "film",
+      "status": "watched",
+      "color": "#162A1E",
+      "wiki": "The_Matrix",
+      "note": ""
+    },
+    {
+      "title": "Fight Club",
+      "creator": "David Fincher",
+      "year": "1999",
+      "kind": "film",
+      "status": "watched",
+      "color": "#5E2328",
+      "wiki": "Fight_Club",
+      "note": ""
+    },
+    {
+      "title": "V for Vendetta",
+      "creator": "James McTeigue",
+      "year": "2005",
+      "kind": "film",
+      "status": "watched",
+      "color": "#5E191B",
+      "wiki": "V_for_Vendetta_(film)",
+      "note": ""
+    },
     {
       "title": "Neon Genesis Evangelion",
       "creator": "Hideaki Anno",
@@ -285,115 +315,6 @@
       "kind": "series",
       "status": "watched",
       "color": "#26233A",
-      "note": ""
-    },
-    {
-      "title": "The Mentalist",
-      "creator": "Bruno Heller",
-      "year": "2008",
-      "kind": "series",
-      "status": "watched",
-      "color": "#5C2422",
-      "note": ""
-    },
-    {
-      "title": "Sherlock",
-      "creator": "Gatiss & Moffat",
-      "year": "2010",
-      "kind": "series",
-      "status": "watched",
-      "color": "#1C2A36",
-      "note": ""
-    },
-    {
-      "title": "Rick and Morty",
-      "creator": "Justin Roiland & Dan Harmon",
-      "year": "2013",
-      "kind": "series",
-      "status": "watched",
-      "color": "#1F3B2C",
-      "source": "https://static.tvmaze.com/uploads/images/original_untouched/568/1420186.jpg",
-      "note": ""
-    },
-    {
-      "title": "Bungo Stray Dogs",
-      "creator": "Bones",
-      "year": "2016",
-      "kind": "series",
-      "status": "watched",
-      "color": "#5C1E22",
-      "source": "https://static.tvmaze.com/uploads/images/original_untouched/47/118122.jpg",
-      "note": ""
-    },
-    {
-      "title": "Lucifer",
-      "creator": "Tom Kapinos",
-      "year": "2016",
-      "kind": "series",
-      "status": "watched",
-      "color": "#5A181B",
-      "source": "https://static.tvmaze.com/uploads/images/original_untouched/46/115965.jpg",
-      "note": ""
-    },
-    {
-      "title": "The Godfather",
-      "creator": "Francis Ford Coppola",
-      "year": "1972",
-      "kind": "film",
-      "status": "watched",
-      "color": "#1E1D1B",
-      "wiki": "The_Godfather",
-      "trim": true,
-      "note": ""
-    },
-    {
-      "title": "The Devil's Advocate",
-      "creator": "Taylor Hackford",
-      "year": "1997",
-      "kind": "film",
-      "status": "watched",
-      "color": "#4A1C1A",
-      "wiki": "The_Devil's_Advocate_(1997_film)",
-      "note": ""
-    },
-    {
-      "title": "Fight Club",
-      "creator": "David Fincher",
-      "year": "1999",
-      "kind": "film",
-      "status": "watched",
-      "color": "#5E2328",
-      "wiki": "Fight_Club",
-      "note": ""
-    },
-    {
-      "title": "The Matrix",
-      "creator": "The Wachowskis",
-      "year": "1999",
-      "kind": "film",
-      "status": "watched",
-      "color": "#162A1E",
-      "wiki": "The_Matrix",
-      "note": ""
-    },
-    {
-      "title": "V for Vendetta",
-      "creator": "James McTeigue",
-      "year": "2005",
-      "kind": "film",
-      "status": "watched",
-      "color": "#5E191B",
-      "wiki": "V_for_Vendetta_(film)",
-      "note": ""
-    },
-    {
-      "title": "Iron Man",
-      "creator": "Jon Favreau",
-      "year": "2008",
-      "kind": "film",
-      "status": "watched",
-      "color": "#6B1D1D",
-      "wiki": "Iron_Man_(2008_film)",
       "note": ""
     },
     {
@@ -427,6 +348,85 @@
       "note": ""
     },
     {
+      "title": "The Godfather",
+      "creator": "Francis Ford Coppola",
+      "year": "1972",
+      "kind": "film",
+      "status": "watched",
+      "color": "#1E1D1B",
+      "wiki": "The_Godfather",
+      "trim": true,
+      "note": ""
+    },
+    {
+      "title": "The Devil's Advocate",
+      "creator": "Taylor Hackford",
+      "year": "1997",
+      "kind": "film",
+      "status": "watched",
+      "color": "#4A1C1A",
+      "wiki": "The_Devil's_Advocate_(1997_film)",
+      "note": ""
+    },
+    {
+      "title": "Sherlock",
+      "creator": "Gatiss & Moffat",
+      "year": "2010",
+      "kind": "series",
+      "status": "watched",
+      "color": "#1C2A36",
+      "note": ""
+    },
+    {
+      "title": "The Mentalist",
+      "creator": "Bruno Heller",
+      "year": "2008",
+      "kind": "series",
+      "status": "watched",
+      "color": "#5C2422",
+      "note": ""
+    },
+    {
+      "title": "Lucifer",
+      "creator": "Tom Kapinos",
+      "year": "2016",
+      "kind": "series",
+      "status": "watched",
+      "color": "#5A181B",
+      "source": "https://static.tvmaze.com/uploads/images/original_untouched/46/115965.jpg",
+      "note": ""
+    },
+    {
+      "title": "Bungo Stray Dogs",
+      "creator": "Bones",
+      "year": "2016",
+      "kind": "series",
+      "status": "watched",
+      "color": "#5C1E22",
+      "source": "https://static.tvmaze.com/uploads/images/original_untouched/47/118122.jpg",
+      "note": ""
+    },
+    {
+      "title": "Rick and Morty",
+      "creator": "Justin Roiland & Dan Harmon",
+      "year": "2013",
+      "kind": "series",
+      "status": "watched",
+      "color": "#1F3B2C",
+      "source": "https://static.tvmaze.com/uploads/images/original_untouched/568/1420186.jpg",
+      "note": ""
+    },
+    {
+      "title": "Iron Man",
+      "creator": "Jon Favreau",
+      "year": "2008",
+      "kind": "film",
+      "status": "watched",
+      "color": "#6B1D1D",
+      "wiki": "Iron_Man_(2008_film)",
+      "note": ""
+    },
+    {
       "title": "Deadpool",
       "creator": "Tim Miller",
       "year": "2016",
@@ -447,32 +447,143 @@
       "note": ""
     },
     {
-      "title": "Monster",
-      "creator": "Madhouse",
-      "year": "2004",
-      "kind": "series",
-      "status": "queued",
-      "color": "#24292E",
-      "source": "https://static.tvmaze.com/uploads/images/original_untouched/29/74582.jpg",
-      "note": ""
-    },
-    {
-      "title": "Prison Break",
-      "creator": "Paul Scheuring",
-      "year": "2005",
-      "kind": "series",
-      "status": "queued",
-      "color": "#27313B",
-      "source": "https://static.tvmaze.com/uploads/images/original_untouched/4/11418.jpg",
-      "note": ""
-    },
-    {
-      "title": "Dexter",
-      "creator": "James Manos Jr.",
+      "title": "The Prestige",
+      "creator": "Christopher Nolan",
       "year": "2006",
-      "kind": "series",
+      "kind": "film",
       "status": "queued",
-      "color": "#5C1B1B",
+      "color": "#1F262E",
+      "wiki": "The_Prestige_(film)",
+      "note": ""
+    },
+    {
+      "title": "Memento",
+      "creator": "Christopher Nolan",
+      "year": "2000",
+      "kind": "film",
+      "status": "queued",
+      "color": "#2C2F36",
+      "wiki": "Memento_(film)",
+      "note": ""
+    },
+    {
+      "title": "Ex Machina",
+      "creator": "Alex Garland",
+      "year": "2014",
+      "kind": "film",
+      "status": "queued",
+      "color": "#222A30",
+      "wiki": "Ex_Machina_(film)",
+      "note": ""
+    },
+    {
+      "title": "I, Robot",
+      "creator": "Alex Proyas",
+      "year": "2004",
+      "kind": "film",
+      "status": "queued",
+      "color": "#25313E",
+      "wiki": "I,_Robot_(film)",
+      "note": ""
+    },
+    {
+      "title": "Interstellar",
+      "creator": "Christopher Nolan",
+      "year": "2014",
+      "kind": "film",
+      "status": "queued",
+      "color": "#1B2632",
+      "wiki": "Interstellar_(film)",
+      "note": ""
+    },
+    {
+      "title": "Oppenheimer",
+      "creator": "Christopher Nolan",
+      "year": "2023",
+      "kind": "film",
+      "status": "queued",
+      "color": "#5E2B18",
+      "wiki": "Oppenheimer_(film)",
+      "note": ""
+    },
+    {
+      "title": "Se7en",
+      "creator": "David Fincher",
+      "year": "1995",
+      "kind": "film",
+      "status": "queued",
+      "color": "#3E2B1E",
+      "wiki": "Seven_(1995_film)",
+      "note": ""
+    },
+    {
+      "title": "Taxi Driver",
+      "creator": "Martin Scorsese",
+      "year": "1976",
+      "kind": "film",
+      "status": "queued",
+      "color": "#4E3A1E",
+      "wiki": "Taxi_Driver",
+      "note": ""
+    },
+    {
+      "title": "A Clockwork Orange",
+      "creator": "Stanley Kubrick",
+      "year": "1971",
+      "kind": "film",
+      "status": "queued",
+      "color": "#6E351A",
+      "wiki": "A_Clockwork_Orange_(film)",
+      "note": ""
+    },
+    {
+      "title": "American Psycho",
+      "creator": "Mary Harron",
+      "year": "2000",
+      "kind": "film",
+      "status": "queued",
+      "color": "#4A1C22",
+      "wiki": "American_Psycho_(film)",
+      "note": ""
+    },
+    {
+      "title": "Joker",
+      "creator": "Todd Phillips",
+      "year": "2019",
+      "kind": "film",
+      "status": "queued",
+      "color": "#5E241E",
+      "wiki": "Joker_(2019_film)",
+      "note": ""
+    },
+    {
+      "title": "The Batman",
+      "creator": "Matt Reeves",
+      "year": "2022",
+      "kind": "film",
+      "status": "queued",
+      "color": "#4A1416",
+      "wiki": "The_Batman_(film)",
+      "note": ""
+    },
+    {
+      "title": "The Great Gatsby",
+      "creator": "Baz Luhrmann",
+      "year": "2013",
+      "kind": "film",
+      "status": "queued",
+      "color": "#4E3E1F",
+      "wiki": "The_Great_Gatsby_(2013_film)",
+      "note": ""
+    },
+    {
+      "title": "John Wick",
+      "creator": "Chad Stahelski",
+      "year": "2014",
+      "kind": "film",
+      "status": "queued",
+      "color": "#1C2536",
+      "wiki": "John_Wick_(film)",
       "note": ""
     },
     {
@@ -486,15 +597,6 @@
       "note": ""
     },
     {
-      "title": "Breaking Bad",
-      "creator": "Vince Gilligan",
-      "year": "2008",
-      "kind": "series",
-      "status": "queued",
-      "color": "#263B29",
-      "note": ""
-    },
-    {
       "title": "Steins;Gate",
       "creator": "White Fox",
       "year": "2011",
@@ -504,21 +606,13 @@
       "note": ""
     },
     {
-      "title": "Hannibal",
-      "creator": "Bryan Fuller",
-      "year": "2013",
+      "title": "Prison Break",
+      "creator": "Paul Scheuring",
+      "year": "2005",
       "kind": "series",
       "status": "queued",
-      "color": "#3B181A",
-      "note": ""
-    },
-    {
-      "title": "Mr. Robot",
-      "creator": "Sam Esmail",
-      "year": "2015",
-      "kind": "series",
-      "status": "queued",
-      "color": "#1C1B1E",
+      "color": "#27313B",
+      "source": "https://static.tvmaze.com/uploads/images/original_untouched/4/11418.jpg",
       "note": ""
     },
     {
@@ -551,143 +645,49 @@
       "note": ""
     },
     {
-      "title": "A Clockwork Orange",
-      "creator": "Stanley Kubrick",
-      "year": "1971",
-      "kind": "film",
+      "title": "Mr. Robot",
+      "creator": "Sam Esmail",
+      "year": "2015",
+      "kind": "series",
       "status": "queued",
-      "color": "#6E351A",
-      "wiki": "A_Clockwork_Orange_(film)",
+      "color": "#1C1B1E",
       "note": ""
     },
     {
-      "title": "Taxi Driver",
-      "creator": "Martin Scorsese",
-      "year": "1976",
-      "kind": "film",
+      "title": "Breaking Bad",
+      "creator": "Vince Gilligan",
+      "year": "2008",
+      "kind": "series",
       "status": "queued",
-      "color": "#4E3A1E",
-      "wiki": "Taxi_Driver",
+      "color": "#263B29",
       "note": ""
     },
     {
-      "title": "Se7en",
-      "creator": "David Fincher",
-      "year": "1995",
-      "kind": "film",
-      "status": "queued",
-      "color": "#3E2B1E",
-      "wiki": "Seven_(1995_film)",
-      "note": ""
-    },
-    {
-      "title": "American Psycho",
-      "creator": "Mary Harron",
-      "year": "2000",
-      "kind": "film",
-      "status": "queued",
-      "color": "#4A1C22",
-      "wiki": "American_Psycho_(film)",
-      "note": ""
-    },
-    {
-      "title": "Memento",
-      "creator": "Christopher Nolan",
-      "year": "2000",
-      "kind": "film",
-      "status": "queued",
-      "color": "#2C2F36",
-      "wiki": "Memento_(film)",
-      "note": ""
-    },
-    {
-      "title": "I, Robot",
-      "creator": "Alex Proyas",
-      "year": "2004",
-      "kind": "film",
-      "status": "queued",
-      "color": "#25313E",
-      "wiki": "I,_Robot_(film)",
-      "note": ""
-    },
-    {
-      "title": "The Prestige",
-      "creator": "Christopher Nolan",
+      "title": "Dexter",
+      "creator": "James Manos Jr.",
       "year": "2006",
-      "kind": "film",
+      "kind": "series",
       "status": "queued",
-      "color": "#1F262E",
-      "wiki": "The_Prestige_(film)",
+      "color": "#5C1B1B",
       "note": ""
     },
     {
-      "title": "The Great Gatsby",
-      "creator": "Baz Luhrmann",
+      "title": "Hannibal",
+      "creator": "Bryan Fuller",
       "year": "2013",
-      "kind": "film",
+      "kind": "series",
       "status": "queued",
-      "color": "#4E3E1F",
-      "wiki": "The_Great_Gatsby_(2013_film)",
+      "color": "#3B181A",
       "note": ""
     },
     {
-      "title": "Interstellar",
-      "creator": "Christopher Nolan",
-      "year": "2014",
-      "kind": "film",
+      "title": "Monster",
+      "creator": "Madhouse",
+      "year": "2004",
+      "kind": "series",
       "status": "queued",
-      "color": "#1B2632",
-      "wiki": "Interstellar_(film)",
-      "note": ""
-    },
-    {
-      "title": "Ex Machina",
-      "creator": "Alex Garland",
-      "year": "2014",
-      "kind": "film",
-      "status": "queued",
-      "color": "#222A30",
-      "wiki": "Ex_Machina_(film)",
-      "note": ""
-    },
-    {
-      "title": "John Wick",
-      "creator": "Chad Stahelski",
-      "year": "2014",
-      "kind": "film",
-      "status": "queued",
-      "color": "#1C2536",
-      "wiki": "John_Wick_(film)",
-      "note": ""
-    },
-    {
-      "title": "Joker",
-      "creator": "Todd Phillips",
-      "year": "2019",
-      "kind": "film",
-      "status": "queued",
-      "color": "#5E241E",
-      "wiki": "Joker_(2019_film)",
-      "note": ""
-    },
-    {
-      "title": "The Batman",
-      "creator": "Matt Reeves",
-      "year": "2022",
-      "kind": "film",
-      "status": "queued",
-      "color": "#4A1416",
-      "wiki": "The_Batman_(film)",
-      "note": ""
-    },
-    {
-      "title": "Oppenheimer",
-      "creator": "Christopher Nolan",
-      "year": "2023",
-      "kind": "film",
-      "status": "queued",
-      "color": "#5E2B18",
-      "wiki": "Oppenheimer_(film)",
+      "color": "#24292E",
+      "source": "https://static.tvmaze.com/uploads/images/original_untouched/29/74582.jpg",
       "note": ""
     }
   ]
