@@ -9,6 +9,33 @@
       "note": ""
     },
     {
+      "title": "Frankenstein",
+      "creator": "Mary Shelley",
+      "year": "1818",
+      "status": "next",
+      "color": "#2B3438",
+      "source": "https://covers.openlibrary.org/b/isbn/9780141439471-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Moby-Dick",
+      "creator": "Herman Melville",
+      "year": "1851",
+      "status": "next",
+      "color": "#22323A",
+      "source": "https://covers.openlibrary.org/b/isbn/9780142437247-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Les Misérables",
+      "creator": "Victor Hugo",
+      "year": "1862",
+      "status": "next",
+      "color": "#262C38",
+      "source": "https://covers.openlibrary.org/b/isbn/9780140444308-L.jpg",
+      "note": ""
+    },
+    {
       "title": "Notes from Underground",
       "creator": "Fyodor Dostoevsky",
       "year": "1864",
@@ -24,6 +51,33 @@
       "status": "next",
       "color": "#4A2322",
       "source": "https://covers.openlibrary.org/b/id/13116014-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "The Yellow Wallpaper",
+      "creator": "Charlotte Perkins Gilman",
+      "year": "1892",
+      "status": "next",
+      "color": "#5E4D24",
+      "source": "https://covers.openlibrary.org/b/isbn/9781558611580-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "The King in Yellow",
+      "creator": "Robert W. Chambers",
+      "year": "1895",
+      "status": "next",
+      "color": "#4E3D1C",
+      "source": "https://covers.openlibrary.org/b/id/4245882-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "The Invisible Man",
+      "creator": "H. G. Wells",
+      "year": "1897",
+      "status": "next",
+      "color": "#5E1D1E",
+      "source": "https://covers.openlibrary.org/b/isbn/9780141439983-L.jpg",
       "note": ""
     },
     {
@@ -45,6 +99,15 @@
       "note": ""
     },
     {
+      "title": "Of Mice and Men",
+      "creator": "John Steinbeck",
+      "year": "1937",
+      "status": "next",
+      "color": "#3E3730",
+      "source": "https://covers.openlibrary.org/b/isbn/9780141023571-L.jpg",
+      "note": ""
+    },
+    {
       "title": "The Stranger",
       "creator": "Albert Camus",
       "year": "1942",
@@ -62,12 +125,39 @@
       "note": ""
     },
     {
+      "title": "No Longer Human",
+      "creator": "Osamu Dazai",
+      "year": "1948",
+      "status": "next",
+      "color": "#3B1E2E",
+      "source": "https://covers.openlibrary.org/b/isbn/9780811204811-L.jpg",
+      "note": ""
+    },
+    {
       "title": "1984",
       "creator": "George Orwell",
       "year": "1949",
       "status": "next",
       "color": "#7A231D",
       "source": "https://covers.openlibrary.org/b/isbn/9780141036144-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Blindness",
+      "creator": "José Saramago",
+      "year": "1995",
+      "status": "next",
+      "color": "#383A3E",
+      "source": "https://covers.openlibrary.org/b/isbn/9780156007757-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "The Republic",
+      "creator": "Plato",
+      "year": "375 BC",
+      "status": "next",
+      "color": "#4A3E2D",
+      "source": "https://covers.openlibrary.org/b/isbn/9780140455113-L.jpg",
       "note": ""
     },
     {
@@ -86,6 +176,24 @@
       "status": "next",
       "color": "#26282E",
       "source": "https://covers.openlibrary.org/b/isbn/9780486445816-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "The Communist Manifesto",
+      "creator": "Karl Marx & Friedrich Engels",
+      "year": "1848",
+      "status": "next",
+      "color": "#661A1A",
+      "source": "https://covers.openlibrary.org/b/isbn/9780140447576-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Das Kapital",
+      "creator": "Karl Marx",
+      "year": "1867",
+      "status": "next",
+      "color": "#521B1B",
+      "source": "https://covers.openlibrary.org/b/isbn/9780199535705-L.jpg",
       "note": ""
     },
     {
@@ -510,6 +618,16 @@
       "status": "queued",
       "color": "#1F262E",
       "wiki": "The_Prestige_(film)",
+      "note": ""
+    },
+    {
+      "title": "The Great Gatsby",
+      "creator": "Baz Luhrmann",
+      "year": "2013",
+      "kind": "film",
+      "status": "queued",
+      "color": "#4E3E1F",
+      "wiki": "The_Great_Gatsby_(2013_film)",
       "note": ""
     },
     {
