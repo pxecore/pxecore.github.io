@@ -756,11 +756,11 @@ body.light-theme .shelf-ledge {
 /* Cinema / Watchlist VHS Cassette Styling */
 .shelf-section[data-mode="cinema"] .shelf-track {
     min-height: 276px;
-    gap: 5px;
+    gap: 6px;
 }
 
 .shelf-section[data-mode="cinema"] .shelf-item {
-    width: 34px;
+    width: 38px;
     height: 248px;
     border-radius: 3px 3px 2px 2px;
     border-color: rgba(255, 255, 255, 0.14);
