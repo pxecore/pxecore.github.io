@@ -160,6 +160,15 @@
       "note": ""
     },
     {
+      "title": "Boy in a White Room",
+      "creator": "Karl Olsberg",
+      "year": "2017",
+      "status": "next",
+      "color": "#1B3324",
+      "source": "https://covers.openlibrary.org/b/id/13200627-L.jpg",
+      "note": ""
+    },
+    {
       "title": "The Invisible Man",
       "creator": "H. G. Wells",
       "year": "1897",
@@ -759,6 +768,16 @@
       "status": "queued",
       "color": "#6E1E22",
       "source": "https://static.tvmaze.com/uploads/images/original_untouched/642/1606527.jpg",
+      "note": ""
+    },
+    {
+      "title": "Person of Interest",
+      "creator": "Jonathan Nolan",
+      "year": "2011",
+      "kind": "series",
+      "status": "queued",
+      "color": "#1B2838",
+      "source": "https://static.tvmaze.com/uploads/images/original_untouched/163/407679.jpg",
       "note": ""
     },
     {
