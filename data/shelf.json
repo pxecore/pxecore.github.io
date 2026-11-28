@@ -9,6 +9,15 @@
       "note": ""
     },
     {
+      "title": "On the Shortness of Life",
+      "creator": "Seneca",
+      "year": "49",
+      "status": "reading",
+      "color": "#5A4634",
+      "source": "https://covers.openlibrary.org/b/isbn/9780143036326-L.jpg",
+      "note": ""
+    },
+    {
       "title": "Source Code",
       "creator": "Bill Gates",
       "year": "2025",
@@ -223,6 +232,15 @@
       "note": ""
     },
     {
+      "title": "Enchiridion",
+      "creator": "Epictetus",
+      "year": "125",
+      "status": "next",
+      "color": "#3F4A3C",
+      "source": "https://covers.openlibrary.org/b/isbn/9780486433592-L.jpg",
+      "note": ""
+    },
+    {
       "title": "Meditations",
       "creator": "Marcus Aurelius",
       "year": "180",
@@ -232,12 +250,30 @@
       "note": ""
     },
     {
+      "title": "Man's Search for Meaning",
+      "creator": "Viktor E. Frankl",
+      "year": "1946",
+      "status": "next",
+      "color": "#4E3B31",
+      "source": "https://covers.openlibrary.org/b/isbn/9780807014271-L.jpg",
+      "note": ""
+    },
+    {
       "title": "The Republic",
       "creator": "Plato",
       "year": "375 BC",
       "status": "next",
       "color": "#4A3E2D",
       "source": "https://covers.openlibrary.org/b/isbn/9780140455113-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Ethics",
+      "creator": "Baruch Spinoza",
+      "year": "1677",
+      "status": "next",
+      "color": "#2E2A26",
+      "source": "https://covers.openlibrary.org/b/isbn/9780140435719-L.jpg",
       "note": ""
     },
     {
@@ -256,6 +292,33 @@
       "status": "next",
       "color": "#1C4B27",
       "source": "https://covers.openlibrary.org/b/isbn/9780521599634-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Thus Spoke Zarathustra",
+      "creator": "Friedrich Nietzsche",
+      "year": "1883",
+      "status": "next",
+      "color": "#1D354A",
+      "source": "https://covers.openlibrary.org/b/isbn/9780140441185-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "Beyond Good and Evil",
+      "creator": "Friedrich Nietzsche",
+      "year": "1886",
+      "status": "next",
+      "color": "#2A2D3E",
+      "source": "https://covers.openlibrary.org/b/isbn/9780140449235-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "The Myth of Sisyphus",
+      "creator": "Albert Camus",
+      "year": "1942",
+      "status": "next",
+      "color": "#463932",
+      "source": "https://covers.openlibrary.org/b/isbn/9780141182001-L.jpg",
       "note": ""
     },
     {
