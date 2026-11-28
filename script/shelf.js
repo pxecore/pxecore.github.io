@@ -262,16 +262,9 @@
             detailNote.hidden = !item.note;
         }
 
-        function getPerShelf() {
-            const w = window.innerWidth;
-            if (w <= 640) return Math.max(1, filtered.length);
-            if (w <= 860) return cfg.mode === 'cinema' ? 12 : 10;
-            return cfg.mode === 'cinema' ? 16 : 14;
-        }
-
         function renderItems() {
             stage.textContent = '';
-            const perShelf = getPerShelf();
+            const perShelf = Math.max(1, filtered.length);
 
             for (let start = 0; start < Math.max(1, filtered.length); start += perShelf) {
                 const slice = filtered.slice(start, start + perShelf);
@@ -456,19 +449,6 @@
                 updateSelection(true);
             }
         }, { passive: false });
-
-        let lastPerShelf = getPerShelf();
-        let resizeTimer = 0;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                const nextPerShelf = getPerShelf();
-                if (nextPerShelf !== lastPerShelf) {
-                    lastPerShelf = nextPerShelf;
-                    renderItems();
-                }
-            }, 160);
-        }, { passive: true });
 
         renderFilters();
         renderItems();
