@@ -259,6 +259,15 @@
       "note": ""
     },
     {
+      "title": "The Courage to Be Disliked",
+      "creator": "Ichiro Kishimi & Fumitake Koga",
+      "year": "2013",
+      "status": "next",
+      "color": "#6B1B1D",
+      "source": "https://covers.openlibrary.org/b/isbn/9781760630737-L.jpg",
+      "note": ""
+    },
+    {
       "title": "The Republic",
       "creator": "Plato",
       "year": "375 BC",
@@ -337,6 +346,42 @@
       "status": "next",
       "color": "#521B1B",
       "source": "https://covers.openlibrary.org/b/isbn/9780199535705-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "The Torah",
+      "creator": "Hebrew Bible",
+      "year": "5th c. BC",
+      "status": "next",
+      "color": "#3C3832",
+      "source": "https://covers.openlibrary.org/b/isbn/9780393333930-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "The Book of Psalms",
+      "creator": "Hebrew Bible",
+      "year": "5th c. BC",
+      "status": "next",
+      "color": "#263652",
+      "source": "https://covers.openlibrary.org/b/isbn/9780393337044-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "The New Testament",
+      "creator": "Christian Bible",
+      "year": "1st c. AD",
+      "status": "next",
+      "color": "#5C2622",
+      "source": "https://covers.openlibrary.org/b/isbn/9780199535941-L.jpg",
+      "note": ""
+    },
+    {
+      "title": "The Qur'an",
+      "creator": "Islamic Scripture",
+      "year": "632",
+      "status": "next",
+      "color": "#1D3557",
+      "source": "https://covers.openlibrary.org/b/isbn/9780192831934-L.jpg",
       "note": ""
     }
   ],
